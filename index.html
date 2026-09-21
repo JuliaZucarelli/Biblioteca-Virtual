@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="img/Favicon-Biblioteca-Virtual.png">
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <title>Biblioteca Virtual</title>
+</head>
+<body>
+    <div class="layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar_logo">
+                <img src="img/logo-horizontal-Biblioteca-Virtual.png" alt="logo horizontal da plataforma Biblioteca Virtural">
+            </div>
+
+            <nav class="sidebar_nav">
+                <!-- nav-item--active marca em qual página o usuário está -->
+                <a href="inicio.html">início</a>
+                <br>
+                <a href="emprestimos.html">empréstimos</a>
+                <br>
+                <a href="historico.html">histórico</a>
+                <br>
+                <a href="conta.html">conta</a>
+            </nav>
+
+            <div class="sidebar__profile">
+                <div class="avatar">JZ
+                    <img src="#" alt="">
+                </div>
+                <div>
+                    <p class="sidebar__profile-name">Julia Zucareli</p>
+                    <p class="sidebar__profile_role">membro</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <div class="main">
+            <!-- topbar: busca rápida + avatar -->
+             <header class="topbar">
+                <div class="search-bar search-bar--compact">
+                    <input type="text" name="userSearchBarFull" id="searchBarFull" placeholder="busca rápida...">
+                </div>
+                <button class="avatar avatar--button">JZ</button>
+             </header>
+
+             <main class="content">
+                <!-- HERO  -->
+                <section class="hero">
+                    <h1>Um lugar quieto para encontrar a próxima leitura...</h1>
+                    <p class="hero__quote">
+                        "Um leitor vive 100 vidas antes de morrer. O homem que nunca lê, vive apenas uma."
+                        — George R.R. Martin
+                    </p>
+
+                    <div class="search-bar search-bar--hero">
+                        <input type="text" name="userSearchBar" id="searchBar" placeholder="buscar por título, autor, ISBN...">
+                    </div>
+                </section>
+
+                <!-- EM DESTAQUE -->
+                <section class="section">
+                    <div class="section__header">
+                        <h2>Em destaque</h2>
+                        <a href="#" class="link-arrow">ver todo acervo</a>
+                    </div>
+                    
+                    <div class="book-grid">
+                        <article class="book-card">
+                            <div class="book-card__cover" style="background: #1a1a1a;"></div>
+                            <div class="book-card__body">
+                                <p class="book-card__genre">LITERATURA RUSSA</p>
+                                <h3 class="book-card__title">Noite Brancas</h3>
+                                <p class="book-card__author">Fiódor Dostoiévski</p>
+                                <span class="badge badge--rose">indisponível</span>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    
+</body>
+</html>
