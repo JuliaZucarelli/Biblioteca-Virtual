@@ -1,0 +1,76 @@
+:root {
+  --bg-base: #f7f3ec;
+  --bg-elevated: #fffdf9;
+  --bg-nav: #e4ddd0; 
+  --ink-primary: #2e2a26;
+  --ink-secondary: #6b655c;
+  --ink-muted: #9b9488;
+
+  --pastel-sage: #b7c4b1;
+  --pastel-sage-text: #3f4f3a;
+  --pastel-dusty: #d8b4a0;
+  --pastel-lilac: #c9bfe0;
+  --pastel-lilac-text: #453a63;
+  --pastel-rose: #e0afae;
+  --pastel-rose-text: #6b2d2c;
+
+  --line-hairline: #e2dacb;
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Work Sans", sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  --sidebar-w: 220px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-base);
+  color: var(--ink-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+h1 {
+  font-family: var(--font-display);
+}
+
+h2, h3, h4 {
+    font-family: var(--font-body);
+}
+
+/* LAYOUT — sidebar fixa + área principal */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--bg-nav);
+  border-right: 1px solid var(--line-hairline);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-5) var(--space-4);
+}
+
+img {
+    width: 200px;
+}
+
