@@ -22,11 +22,8 @@
 
             <nav class="sidebar_nav">
                 <a class="nav-item" href="inicio.html">início</a>
-                <br>
                 <a class="nav-item" href="emprestimos.html">empréstimos</a>
-                <br>
                 <a class="nav-item" href="historico.html">histórico</a>
-                <br>
                 <a class="nav-item" href="conta.html">conta</a>
             </nav>
 
@@ -71,13 +68,29 @@
                 <section class="section">
                     <div class="section__header">
                         <h2>Em destaque</h2>
-                        <a href="#" class="link-arrow">ver todo acervo</a>
+                        <a href="#" class="link-arrow">ver todo acervo <span aria-hidden="true">→</span></a>
                     </div>
                     
                     <div class="book-grid">
                         <article class="book-card">
                             <!-- adicionar imagem de cada livro -->
-                            <div class="book-card__cover" style="background: #1a1a1a;"></div>
+                            <div class="book-card__cover book-cover--noite" >
+                                <img src="/img/noites-brancas.jpg" alt="">
+                            </div>
+                            <div class="book-card__body">
+                                <h4 class="book-card__genre">LITERATURA RUSSA</h4>
+                                <h3 class="book-card__title">Noite Brancas</h3>
+                                <p class="book-card__author">Fiódor Dostoiévski</p>
+                                <span class="badge badge--rose">indisponível</span>
+                            </div>
+
+                        </article>
+
+                        <article class="book-card">
+                            <!-- adicionar imagem de cada livro -->
+                            <div class="book-card__cover book-cover--agua-viva" >
+                                <img src="/img/agua-viva.jpg" alt="">
+                            </div>
                             <div class="book-card__body">
                                 <h4 class="book-card__genre">LITERATURA RUSSA</h4>
                                 <h3 class="book-card__title">Noite Brancas</h3>
@@ -85,6 +98,33 @@
                                 <span class="badge badge--rose">indisponível</span>
                             </div>
                         </article>
+                    
+                        <article class="book-card">
+                            <!-- adicionar imagem de cada livro -->
+                            <div class="book-card__cover book-cover--apanhador" >
+                                <img src="/img/o-apanhador-de-centeio.jpg" alt="">
+                            </div>
+                            <div class="book-card__body">
+                                <h4 class="book-card__genre">LITERATURA RUSSA</h4>
+                                <h3 class="book-card__title">Noite Brancas</h3>
+                                <p class="book-card__author">Fiódor Dostoiévski</p>
+                                <span class="badge badge--rose">indisponível</span>
+                            </div>
+                        </article>
+
+                        <article class="book-card">
+                            <!-- adicionar imagem de cada livro -->
+                            <div class="book-card__cover book-cover--metamorfose" >
+                                <img src="/img/a-metamorfose.jpg" alt="">
+                            </div>
+                            <div class="book-card__body">
+                                <h4 class="book-card__genre">LITERATURA RUSSA</h4>
+                                <h3 class="book-card__title">Noite Brancas</h3>
+                                <p class="book-card__author">Fiódor Dostoiévski</p>
+                                <span class="badge badge--rose">indisponível</span>
+                            </div>
+                        </article>
+
                     </div>
                 </section>
             </main>
