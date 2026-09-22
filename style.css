@@ -252,3 +252,61 @@ a {
   align-items: center;
   justify-content: space-between;
 }
+
+/* BOOK GRID */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 22px;
+}
+
+.book-card {
+  width: 333px;
+  min-width: 0;
+  overflow: hidden;
+
+  background: var(--bg-header-footer);
+  border: 1px solid var(--line-hairline);
+  border-radius: 8px;
+}
+
+.book-card__cover {
+  height: 643px;
+
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.book-card__body {
+  min-height: 128px;
+  padding: 18px 0 37px 18px;
+}
+
+.book-card__genre {
+  margin: 0 0 5px;
+}
+
+.book-card__title {
+  margin: 0;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.book-card__author {
+  margin: 12px 0 10px;
+}
+
+.badge {
+  display: inline-block;
+
+  padding: 12px 0 10px;
+  border-radius: 20px;
+}
+
+.badge--rose {
+  background: var(--pastel-rose);
+  color: var(--pastel-rose-text);
+}
