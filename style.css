@@ -310,3 +310,77 @@ a {
   background: var(--pastel-rose);
   color: var(--pastel-rose-text);
 }
+
+
+
+/* RESPONSIVIDADE */
+@media (max-width: 1100px) {
+  .content {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .book-grid {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  :root {
+    --sidebar-w: 0px;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 12px 16px;
+  }
+
+  .main {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .sidebar_logo {
+    width: 150px;
+    margin: 0 0 10px;
+  }
+
+  .sidebar__nav {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .sidebar__profile {
+    display: none;
+  }
+
+  .topbar {
+    padding: 0 16px;
+  }
+
+  .search-bar--compact {
+    width: 70%;
+  }
+
+  .content {
+    padding: 35px 20px 50px;
+  }
+
+  .hero h1 {
+    font-size: 40px;
+  }
+
+  .section {
+    margin-top: 55px;
+  }
+
+  .book-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .book-card__cover {
+    height: 430px;
+  }
+}
