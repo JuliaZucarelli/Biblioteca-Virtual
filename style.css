@@ -113,8 +113,8 @@ a {
 }
 
 .sidebar__profile {
-  margin-top: auto; 
-  
+  margin-top: auto;
+
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -224,7 +224,7 @@ a {
   border-radius: 48px;
 
   color: var(--ink-secondary);
-} 
+}
 
 .search-bar--compact {
   width: 670px;
@@ -246,7 +246,7 @@ a {
   outline: 0;
   background: transparent;
 
-  color: var(--ink-secondary);
+  color: var(--ink-muted);
   font-size: var(--font-body);
 }
 
@@ -266,7 +266,7 @@ a {
 
 .hero h1 {
   margin: 0;
-  
+
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 3.33vw, 4rem);
 }
@@ -311,12 +311,12 @@ a {
 /* BOOK GRID */
 .book-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(180px, 1fr));
-  gap: 80px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 32px;
 }
 
 .book-card {
-  width: 333px;
+  width: 100%;
   min-width: 0;
   overflow: hidden;
 
@@ -326,8 +326,6 @@ a {
 }
 
 .book-card__cover {
-  /* height: 643px; */
-
   position: relative;
   overflow: hidden;
 
