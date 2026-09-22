@@ -1,7 +1,7 @@
 :root {
   --bg-base: #f7f3ec;
   --bg-elevated: #fffdf9;
-  --bg-nav: #e4ddd0; 
+  --bg-nav: #e4ddd0;
   --ink-primary: #2e2a26;
   --ink-secondary: #6b655c;
   --ink-muted: #9b9488;
@@ -26,8 +26,9 @@
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
+  --space-5: 18px;
+  --space-6: 24px;
+  --space-7: 32px;
 
   --sidebar-w: 220px;
 }
@@ -67,6 +68,7 @@ a {
   color: inherit;
 }
 
+
 /* LAYOUT */
 .layout {
   display: flex;
@@ -75,15 +77,26 @@ a {
 
 /* SIDEBAR */
 .sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
   width: var(--sidebar-w);
-  flex-shrink: 0;
+  height: 100vh;
+
   background: var(--bg-nav);
   border-right: 1px solid var(--line-hairline);
+
   display: flex;
   flex-direction: column;
-  padding: var(--space-5) var(--space-4);
+  padding: var(--space-6) var(--space-5);
 }
 
+.main {
+  width: calc(100% - var(--sidebar-w));
+  margin-left: var(--sidebar-w);
+  min-width: 0;
+}
+
+/* SIDEBAR */
  .sidebar_logo {
   width: 200px;
   height: auto;
@@ -96,8 +109,12 @@ a {
 }
 
 .nav-item {
-  /* display: block; */
-  padding: 10px 12px;
+  min-height: 38px;
+  padding: var(--space-2) var(--space-5);
+
+  align-items: center;
+  gap: var(--space-4);
+  
   text-decoration: none;
   color: var(--ink-secondary);
   font-size: 14px;
