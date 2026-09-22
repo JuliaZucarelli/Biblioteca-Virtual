@@ -112,6 +112,33 @@ a {
   gap: 2px;
 }
 
+.sidebar__profile {
+  margin-top: auto; 
+  
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-5);
+}
+
+.sidebar__profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar__profile-name {
+  margin: 0;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  line-height: 1.2;
+}
+
+.sidebar__profile_role {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
 .nav-item {
   min-height: 38px;
   padding: var(--space-2) var(--space-5);
@@ -391,7 +418,7 @@ a {
   }
 
   .sidebar__profile {
-    display: none;
+    display: flex;
   }
 
   .topbar {
