@@ -127,3 +127,6 @@ a {
   font-weight: 500;
 }
 
+.nav-item--active {
+  border-right: 2px solid var(--bg-elevated);
+}
