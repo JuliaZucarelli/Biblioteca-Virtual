@@ -130,3 +130,33 @@ a {
 .nav-item--active {
   border-right: 2px solid var(--bg-elevated);
 }
+
+/* AVATAR */
+
+/* lembrar de adicionar opção aqui ser foto*/
+.avatar {
+  width: 43px;
+  height: 43px;
+  flex-shrink: 1;
+
+  border-radius: 60px 60px;
+  background: #000000;
+  color: var(--bg-base);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: var(--font-body);
+  font-size: var(--space-4);
+}
+
+.avatar--profile {
+  width: 36px;
+  height: 36px;
+  font: var(--space-2);
+}
+
+.avatar--button {
+  cursor: pointer;
+}
