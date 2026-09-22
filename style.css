@@ -239,3 +239,16 @@ a {
   margin: 26px 0 26px;
   font-size: clamp(1.125rem 1.25vw 1.5rem );
 }
+
+/* SEÇÃO DE LIVROS */
+.section {
+  margin-top: 87px;
+}
+
+.section__header {
+  margin-bottom: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
