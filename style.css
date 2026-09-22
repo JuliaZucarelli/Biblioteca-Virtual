@@ -54,12 +54,13 @@ h2, h3, h4 {
     font-family: var(--font-body);
 }
 
-/* LAYOUT — sidebar fixa + área principal */
+/* LAYOUT */
 .layout {
   display: flex;
   min-height: 100vh;
 }
 
+/* SIDEBAR */
 .sidebar {
   width: var(--sidebar-w);
   flex-shrink: 0;
@@ -72,6 +73,7 @@ h2, h3, h4 {
 
  .sidebar_logo {
   width: 200px;
+  height: auto;
  }
 
 .sidebar__nav {
