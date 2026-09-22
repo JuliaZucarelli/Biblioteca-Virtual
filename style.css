@@ -70,7 +70,27 @@ h2, h3, h4 {
   padding: var(--space-5) var(--space-4);
 }
 
-img {
-    width: 200px;
+ .sidebar_logo {
+  width: 200px;
+ }
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  /* display: block; */
+  padding: 10px 12px;
+  text-decoration: none;
+  color: var(--ink-secondary);
+  font-size: 14px;
+}
+
+.nav-item:hover {
+  background: var(--bg-elevated);
+  color: var(--ink-primary);
+  font-weight: 500;
 }
 
