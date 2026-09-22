@@ -120,7 +120,8 @@ a {
   font-size: 14px;
 }
 
-.nav-item:hover {
+.nav-item:hover, 
+.nav-item--active {
   background: var(--bg-elevated);
   color: var(--ink-primary);
   font-weight: 500;
