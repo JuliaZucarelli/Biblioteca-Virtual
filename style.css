@@ -50,12 +50,9 @@ html, body {
   line-height: 1.6;
 }
 
-h1 {
-  font-family: var(--font-display);
-}
-
 h2, h3, h4 {
-    font-family: var(--font-body);
+  font-family: var(--font-body);
+  color: var(--ink-secondary);
 }
 
 button, input {
@@ -222,3 +219,23 @@ a {
   opacity: 1;
 }
 
+/* HERO */
+.content {
+  padding: 52px 82px 82px;
+}
+
+.hero {
+  max-width: 930px;
+}
+
+.hero h1 {
+  margin: 0;
+  
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 3.33vw, 4rem);
+}
+
+.hero__quote {
+  margin: 26px 0 26px;
+  font-size: clamp(1.125rem 1.25vw 1.5rem );
+}
