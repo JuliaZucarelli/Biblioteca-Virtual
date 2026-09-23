@@ -73,6 +73,7 @@ button, input {
 
 button {
   border: 0;
+  background: transparent;
 }
 
 a {
@@ -565,6 +566,8 @@ a {
   white-space: nowrap;
 
   color: var(--pastel-mostard);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .emprestimos-card__renovar-icon {
@@ -577,6 +580,16 @@ a {
   stroke-width: 1;
   color: var(--pastel-mostard);
 }
+
+.emprestimos-card__renovation:hover {
+  font-weight: 500;
+  transform: translateY(-1px);
+}
+
+.emprestimos-card__renovation:hover .emprestimos-card__renovar-icon {
+  stroke-width: 2;
+}
+
 
 
 /* RESPONSIVIDADE */
