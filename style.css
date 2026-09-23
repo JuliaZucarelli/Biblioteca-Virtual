@@ -313,6 +313,13 @@ a {
   max-width: 930px;
 }
 
+.hero__info {
+  font-weight: 500;
+}
+
+
+}
+
 .hero h1 {
   margin: 0;
 
