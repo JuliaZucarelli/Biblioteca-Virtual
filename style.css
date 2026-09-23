@@ -163,6 +163,15 @@ a {
   border-right: 2px solid var(--bg-elevated);
 }
 
+.nav-item__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+
+  stroke-width: 1;
+  color: currentColor;
+}
+
 /* AVATAR */
 
 /* lembrar de adicionar opção aqui ser foto*/
