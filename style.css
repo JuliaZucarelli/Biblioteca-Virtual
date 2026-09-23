@@ -322,8 +322,13 @@ a {
   align-items: center;
   gap: 4px;
 
+  margin: 8px 0 0;
   font-weight: 500;
-  margin: 0;
+}
+
+.hero__mensagem {
+  margin: 8px 0 0;
+  padding: 0;
 }
 
 .hero__icon {
@@ -515,7 +520,7 @@ a {
   display: grid;
   grid-template-columns: auto auto minmax(0, 1fr) auto;
   grid-template-rows: auto auto 1fr auto;
-  column-gap: 24px; 
+  column-gap: 24px;
   align-items: start;
 }
 
@@ -526,7 +531,7 @@ a {
   margin: 0;
 }
 
-.emprestimos-card__author { 
+.emprestimos-card__author {
   grid-column: 1;
   grid-row: 2;
 
@@ -547,8 +552,8 @@ a {
 }
 
 .emprestimos-card__date,
-.emprestimos-card__devolution, 
-.emprestimos-card__penalty, 
+.emprestimos-card__devolution,
+.emprestimos-card__penalty,
 .emprestimos-card__renovation {
   grid-row: 4;
   align-self: end;
@@ -570,7 +575,7 @@ a {
 
 .emprestimos-card__penalty {
   grid-column: 3;
-  
+
   color: var(--pastel-rose);
   font-weight: 500;
 }
