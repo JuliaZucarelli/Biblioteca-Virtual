@@ -154,8 +154,7 @@ a {
 
 .nav-item:hover,
 .nav-item--active {
-  background: var(--bg-elevated);
-  opacity: 30%;
+  background: color-mix(in srgb, var(--bg-elevated) 30%, transparent);
   color: var(--ink-primary);
   font-weight: 500;
 }
@@ -257,7 +256,7 @@ a {
 
 /* HERO */
 .content {
-  padding: 52px 82px 82px;
+  padding: 52px 40px 16px 52px
 }
 
 .hero {
@@ -420,7 +419,7 @@ a {
   }
 
   .topbar {
-    padding: 0 16px;
+    padding: 12px 20px 12px 22px;
   }
 
   .search-bar--compact {
