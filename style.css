@@ -369,9 +369,17 @@ a {
 .book-card__cover {
   position: relative;
   overflow: hidden;
+  height: 475px;
 
   display: flex;
   flex-direction: column;
+}
+
+.book-card__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .book-card__body {
