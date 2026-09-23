@@ -225,6 +225,29 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.icon-button {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+
+  stroke-width: 1;
+
+  background: transparent;
+  color: var(--ink-secondary);
+  cursor: pointer;
+}
+
+.icon-button__icon {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.15s ease;
+}
+
+.icon-button:hover .icon-button__icon {
+  stroke-width: 2;
 }
 
 /* SEARCH */
