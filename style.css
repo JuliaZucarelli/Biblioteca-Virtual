@@ -169,7 +169,12 @@ a {
   flex-shrink: 0;
 
   stroke-width: 1;
-  color: currentColor;
+  color: var(--ink-secondary);
+}
+
+.nav-item:hover .nav-item__icon,
+.nav-item--active .nav-item__icon {
+  stroke-width: 2;
 }
 
 /* AVATAR */
