@@ -55,7 +55,13 @@ body {
   line-height: 1.6;
 }
 
-h2, h3, h4, p{
+h2 {
+  font-family: var(--font-body);
+  color: var(--ink-secondary);
+  font-weight: 500;
+}
+
+h3, h4, p{
   font-family: var(--font-body);
   color: var(--ink-secondary);
 }
