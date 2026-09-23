@@ -56,6 +56,10 @@ body {
   line-height: 1.6;
 }
 
+h1 {
+  font-family: var(--font-display);
+}
+
 h2 {
   font-family: var(--font-body);
   color: var(--ink-secondary);
@@ -317,8 +321,6 @@ a {
   font-weight: 500;
 }
 
-
-}
 
 .hero h1 {
   margin: 0;
