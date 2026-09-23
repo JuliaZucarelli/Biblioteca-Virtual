@@ -320,7 +320,7 @@ a {
 
 .hero__quote {
   margin: 26px 0 26px;
-  font-size: clamp(1.125rem, 1.25vw, 1.5rem );
+  /* font-size: clamp(1.125rem, 1.25vw, 1.5rem ); */
 }
 
 /* SEÇÃO DE LIVROS */
