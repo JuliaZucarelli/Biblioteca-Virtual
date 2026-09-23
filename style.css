@@ -390,9 +390,37 @@ a {
 
 .book-card__body {
   min-height: 128px;
-  padding: 18px 0 37px 18px;
+  padding: 18px 18px 20px;
 
   background: var(--bg-header-footer);
+}
+
+.book-card__meta {
+  margin: 12px 0 12px;
+  color: var(--ink-secondary);
+}
+
+.book-card__disponibilidade {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--ink-secondary);
+}
+
+.book-card__disponibilidade-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.book-card__disponibilidade-dot--available {
+  background: var(--pastel-sage-text);
+}
+
+.book-card__disponibilidade-dot--disponivel{
+  background: var(--pastel-sage);
 }
 
 .book-card__genre {
@@ -410,24 +438,7 @@ a {
   color: var(--ink-secondary);
 }
 
-.badge {
-  display: inline-block;
 
-  padding: 12px 12px 10px;
-  border-radius: 20px;
-
-  line-height: 1;
-}
-
-.badge--rose {
-  background: var(--pastel-rose);
-  color: var(--pastel-rose-text);
-}
-
-.badge--sage {
-  background: var(--pastel-sage);
-  color: var(--pastel-sage-text);
-}
 
 /* RESPONSIVIDADE */
 @media (max-width: 1100px) {
