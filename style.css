@@ -225,6 +225,11 @@ a {
   color: var(--ink-secondary);
 }
 
+.search-bar:hover {
+  background: color-mix(in srgb, var(--bg-elevated) 30%, transparent);;
+  border-color: var(--ink-muted);
+}
+
 .search-bar--compact {
   width: 670px;
   height: 48px;
