@@ -15,6 +15,7 @@
   --pastel-lilac-text: #453a63;
   --pastel-rose: #e0afae;
   --pastel-rose-text: #6b2d2c;
+  --pastel-mostard: #e3c77c;
 
   --line-hairline: #e2dacb;
 
@@ -438,6 +439,144 @@ a {
   color: var(--ink-secondary);
 }
 
+/* EMPRESTIMOS GRID */
+.emprestimos-grid {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1100px;
+
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.emprestimos-card {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+
+  background: var(--bg-header-footer);
+  border: 1px solid var(--line-hairline);
+  border-radius: 8px;
+
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  padding: 16px;
+}
+
+.emprestimos-card__cover {
+  position: relative;
+  overflow: hidden;
+  width: 88px;
+  height: 124px;
+
+  flex-shrink: 0;
+  border-radius: 4px;
+
+  align-self: center;
+}
+
+.emprestimos-card__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.emprestimos-card__body {
+  flex: 1;
+  min-width: 0;
+
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto 1fr auto;
+  column-gap: 24px; 
+  align-items: start;
+}
+
+.emprestimos-card__title {
+  grid-column: 1;
+  grid-row: 1;
+
+  margin: 0;
+}
+
+.emprestimos-card__author { 
+  grid-column: 1;
+  grid-row: 2;
+
+  margin: 4px 0 0;
+}
+
+.emprestimos-card__remainder {
+  margin: 0;
+  align-self: start;
+  justify-self: end;
+
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: var(--bg-nav);
+
+  grid-column: 4;
+  grid-row: 1/3;
+}
+
+.emprestimos-card__date,
+.emprestimos-card__devolution, 
+.emprestimos-card__penalty, 
+.emprestimos-card__renovation {
+  grid-row: 4;
+  align-self: end;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.emprestimos-card__date {
+  align-self: end;
+  grid-column: 1;
+}
+
+.emprestimos-card__devolution {
+  grid-column: 2;
+
+  color: var(--pastel-rose);
+  font-weight: 700;
+}
+
+.emprestimos-card__penalty {
+  grid-column: 3;
+  
+  color: var(--pastel-rose);
+  font-weight: 500;
+}
+
+.emprestimos-card__renovation {
+  grid-column: 4;
+  justify-self: end;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+
+  margin: 0;
+  white-space: nowrap;
+
+  color: var(--pastel-mostard);
+}
+
+.emprestimos-card__renovar-icon {
+  width: 18%;
+  height: 18px;
+
+  flex: 0 0 18px;
+  display: block;
+
+  stroke-width: 1;
+  color: var(--pastel-mostard);
+}
 
 
 /* RESPONSIVIDADE */
