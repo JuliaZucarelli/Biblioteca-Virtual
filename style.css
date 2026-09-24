@@ -626,7 +626,69 @@ a {
   stroke-width: 2;
 }
 
+/* INFORMAÇÃO DO PERFIL  */
+.perfil-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
 
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.perfil-card {
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+
+  background: var(--bg-header-footer);
+  border: 1px solid var(--line-hairline);
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 24px 16px 16px;
+}
+
+.perfil-card__foto {
+  
+}
+
+.perfil-card__body {
+  flex: 1;
+  min-width: 0;
+
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-template-rows: auto auto 1fr auto;
+  column-gap: 24px;
+  align-items: start;
+}
+
+.perfil-card__name {
+  grid-column: 1;
+  grid-row: 1;
+
+  margin: 0;
+}
+
+.perfil-card__email {
+  grid-column: 1;
+  grid-row: 2;
+
+  margin: 4px 0 0;
+}
+
+.perfil-card__function {
+  grid-column: 1;
+  grid-row: 3;
+
+  margin: 0;
+}
 
 /* RESPONSIVIDADE */
 @media (max-width: 1100px) {
