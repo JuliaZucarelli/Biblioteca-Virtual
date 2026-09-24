@@ -27,7 +27,7 @@
                 </a>
                 <a class="nav-item" href="emprestimos.html">
                     <svg class="nav-item__icon" aria-hidden="true"><use href="img/icons/icon-emprestimo.svg"></use></svg>
-                    empréstimos
+                    meus empréstimos
                 </a>
                 <a class="nav-item" href="historico.html">
                     <svg class="nav-item__icon" aria-hidden="true"><use href="img/icons/icon-historico.svg"></use></svg>
@@ -38,6 +38,25 @@
                     conta
                 </a>
             </nav>
+
+            <div class="sidebar__admin">
+                <p class="sidebar__admin-label">admin</p>
+
+                <a class="nav-item" href="cadastrar-livro.html">
+                    <svg class="nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    cadastrar novo livro
+                </a>
+                <a class="nav-item" href="admin.html">
+                    <svg class="nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    admin
+                </a>
+            </div>
 
             <div class="sidebar__profile">
                 <div class="avatar avatar--profile">JZ</div>
@@ -65,58 +84,57 @@
                 </div>
              </header>
 
-             <section>
+             <main class="content">
                 <!-- HERO -->
                 <h2>Minha conta</h2>
 
-                <section>
-                    <div class="perfil-grid">
-                        <article class="perfil-card">
-                            <div class="perfil-card__foto perfil--foto">
-                                <input type="file" name="" id="">
-                            </div>
+                <div class="perfil-grid">
+                    <!-- CARTÃO DE PERFIL -->
+                    <article class="perfil-card perfil-card--profile">
+                        <div class="perfil-card__foto">
+                            <input type="file" name="foto" id="foto" title="Alterar foto de perfil">
+                        </div>
 
-                            <div class="perfil-card__body">
-                                <h2 class="perfil-card__name">Julia Zucareli</h2>
-                                <p class="perfil-card__email">email</p>
-                                <p class="perfil-card__function">membro desde jan. 2026</p>
-                            </div>
-                        </article>
-                </section>
+                        <div class="perfil-card__body">
+                            <h2 class="perfil-card__name">Julia Zucareli</h2>
+                            <p class="perfil-card__email">email</p>
+                            <p class="perfil-card__function">membro desde jan. 2026</p>
+                        </div>
+                    </article>
 
-                <section>
-                    <article class="perfil-card">
+                    <!-- CARTÕES DE ESTATÍSTICA -->
+                    <div class="perfil-stats-grid">
+                        <article class="perfil-card perfil-card--stat">
                             <h2 class="perfil-card__number">3</h2>
                             <p class="perfil-card__text">empréstimos ativos</p>
                         </article>
 
-                        <article class="perfil-card">
+                        <article class="perfil-card perfil-card--stat">
                             <h2 class="perfil-card__number">47</h2>
                             <p class="perfil-card__text">livros lidos</p>
                         </article>
 
-                        <article class="perfil-card">
-                            <h2 class="perfil-card__valor">R$12,50</h2>
+                        <article class="perfil-card perfil-card--stat">
+                            <h2 class="perfil-card__valor">R$ 12,50</h2>
                             <p class="perfil-card__text">multa pendente</p>
                         </article>
 
-                        <article class="perfil-card">
+                        <article class="perfil-card perfil-card--stat">
                             <h2 class="perfil-card__renovation">2</h2>
                             <p class="perfil-card__text">renovações</p>
                         </article>
-
-                        <article class="perfil-card">
-                            <h4 class="perfil-card__preference">Preferências</h4>
-                            <p class="perfil-card__text">alterar senha</p>
-                            <p class="perfil-card__text">trocal email</p>
-                            <p class="perfil-card__text">sair da conta</p>
-                        </article>
                     </div>
-                </section>
-             </section>
 
-             <main class="content">
-             
+                    <!-- PREFERÊNCIAS -->
+                    <article class="perfil-card perfil-card--preferences">
+                        <h4 class="perfil-card__preference">Preferências</h4>
+                        <ul class="preference-list">
+                            <li>alterar senha</li>
+                            <li>trocar email</li>
+                            <li>sair da conta</li>
+                        </ul>
+                    </article>
+                </div>
             </main>
         </div>
     </div>
