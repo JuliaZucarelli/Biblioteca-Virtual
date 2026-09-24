@@ -106,11 +106,19 @@
                     </div>
                     
                     <div class="book-grid">
-                        <article class="book-card">
-                            <!-- adicionar imagem de cada livro -->
+                        <article class="book-card" 
+                            data-genero="LITERATURA RUSSA" 
+                            data-titulo="Noites Brancas" 
+                            data-autor="Fiódor Dostoiévski" 
+                            data-ano="1848"
+                            data-disponibilidade="2 disponíveis / 3 total"
+                            data-descricao="Uma história sobre encontros, solidão e expectativas, acompanha um jovem sonhador durante quatro noites pelas ruas de São Petersburgi">
+                            
+                            <!-- adicionar imagem de cada livro - provavelmente vai usar um input file -->
                             <div class="book-card__cover book-cover--noite" >
-                                <img src="/img/noites-brancas.jpg" alt="">
+                                <img src="/img/noites-brancas.jpg" alt="capa do livro Noites Brancas">
                             </div>
+
                             <div class="book-card__body">
                                 <h4 class="book-card__genre">LITERATURA RUSSA</h4>
                                 <h3 class="book-card__title">Noite Brancas</h3>
@@ -176,6 +184,32 @@
         </div>
     </div>
 
-    
+    <!-- OVERLAY DO LIVRO -->
+    <div class="book-overlay" id="bookOverlay">
+        <div class="book-modal">
+            <button class="book-modal__close" id="closeBook" aria-label="Fechar">
+                ×
+            </button>
+
+            <div class="book-modal__cover">
+                <img id="modalCover" src="" alt="">
+            </div>
+
+            <div class="book-modal__info">
+                <p class="book-modal__genre" id="modalGenre"></p>
+                <h2 class="book-modal__title" id="modalTitle"></h2>
+                <p class="book-modal__meta" id="modalMeta"></p>
+                <p class="book-modal_description" id="modalDescription"></p>
+                <p class="book-modal__availability" id="modalAvailability"></p>
+
+                <button class="book-modal__reserve">
+                    reservar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
