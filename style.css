@@ -700,6 +700,45 @@ a {
   margin: 0;
 }
 
+.perfil-stats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.perfil-card--stat {
+  width: 148px;
+  height: 132px;
+  flex-shrink: 0;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.perfil-card__number {
+  margin: 0;
+  color: var(--ink-primary);
+}
+
+.perfil-card__valor {
+  margin: 0;
+  color: var(--pastel-rose);
+}
+
+.perfil-card__renovation {
+  margin: 0;
+  color: var(--pastel-mostard);
+}
+
+.perfil-card--stat .perfil-card__text {
+  margin: 0;
+  font-size: 13px;
+}
+
 
 
 
