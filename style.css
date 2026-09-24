@@ -704,7 +704,7 @@ a {
   font-family: var(--font-body);
   font-size: 20px;
   font-weight: 500;
-  color: var(--ink-primary);
+  color: var(--ink-secondary);
 }
 
 .perfil-card__email,
@@ -738,7 +738,7 @@ a {
   font-family: var(--font-body);
   font-size: 28px;
   font-weight: 500;
-  color: var(--ink-primary);
+  color: var(--ink-secondary);
 }
 
 .perfil-card__valor {
@@ -746,7 +746,7 @@ a {
   font-family: var(--font-body);
   font-size: 20px;
   font-weight: 500;
-  color: var(--pastel-rose-text);
+  color: var(--pastel-rose);
   line-height: 1.2;
 }
 
@@ -775,7 +775,7 @@ a {
 
 .perfil-card__preference {
   margin: 0 0 8px;
-  color: var(--ink-primary);
+  color: var(--ink-secondary);
   font-weight: 500;
   font-size: 14px;
 }
