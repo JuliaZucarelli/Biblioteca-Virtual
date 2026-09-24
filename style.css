@@ -125,7 +125,7 @@ a {
 }
 
 .sidebar__profile {
-  margin-top: auto;
+  margin-top: var(--space-4);
 
   display: flex;
   align-items: center;
@@ -654,6 +654,7 @@ a {
   padding: 16px 24px 16px 16px;
 }
 
+/* cartão de perfil (foto + nome + email) */
 .perfil-card--profile {
   width: 100%;
   max-width: 620px;
@@ -682,6 +683,13 @@ a {
   cursor: pointer;
 }
 
+.perfil-card__foto input[type="file"]::file-selector-button {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  cursor: pointer;
+}
+
 .perfil-card__body {
   flex: 1;
   min-width: 0;
@@ -693,13 +701,19 @@ a {
 
 .perfil-card__name {
   margin: 0;
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink-primary);
 }
 
 .perfil-card__email,
 .perfil-card__function {
   margin: 0;
+  font-size: 12px;
 }
 
+/* cartões de estatística */
 .perfil-stats-grid {
   display: flex;
   flex-wrap: wrap;
@@ -721,16 +735,26 @@ a {
 
 .perfil-card__number {
   margin: 0;
+  font-family: var(--font-body);
+  font-size: 28px;
+  font-weight: 500;
   color: var(--ink-primary);
 }
 
 .perfil-card__valor {
   margin: 0;
-  color: var(--pastel-rose);
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--pastel-rose-text);
+  line-height: 1.2;
 }
 
 .perfil-card__renovation {
   margin: 0;
+  font-family: var(--font-body);
+  font-size: 28px;
+  font-weight: 500;
   color: var(--pastel-mostard);
 }
 
@@ -739,6 +763,7 @@ a {
   font-size: 13px;
 }
 
+/* cartão de preferências */
 .perfil-card--preferences {
   width: 100%;
   max-width: 620px;
@@ -775,6 +800,28 @@ a {
 
 .preference-list li:last-child {
   border-bottom: none;
+}
+
+/* SIDEBAR - SEÇÃO ADMIN */
+.sidebar__admin {
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line-hairline);
+
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar__admin-label {
+  margin: 0 0 4px;
+  padding: 0 var(--space-5);
+
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
 }
 
 
