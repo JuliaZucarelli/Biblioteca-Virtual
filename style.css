@@ -654,8 +654,24 @@ a {
   padding: 16px 24px 16px 16px;
 }
 
+.perfil-card--profile {
+  width: 100%;
+  max-width: 620px;
+  gap: 20px;
+  padding: 20px 24px;
+}
+
 .perfil-card__foto {
-  
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--bg-nav);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .perfil-card__body {
