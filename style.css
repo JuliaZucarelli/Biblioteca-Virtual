@@ -739,7 +739,43 @@ a {
   font-size: 13px;
 }
 
+.perfil-card--preferences {
+  width: 100%;
+  max-width: 620px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 20px 24px;
+}
 
+.perfil-card__preference {
+  margin: 0 0 8px;
+  color: var(--ink-primary);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.preference-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.preference-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-hairline);
+  color: var(--ink-secondary);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.preference-list li:hover {
+  color: var(--ink-primary);
+}
+
+.preference-list li:last-child {
+  border-bottom: none;
+}
 
 
 /* RESPONSIVIDADE */
