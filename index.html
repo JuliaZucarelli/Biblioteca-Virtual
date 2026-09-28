@@ -265,7 +265,12 @@
 
     <!-- OVERLAY DE LOGIN -->
     <div class="login-overlay" id="loginOverlay">
-      <div class="login-modal">
+      <div
+        class="login-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Login"
+      >
         <button class="login-modal__close" id="closeLogin" aria-label="Fechar">
           ×
         </button>
@@ -278,15 +283,22 @@
         />
       </div>
 
-      <div class="login-modal__input">
+      <form class="login-modal__input">
         <label for="email">email</label>
-        <input type="email" name="loginEmail" id="email" />
+        <input type="email" name="loginEmail" id="email" autocomplete="email" />
         <label for="password"></label>
-        <input type="password" name="loginPassword" id="password" />
+        <input
+          type="password"
+          name="loginPassword"
+          id="password"
+          autocomplete="current-password"
+        />
 
-        <button class="login-modal__enter">entrar</button>
+        <p class="login-modal__error" id="loginError" role="alert"></p>
+
+        <button class="login-modal__enter" type="submit">entrar</button>
         <button class="login-modal__Fpassword">esqueci minha senha</button>
-      </div>
+      </form>
     </div>
 
     <script src="script.js"></script>
