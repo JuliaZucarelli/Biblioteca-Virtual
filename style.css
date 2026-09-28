@@ -276,7 +276,7 @@ a {
 }
 
 .search-bar:hover {
-  background: color-mix(in srgb, var(--bg-elevated) 30%, transparent);
+  /* background: color-mix(in srgb, var(--bg-elevated) 30%, transparent); */
   border-color: var(--ink-muted);
 }
 
