@@ -102,3 +102,63 @@ document.addEventListener('keydown', (e) => {
 reserveBtn.addEventListener('click', () => {
   console.log('Reservar:', modal.title.textContent);
 });
+
+// LOGIN OVERLAY 
+(() => {
+  const loginOverlay = document.getElementById('loginOverlay');
+  const openBtn = document.querySelector('.avatar--button'); // botão de avatar da topbar
+  const closeBtn = document.getElementById('closeLogin');
+  const form = document.getElementById('loginForm');
+  const emailInput = document.getElementById('loginEmail');
+  const passwordInput = document.getElementById('loginPassword');
+  const errorEl = document.getElementById('loginError');
+ 
+  let lastFocused = null;
+ 
+  function openLogin() {
+    lastFocused = document.activeElement;
+    loginOverlay.classList.add('is-open');
+    document.body.classList.add('modal-open');
+    emailInput.focus();
+  }
+ 
+  function closeLogin() {
+    loginOverlay.classList.remove('is-open');
+    document.body.classList.remove('modal-open');
+    form.reset();
+    errorEl.textContent = '';
+    lastFocused?.focus();
+  }
+ 
+  openBtn.addEventListener('click', openLogin);
+  closeBtn.addEventListener('click', closeLogin);
+ 
+  // clique no fundo escurecido
+  loginOverlay.addEventListener('click', (e) => {
+    if (e.target === loginOverlay) closeLogin();
+  });
+ 
+  // tecla Esc
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && loginOverlay.classList.contains('is-open')) closeLogin();
+  });
+ 
+  // envio do formulário
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+ 
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+ 
+    if (!email || !password) {
+      errorEl.textContent = 'Preencha e-mail e senha para entrar.';
+      return;
+    }
+ 
+    errorEl.textContent = '';
+ 
+    // TODO: trocar pela sua lógica de autenticação
+    console.log('Login:', { email });
+  });
+})();
+ 
