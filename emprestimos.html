@@ -1,183 +1,336 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="icon" href="img/Favicon-Biblioteca-Virtual.png">
+    <link rel="icon" href="img/Favicon-Biblioteca-Virtual.png" />
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
 
     <title>Biblioteca Virtual</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="layout">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <img class="sidebar_logo" src="img/logo-horizontal-Biblioteca-Virtual.png" alt="logo horizontal da plataforma Biblioteca Virtural">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <img
+          class="sidebar_logo"
+          src="img/logo-horizontal-Biblioteca-Virtual.png"
+          alt="logo horizontal da plataforma Biblioteca Virtural"
+        />
 
-            <nav class="sidebar_nav">
-                <a class="nav-item" href="index.html">
-                    <svg class="nav-item__icon" aria-hidden="true"><use href="img/icons/icon-inicio.svg"></use></svg>
-                    início
-                </a>
-                <a class="nav-item" href="emprestimos.html">
-                    <svg class="nav-item__icon" aria-hidden="true"><use href="img/icons/icon-emprestimo.svg"></use></svg>
-                    empréstimos
-                </a>
-                <a class="nav-item" href="historico.html">
-                    <svg class="nav-item__icon" aria-hidden="true"><use href="img/icons/icon-historico.svg"></use></svg>
-                    histórico
-                </a>
-                <a class="nav-item" href="conta.html">
-                    <svg class="nav-item__icon" aria-hidden="true"><use href="img/icons/icon-conta.svg"></use></svg>
-                    conta
-                </a>
-            </nav>
+        <nav class="sidebar_nav">
+          <a class="nav-item" href="index.html">
+            <svg class="nav-item__icon" aria-hidden="true">
+              <use href="img/icons/icon-inicio.svg"></use>
+            </svg>
+            início
+          </a>
+          <a class="nav-item" href="emprestimos.html">
+            <svg class="nav-item__icon" aria-hidden="true">
+              <use href="img/icons/icon-emprestimo.svg"></use>
+            </svg>
+            empréstimos
+          </a>
+          <a class="nav-item" href="historico.html">
+            <svg class="nav-item__icon" aria-hidden="true">
+              <use href="img/icons/icon-historico.svg"></use>
+            </svg>
+            histórico
+          </a>
+          <a class="nav-item" href="conta.html">
+            <svg class="nav-item__icon" aria-hidden="true">
+              <use href="img/icons/icon-conta.svg"></use>
+            </svg>
+            conta
+          </a>
+        </nav>
 
-            <div class="sidebar__admin">
-                <p class="sidebar__admin-label">admin</p>
+        <div class="sidebar__admin">
+          <p class="sidebar__admin-label">admin</p>
 
-                <a class="nav-item" href="cadastro.html">
-                    <svg class="nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    cadastrar novo livro
-                </a>
-                <a class="nav-item" href="admin.html">
-                    <svg class="nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
-                    admin
-                </a>
-            </div>
-
-            <div class="sidebar__profile">
-                <div class="avatar avatar--profile">JZ</div>
-                <div class="sidebar__profile-info">
-                    <p class="sidebar__profile-name">Julia Zucareli</p>
-                    <p class="sidebar__profile_role">membro</p>
-                </div>
-            </div>
-        </aside>
-
-        <!-- CONTEÚDO PRINCIPAL -->
-        <div class="main">
-            <!-- TOPBAR -->
-             <header class="topbar">
-                <div class="search-bar search-bar--compact">
-                    <input type="text" name="userSearchBarFull" id="searchBarFull" placeholder="busca rápida...">
-                </div>
-
-                <div class="topbar__actions">
-                    <!-- adicionar link para abrir na pagina conta -->
-                    <button class="icon-button" aria-label="Ver notificações">
-                        <svg class="icon-button__icon" aria-hidden="true"><use href="img/icons/icon-notificacao.svg"></use></svg>
-                    </button>
-                    <button class="avatar avatar--button" aria-label="Abrir conta">JZ</button>
-                </div>
-             </header>
-
-             <main class="content">
-                <!-- HERO -->
-                <h2>Meus empréstimos</h2>
-                <p class="hero__info">
-                    <svg class="hero__icon" aria-hidden="true"><use href="img/icons/icon-atraso.svg"></use></svg>
-                    você tem livros atrasados
-                </p>
-                <p class="hero__mensagem">multas acumulam R$ 2,50 por dia. Regularize para continuar emprestando. </p>
-
-                <section>
-                    <div class="emprestimos-grid">
-                        <article class="emprestimos-card">  
-                            <div class="emprestimos-card__cover emprestimos-cover--noite ">
-                                <!-- adicionar imagem de cada livro  -->
-                                <img src="img/noites-brancas.jpg" alt="">
-                            </div>
-                            <div class="emprestimos-card__body">
-                                    <h3 class="emprestimos-card__title">Noites Brancas</h3>
-                                    <p class="emprestimos-card__author">Fiódor Dostoiévski</p>                                    
-                                    <p class="emprestimos-card__date">emprestado: 24 de ago. de 2026</p>
-                                    <p class="emprestimos-card__devolution">devolução: 07 de set. de 2026</p>
-                                    <p class="emprestimos-card__penalty">multa acumulada: R$12,50</p>         
-                                    <button class="emprestimos-card__renovation">
-                                        <svg class="emprestimos-card__renovar-icon" aria-hidden="true"><use href="img/icons/icon-renovar.svg"></use></svg>
-                                        renovar por mais 14 dias
-                                    </button>                       
-                                    <p class="emprestimos-card__remainder" >12d restantes</p>
-                            </div>
-                        </article>
-
-                        <article class="emprestimos-card">  
-                            <div class="emprestimos-card__cover emprestimos-cover--noite ">
-                                <!-- adicionar imagem de cada livro  -->
-                                <img src="img/noites-brancas.jpg" alt="">
-                            </div>
-                            <div class="emprestimos-card__body">
-                                    <h3 class="emprestimos-card__title">Noites Brancas</h3>
-                                    <p class="emprestimos-card__author">Fiódor Dostoiévski</p>                                    
-                                    <p class="emprestimos-card__date">emprestado: 24 de ago. de 2026</p>
-                                    <p class="emprestimos-card__devolution">devolução: 07 de set. de 2026</p>
-                                    <p class="emprestimos-card__penalty">multa acumulada: R$12,50</p>         
-                                    <button class="emprestimos-card__renovation">
-                                        <svg class="emprestimos-card__renovar-icon" aria-hidden="true"><use href="img/icons/icon-renovar.svg"></use></svg>
-                                        renovar por mais 14 dias
-                                    </button>                       
-                                    <p class="emprestimos-card__remainder" >12d restantes</p>
-                            </div>
-                        </article>
-
-                        <article class="emprestimos-card">  
-                            <div class="emprestimos-card__cover emprestimos-cover--noite ">
-                                <!-- adicionar imagem de cada livro  -->
-                                <img src="img/noites-brancas.jpg" alt="">
-                            </div>
-                            <div class="emprestimos-card__body">
-                                    <h3 class="emprestimos-card__title">Noites Brancas</h3>
-                                    <p class="emprestimos-card__author">Fiódor Dostoiévski</p>                                    
-                                    <p class="emprestimos-card__date">emprestado: 24 de ago. de 2026</p>
-                                    <p class="emprestimos-card__devolution">devolução: 07 de set. de 2026</p>
-                                    <p class="emprestimos-card__penalty">multa acumulada: R$12,50</p>         
-                                    <button class="emprestimos-card__renovation">
-                                        <svg class="emprestimos-card__renovar-icon" aria-hidden="true"><use href="img/icons/icon-renovar.svg"></use></svg>
-                                        renovar por mais 14 dias
-                                    </button>                       
-                                    <p class="emprestimos-card__remainder" >12d restantes</p>
-                            </div>
-                        </article>
-
-                        <article class="emprestimos-card">  
-                            <div class="emprestimos-card__cover emprestimos-cover--noite ">
-                                <!-- adicionar imagem de cada livro  -->
-                                <img src="img/noites-brancas.jpg" alt="">
-                            </div>
-                            <div class="emprestimos-card__body">
-                                    <h3 class="emprestimos-card__title">Noites Brancas</h3>
-                                    <p class="emprestimos-card__author">Fiódor Dostoiévski</p>                                    
-                                    <p class="emprestimos-card__date">emprestado: 24 de ago. de 2026</p>
-                                    <p class="emprestimos-card__devolution">devolução: 07 de set. de 2026</p>
-                                    <p class="emprestimos-card__penalty">multa acumulada: R$12,50</p>         
-                                    <button class="emprestimos-card__renovation">
-                                        <svg class="emprestimos-card__renovar-icon" aria-hidden="true"><use href="img/icons/icon-renovar.svg"></use></svg>
-                                        renovar por mais 14 dias
-                                    </button>                       
-                                    <p class="emprestimos-card__remainder" >12d restantes</p>
-                            </div>
-                        </article>
-
-                    </div>
-                </section>
-
-            </main>
+          <a class="nav-item" href="cadastro.html">
+            <svg
+              class="nav-item__icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            cadastrar novo livro
+          </a>
+          <a class="nav-item" href="admin.html">
+            <svg
+              class="nav-item__icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+              ></path>
+            </svg>
+            admin
+          </a>
         </div>
+
+        <div class="sidebar__profile">
+          <div class="avatar avatar--profile">JZ</div>
+          <div class="sidebar__profile-info">
+            <p class="sidebar__profile-name">Julia Zucareli</p>
+            <p class="sidebar__profile_role">membro</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CONTEÚDO PRINCIPAL -->
+      <div class="main">
+        <!-- TOPBAR -->
+        <header class="topbar">
+          <div class="search-bar search-bar--compact">
+            <input
+              type="text"
+              name="userSearchBarFull"
+              id="searchBarFull"
+              placeholder="busca rápida..."
+            />
+          </div>
+
+          <div class="topbar__actions">
+            <!-- adicionar link para abrir na pagina conta -->
+            <button class="icon-button" aria-label="Ver notificações">
+              <svg class="icon-button__icon" aria-hidden="true">
+                <use href="img/icons/icon-notificacao.svg"></use>
+              </svg>
+            </button>
+            <button class="avatar avatar--button" aria-label="Abrir conta">
+              JZ
+            </button>
+          </div>
+        </header>
+
+        <main class="content">
+          <!-- HERO -->
+          <h2>Meus empréstimos</h2>
+          <p class="hero__info">
+            <svg class="hero__icon" aria-hidden="true">
+              <use href="img/icons/icon-atraso.svg"></use>
+            </svg>
+            você tem livros atrasados
+          </p>
+          <p class="hero__mensagem">
+            multas acumulam R$ 2,50 por dia. Regularize para continuar
+            emprestando.
+          </p>
+
+          <section>
+            <div class="emprestimos-grid">
+              <article class="emprestimos-card">
+                <div class="emprestimos-card__cover emprestimos-cover--noite">
+                  <!-- adicionar imagem de cada livro  -->
+                  <img src="img/noites-brancas.jpg" alt="" />
+                </div>
+                <div class="emprestimos-card__body">
+                  <h3 class="emprestimos-card__title">Noites Brancas</h3>
+                  <p class="emprestimos-card__author">Fiódor Dostoiévski</p>
+                  <p class="emprestimos-card__date">
+                    emprestado: 24 de ago. de 2026
+                  </p>
+                  <p class="emprestimos-card__devolution">
+                    devolução: 07 de set. de 2026
+                  </p>
+                  <p class="emprestimos-card__penalty">
+                    multa acumulada: R$12,50
+                  </p>
+                  <button class="emprestimos-card__renovation">
+                    <svg
+                      class="emprestimos-card__renovar-icon"
+                      aria-hidden="true"
+                    >
+                      <use href="img/icons/icon-renovar.svg"></use>
+                    </svg>
+                    renovar por mais 14 dias
+                  </button>
+                  <p class="emprestimos-card__remainder">12d restantes</p>
+                </div>
+              </article>
+
+              <article class="emprestimos-card">
+                <div class="emprestimos-card__cover emprestimos-cover--noite">
+                  <!-- adicionar imagem de cada livro  -->
+                  <img src="img/noites-brancas.jpg" alt="" />
+                </div>
+                <div class="emprestimos-card__body">
+                  <h3 class="emprestimos-card__title">Noites Brancas</h3>
+                  <p class="emprestimos-card__author">Fiódor Dostoiévski</p>
+                  <p class="emprestimos-card__date">
+                    emprestado: 24 de ago. de 2026
+                  </p>
+                  <p class="emprestimos-card__devolution">
+                    devolução: 07 de set. de 2026
+                  </p>
+                  <p class="emprestimos-card__penalty">
+                    multa acumulada: R$12,50
+                  </p>
+                  <button class="emprestimos-card__renovation">
+                    <svg
+                      class="emprestimos-card__renovar-icon"
+                      aria-hidden="true"
+                    >
+                      <use href="img/icons/icon-renovar.svg"></use>
+                    </svg>
+                    renovar por mais 14 dias
+                  </button>
+                  <p class="emprestimos-card__remainder">12d restantes</p>
+                </div>
+              </article>
+
+              <article class="emprestimos-card">
+                <div class="emprestimos-card__cover emprestimos-cover--noite">
+                  <!-- adicionar imagem de cada livro  -->
+                  <img src="img/noites-brancas.jpg" alt="" />
+                </div>
+                <div class="emprestimos-card__body">
+                  <h3 class="emprestimos-card__title">Noites Brancas</h3>
+                  <p class="emprestimos-card__author">Fiódor Dostoiévski</p>
+                  <p class="emprestimos-card__date">
+                    emprestado: 24 de ago. de 2026
+                  </p>
+                  <p class="emprestimos-card__devolution">
+                    devolução: 07 de set. de 2026
+                  </p>
+                  <p class="emprestimos-card__penalty">
+                    multa acumulada: R$12,50
+                  </p>
+                  <button class="emprestimos-card__renovation">
+                    <svg
+                      class="emprestimos-card__renovar-icon"
+                      aria-hidden="true"
+                    >
+                      <use href="img/icons/icon-renovar.svg"></use>
+                    </svg>
+                    renovar por mais 14 dias
+                  </button>
+                  <p class="emprestimos-card__remainder">12d restantes</p>
+                </div>
+              </article>
+
+              <article class="emprestimos-card">
+                <div class="emprestimos-card__cover emprestimos-cover--noite">
+                  <!-- adicionar imagem de cada livro  -->
+                  <img src="img/noites-brancas.jpg" alt="" />
+                </div>
+                <div class="emprestimos-card__body">
+                  <h3 class="emprestimos-card__title">Noites Brancas</h3>
+                  <p class="emprestimos-card__author">Fiódor Dostoiévski</p>
+                  <p class="emprestimos-card__date">
+                    emprestado: 24 de ago. de 2026
+                  </p>
+                  <p class="emprestimos-card__devolution">
+                    devolução: 07 de set. de 2026
+                  </p>
+                  <p class="emprestimos-card__penalty">
+                    multa acumulada: R$12,50
+                  </p>
+                  <button class="emprestimos-card__renovation">
+                    <svg
+                      class="emprestimos-card__renovar-icon"
+                      aria-hidden="true"
+                    >
+                      <use href="img/icons/icon-renovar.svg"></use>
+                    </svg>
+                    renovar por mais 14 dias
+                  </button>
+                  <p class="emprestimos-card__remainder">12d restantes</p>
+                </div>
+              </article>
+            </div>
+          </section>
+        </main>
+      </div>
     </div>
 
-    
-</body>
+    <!-- OVERLAY DO LIVRO -->
+    <div class="book-overlay" id="bookOverlay">
+      <div class="book-modal">
+        <button class="book-modal__close" id="closeBook" aria-label="Fechar">
+          ×
+        </button>
+
+        <div class="book-modal__cover">
+          <img id="modalCover" src="" alt="" />
+        </div>
+
+        <div class="book-modal__info">
+          <p class="book-modal__genre" id="modalGenre"></p>
+          <h2 class="book-modal__title" id="modalTitle"></h2>
+          <p class="book-modal__meta" id="modalMeta"></p>
+          <p class="book-modal__description" id="modalDescription"></p>
+          <p class="book-modal__availability" id="modalAvailability"></p>
+
+          <button class="book-modal__reserve">reservar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OVERLAY DE LOGIN -->
+    <div class="login-overlay" id="loginOverlay">
+      <div
+        class="login-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Login"
+      >
+        <button class="login-modal__close" id="closeLogin" aria-label="Fechar">
+          ×
+        </button>
+
+        <div class="login-modal__logo">
+          <img
+            src="img/logo-vertical-Biblioteca-Virtual.png"
+            alt="Logo vertical da Biblioteca Virtual"
+          />
+        </div>
+
+        <form class="login-modal__input">
+          <label for="email">email</label>
+          <input
+            type="email"
+            name="loginEmail"
+            id="email"
+            autocomplete="email"
+            placeholder="nome@email.com"
+          />
+          <label for="password"></label>
+          <input
+            type="password"
+            name="loginPassword"
+            id="password"
+            autocomplete="current-password"
+            placeholder="senha"
+          />
+
+          <p class="login-modal__error" id="loginError" role="alert"></p>
+
+          <button class="login-modal__enter" type="submit">entrar</button>
+          <button class="login-modal__Fpassword">esqueci minha senha</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
