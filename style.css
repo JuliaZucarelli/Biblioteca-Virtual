@@ -399,6 +399,14 @@ a {
   background: var(--bg-header-footer);
   border: 1px solid var(--line-hairline);
   border-radius: 8px;
+
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.book-card:hover,
+.book-card:focus-visible {
+  transform: translateY(-3px);
 }
 
 .book-card__cover {
@@ -822,6 +830,216 @@ a {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-muted);
+}
+
+/* ============================================
+   OVERLAY / MODAL DO LIVRO
+   (cole no final do seu style.css)
+   ============================================ */
+
+/* card clicável */
+/* fundo escurecido + blur */
+.book-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+
+  background: rgba(46, 42, 38, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.book-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* impede o scroll da página por trás */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* caixa do modal */
+.book-modal {
+  position: relative;
+
+  display: flex;
+  gap: 30px;
+
+  width: 100%;
+  max-width: 900px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 38px 46px;
+
+  background: var(--bg-header-footer);
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-lg);
+
+  transform: translateY(14px) scale(0.98);
+  transition: transform 0.25s ease;
+}
+
+.book-overlay.is-open .book-modal {
+  transform: translateY(0) scale(1);
+}
+
+/* botão fechar */
+.book-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+
+  width: 24px;
+  height: 24px;
+
+  color: var(--ink-secondary);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.book-modal__close:hover {
+  color: var(--ink-primary);
+  transform: scale(1.1);
+}
+
+/* capa */
+.book-modal__cover {
+  flex: 0 0 312px;
+  align-self: flex-start;
+  aspect-ratio: 312 / 493;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--bg-nav);
+}
+
+.book-modal__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* informações */
+.book-modal__info {
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.book-modal__genre {
+  margin: 0 0 var(--space-6);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.book-modal__title {
+  margin: 0 0 var(--space-4);
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.book-modal__meta {
+  margin: 0 0 var(--space-6);
+  font-size: 14px;
+}
+
+.book-modal__description {
+  margin: 0 0 var(--space-6);
+  font-size: 14px;
+  line-height: 1.15;
+  white-space: pre-line; /* respeita quebras de linha do data-descricao */
+}
+
+/* disponibilidade */
+.book-modal__availability {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: 14px;
+}
+
+.book-modal__dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.book-modal__dot--disponivel {
+  background: var(--pastel-sage);
+}
+
+.book-modal__dot--indisponivel {
+  background: var(--pastel-rose);
+}
+
+/* botão reservar */
+.book-modal__reserve {
+  margin-top: auto;
+  height: 38px;
+  width: 100%;
+
+  background: var(--pastel-mostard);
+  border-radius: 8px;
+  color: var(--ink-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.book-modal__reserve:hover {
+  filter: brightness(0.96);
+  transform: translateY(-1px);
+}
+
+.book-modal__reserve:disabled {
+  background: var(--bg-nav);
+  color: var(--ink-muted);
+  cursor: not-allowed;
+  transform: none;
+  filter: none;
+}
+
+
+
+/* mobile */
+@media (max-width: 720px) {
+  .book-overlay {
+    padding: var(--space-4);
+  }
+
+  .book-modal {
+    flex-direction: column;
+    gap: var(--space-6);
+    padding: 28px 24px;
+  }
+
+  .book-modal__cover {
+    flex: none;
+    width: 100%;
+    max-width: 240px;
+    align-self: center;
+  }
+
+  .book-modal__reserve {
+    margin-top: var(--space-6);
+  }
 }
 
 
