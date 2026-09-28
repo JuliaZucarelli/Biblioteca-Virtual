@@ -1,7 +1,5 @@
 # Sistema de Biblioteca
 
-## Núcleo obrigatório: motor de busca
-
 ### Interface de busca
 - Busca por **ISBN** ou **título**.
 - Busca textual com **pontuação de relevância**:
@@ -11,16 +9,32 @@
 - Interface para **filtros combináveis**.
 - Execução da busca final.
 
----
 
 ## Empréstimo com regras reais
-
 - Definir o **número máximo de empréstimos simultâneos** por usuário.
 - Definir **prazo de devolução**.
 - Calcular **multa por atraso**.
 - Implementar **renovação limitada**:
   - O livro só pode ser renovado se **ninguém tiver realizado uma renovação anteriormente**.
   - Cada empréstimo pode ser renovado no máximo **2 vezes**.
+- Ao apertar o botão de reservar o número de exemplares disponíveis deve diminuir 
+- Só é possível reservar se houver livro disponível 
+
+
+## Cadastro de novos livro
+- Realizar cadastro de novos livros e adicionar ao acervo 
+- Ao cadastrar novo livro o número do exemplar deve aumentar
+
+
+## Realizar login e cadastro de usuário 
+- Realizar login como admin
+  - Para ser admin o email deve ter o seguinte formato: nome@admin.com
+  - Quando loga como admin a seção de admin deve abrir no nav-bar
+- Realizar login como pessoa comum
+  - Quando loga como pessoa comum não deve abrir a seção admin 
+- Só é possível realizar o login se tiver feito o cadastro de usuário 
+  - Para saber se já existe o usuário basta verificar se o email já foi cadastrado 
+
 
 ---
 
