@@ -16,6 +16,7 @@
   --pastel-rose: #e0afae;
   --pastel-rose-text: #6b2d2c;
   --pastel-mostard: #e3c77c;
+  --pastel-mostard-text: #A87F10;
 
   --line-hairline: #e2dacb;
 
@@ -997,7 +998,7 @@ body.modal-open {
 
   background: var(--pastel-mostard);
   border-radius: 8px;
-  color: var(--ink-secondary);
+  color: var(--pastel-mostard-text);
   font-size: 14px;
   cursor: pointer;
   transition: filter 0.2s ease, transform 0.2s ease;
