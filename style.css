@@ -1185,19 +1185,6 @@ body.login-open {
 
 
 /* CADASTRAR NOVO LIVRO */
-.content h2 {
-  margin: 0 0 8px;
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 2.2vw, 2.5rem);
-  font-weight: 600;
-  color: var(--ink-primary);
-}
- 
-.content > p {
-  margin: 0 0 20px;
-  max-width: 700px;
-}
-
 .cadastro-form {
   max-width: 930px;
   margin-top: 24px;
@@ -1279,9 +1266,8 @@ body.login-open {
   transition: background 0.2s ease, color 0.2s ease;
 }
 
-.cadastro-card__cover--label:hover {
-  /* background: color-mix(in srgb, var(--bg-elevated) 45%, transparent); */
-  color: var(--ink-primary);
+.cadastro-card__cover:hover {
+  border-color: var(--ink-muted);
 }
 
 /* ícone "+" desenhado só em CSS - procurar um SVG*/
@@ -1292,8 +1278,9 @@ body.login-open {
   flex-shrink: 0;
 
   border-radius: 50%;
-  /* background-color: var(--bg-elevated); */
+  background-color: var(--bg-elevated);
   border: 1px solid var(--line-hairline);
+  
 
   background-image:
     linear-gradient(var(--ink-secondary), var(--ink-secondary)),
