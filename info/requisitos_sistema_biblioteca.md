@@ -19,6 +19,9 @@
   - Cada empréstimo pode ser renovado no máximo **2 vezes**.
 - Ao apertar o botão de reservar o número de exemplares disponíveis deve diminuir 
 - Só é possível reservar se houver livro disponível 
+- O botão deve ser reservar ou emprestar de acordo com a regra
+  - se disponível: emprestar
+  - se não disponível: reservar 
 
 
 ## Cadastro de novos livro
