@@ -1122,24 +1122,23 @@ body.login-open {
   padding: 0 var(--space-4);
 
   background: var(--line-hairline);
-  border: 1px solid var(--radius-md);
+  border: 1px solid var(--line-hairline);
   outline: 0;
   border-radius: 8px;
 
   color: var(--ink-secondary);
   font-size: 14px;
-  transition: background 0.2 ease, border-color 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .login-modal__input input:hover {
-  background: var(--bg-elevated); /*trocar a cor*/
-  border-color: var(--ink-secondary);
+  border-color: var(--ink-muted);
 }
 
-.login-modal__input:focus {
-  background: var(--bg-elevated);
-  border-color: var(--ink-primary);
+.login-modal__input input:focus {
+  border-color: var(--ink-muted);
 }
+
 
 .login-modal__error {
   margin: 0;
