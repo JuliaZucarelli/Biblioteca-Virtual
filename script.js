@@ -106,12 +106,13 @@ reserveBtn.addEventListener('click', () => {
 // LOGIN OVERLAY 
 (() => {
   const loginOverlay = document.getElementById('loginOverlay');
-  const openBtn = document.querySelector('.avatar--button'); // botão de avatar da topbar
+  const openBtn = document.querySelector('.avatar--button'); // avatar da topbar
   const closeBtn = document.getElementById('closeLogin');
   const form = document.getElementById('loginForm');
-  const emailInput = document.getElementById('loginEmail');
-  const passwordInput = document.getElementById('loginPassword');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
   const errorEl = document.getElementById('loginError');
+  const forgotBtn = document.querySelector('.login-modal__Fpassword');
  
   let lastFocused = null;
  
@@ -133,17 +134,14 @@ reserveBtn.addEventListener('click', () => {
   openBtn.addEventListener('click', openLogin);
   closeBtn.addEventListener('click', closeLogin);
  
-  // clique no fundo escurecido
   loginOverlay.addEventListener('click', (e) => {
     if (e.target === loginOverlay) closeLogin();
   });
  
-  // tecla Esc
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && loginOverlay.classList.contains('is-open')) closeLogin();
   });
  
-  // envio do formulário
   form.addEventListener('submit', (e) => {
     e.preventDefault();
  
@@ -160,5 +158,9 @@ reserveBtn.addEventListener('click', () => {
     // TODO: trocar pela sua lógica de autenticação
     console.log('Login:', { email });
   });
-})();
  
+  forgotBtn.addEventListener('click', () => {
+    // TODO: fluxo de "esqueci minha senha"
+    console.log('Esqueci minha senha');
+  });
+})();
