@@ -1187,7 +1187,7 @@ body.login-open {
 /* CADASTRAR NOVO LIVRO */
 .cadastro-form {
   max-width: 930px;
-  margin-top: 24px;
+  padding-top: 24px;
 }
 
 .cadastro-card {
