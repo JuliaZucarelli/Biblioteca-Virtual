@@ -1,5 +1,12 @@
 # Sistema de Biblioteca
 
+### Regras 
+Máximo de empréstimos: 3
+Prazo: 14 dias
+Multa: R$ 2,50/dia 
+Máximo de renovações: 2
+
+
 ### Interface de busca
 - Busca por **ISBN** ou **título**.
 - Busca textual com **pontuação de relevância**:
@@ -40,6 +47,52 @@
 
 
 ---
+
+# Dados
+Usuario
+├── id
+├── nome
+├── email
+└── senha
+
+Livro
+├── id
+├── titulo
+├── autor
+├── isbn
+├── ano
+├── genero
+└── sinopse
+
+Exemplar
+├── id
+├── livroId
+└── status
+
+Emprestimo
+├── id
+├── usuarioId
+├── exemplarId
+├── dataInicio
+├── dataDevolucao
+├── renovacoes
+└── multa
+
+---
+
+# Relacionamentos 
+
+Usuário
+   │
+   └── possui empréstimos
+
+Livro
+   │
+   └── possui vários exemplares
+
+Exemplar
+   │
+   └── pode estar emprestado/reservado
 
 # UI/UX
 
