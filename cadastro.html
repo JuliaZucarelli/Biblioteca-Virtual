@@ -134,97 +134,103 @@
           <section class="section">
             <form class="cadastro-form" id="cadastroForm" novalidate>
               <div class="cadastro-card">
-                <div class="cadastro-card__cover">
-                  <img class="cadastro-card__cover-preview" src="" alt="" />
-                  <label
-                    class="cadastro-card__cover--label"
-                    for="capaInput"
-                  ></label>
-                  <input
-                    type="file"
-                    name="capa"
-                    id="capaInput"
-                    accept="image/*"
-                  />
+                <!-- NOVO: envolve capa + campos numa linha -->
+                <div class="cadastro-card__row">
+                  <div class="cadastro-card__cover">
+                    <img class="cadastro-card__cover-preview" src="" alt="" />
+                    <label
+                      class="cadastro-card__cover--label"
+                      for="capaInput"
+                    ></label>
+                    <input
+                      type="file"
+                      name="capa"
+                      id="capaInput"
+                      accept="image/*"
+                    />
+                  </div>
+
+                  <div class="cadastro-card__fields">
+                    <div class="cadastro-field">
+                      <label for="titulo">título</label>
+                      <input
+                        type="text"
+                        name="titulo"
+                        id="titulo"
+                        placeholder="Noites Brancas"
+                        required
+                      />
+                    </div>
+                    <div class="cadastro-field">
+                      <label for="autor">autor</label>
+                      <input
+                        type="text"
+                        name="autor"
+                        id="autor"
+                        placeholder="Fiódor Dostoiévski"
+                        required
+                      />
+                    </div>
+                    <div class="cadastro-field">
+                      <label for="genero">gênero</label>
+                      <input
+                        type="text"
+                        name="genero"
+                        id="genero"
+                        placeholder="Literatura Russa"
+                      />
+                    </div>
+                    <div class="cadastro-field">
+                      <label for="ano">ano de publicação</label>
+                      <input
+                        type="number"
+                        name="ano"
+                        id="ano"
+                        placeholder="1848"
+                      />
+                    </div>
+                    <div class="cadastro-field">
+                      <label for="isbn">ISBN</label>
+                      <input
+                        type="text"
+                        name="isbn"
+                        id="isbn"
+                        placeholder="978-85-0000-000-0"
+                      />
+                    </div>
+                    <div class="cadastro-field cadastro-field--full">
+                      <label for="descricao">descrição</label>
+                      <textarea
+                        name="descricao"
+                        id="descricao"
+                        rows="4"
+                        placeholder="Escreva uma breve sinopse do livro..."
+                      ></textarea>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="cadastro-card__fields">
-                  <div class="cadastro-field">
-                    <label for="titulo">título</label>
-                    <input
-                      type="text"
-                      name="titulo"
-                      id="titulo"
-                      placeholder="Noites Brancas"
-                      required
-                    />
-                  </div>
-                  <div class="cadastro-field">
-                    <label for="autor">autor</label>
-                    <input
-                      type="text"
-                      name="autor"
-                      id="autor"
-                      placeholder="Fiódor Dostoiévski"
-                      required
-                    />
-                  </div>
-                  <div class="cadastro-field">
-                    <label for="genero">gênero</label>
-                    <input
-                      type="text"
-                      name="genero"
-                      id="genero"
-                      placeholder="Literatura Russa"
-                    />
-                  </div>
-                  <div class="cadastro-field">
-                    <label for="ano">ano de publicação</label>
-                    <input
-                      type="number"
-                      name="ano"
-                      id="ano"
-                      placeholder="1848"
-                    />
-                  </div>
-                  <div class="cadastro-field">
-                    <label for="isbn">ISBN</label>
-                    <input
-                      type="text"
-                      name="isbn"
-                      id="isbn"
-                      placeholder="978-85-0000-000-0"
-                    />
-                  </div>
-                  <div class="cadastro-field cadastro-field--full">
-                    <label for="descricao">descrição</label>
-                    <textarea
-                      name="descricao"
-                      id="descricao"
-                      rows="4"
-                      placeholder="Escreva uma breve sinopse do livro..."
-                    ></textarea>
-                  </div>
-                </div>
-              </div>
+                <div class="cadastro-actions">
+                  <p
+                    class="cadastro-form__error"
+                    id="cadastroErro"
+                    role="alert"
+                  ></p>
 
-              <div class="cadastro-actions">
-                <p
-                  class="cadastro-form__error"
-                  id="cadastroErro"
-                  role="alert"
-                ></p>
-
-                <div class="cadastro-actions__buttons">
-                  <button class="cadastro-btn cadastro-btn--ghost" type="reset">
-                    limpar
-                  </button>
-                  <button
-                    class="cadastro-btn cadastro-btn--primary"
-                    type="submit"
-                  >
-                    cadastrar livro
-                  </button>
+                  <div class="cadastro-actions__buttons">
+                    <button
+                      class="cadastro-btn cadastro-btn--ghost"
+                      type="reset"
+                    >
+                      limpar
+                    </button>
+                    <button
+                      class="cadastro-btn cadastro-btn--primary"
+                      type="submit"
+                    >
+                      cadastrar livro
+                    </button>
+                  </div>
                 </div>
               </div>
             </form>
