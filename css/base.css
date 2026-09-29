@@ -1,0 +1,86 @@
+:root {
+  /* Cores */
+  --color-bg-base: #f7f3ec;
+  --color-bg-elevated: #fffdf9;
+  --color-bg-nav: #e4ddd0;
+  --color-bg-header: #F2ECE1;
+
+  --color-text-primary: #2e2a26;
+  --color-text-secondary: #6b655c;
+  --color-text-muted: #9b9488;
+
+  --color-success: #b7c4b1;
+  --color-success-text: #3f4f3a;
+  --color-dusty: #d8b4a0;
+  --color-lilac: #c9bfe0;
+  --color-lilac-text: #453a63;
+  --color-danger: #e0afae;
+  --color-danger-text: #6b2d2c;
+  --color-warning: #e3c77c;
+  --color-warning-text: #A87F10;
+
+  --color-border: #e2dacb;
+
+  /* Tipografia */
+  --font-display: "Fraunces", serif;
+  --font-body: "Work Sans", sans-serif;
+
+  /* Raios */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* Espaçamento */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 18px;
+  --space-6: 24px;
+  --space-7: 32px;
+
+  /* Layout */
+  --sidebar-width: 220px;
+  --topbar-height: 80px;
+}
+
+/* RESET */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--ink-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+h1 {
+  font-family: var(--font-display);
+}
+
+h2 {
+  font-family: var(--font-body);
+  color: var(--ink-secondary);
+  font-weight: 500;
+}
+
+h3, h4, p{
+  font-family: var(--font-body);
+  color: var(--ink-secondary);
+}
+
+/* foco vísivel para navagar pelo teclado */
+:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 3px;
+}
