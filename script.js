@@ -1,4 +1,6 @@
 const overlay = document.getElementById('bookOverlay');
+
+if (overlay) {
 const closeBtn = document.getElementById('closeBook');
 const reserveBtn = overlay.querySelector('.book-modal__reserve');
 
@@ -102,10 +104,13 @@ document.addEventListener('keydown', (e) => {
 reserveBtn.addEventListener('click', () => {
   console.log('Reservar:', modal.title.textContent);
 });
+} // fim do if (overlay)
 
-// LOGIN OVERLAY 
+// LOGIN OVERLAY
 (() => {
   const loginOverlay = document.getElementById('loginOverlay');
+  if (!loginOverlay) return;
+
   const openBtn = document.querySelector('.avatar--button'); // avatar da topbar
   const closeBtn = document.getElementById('closeLogin');
   const form = document.getElementById('loginForm');
