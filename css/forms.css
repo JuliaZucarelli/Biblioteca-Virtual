@@ -1,0 +1,272 @@
+/* CADASTRAR NOVO LIVRO */
+.cadastro-form {
+  max-width: 930px;
+  padding-top: 24px;
+}
+
+.cadastro-card {
+  display: flex;
+  flex-direction: column;
+ 
+  padding: var(--space-6);
+
+  background: var(--bg-header-footer);
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-lg);
+}
+
+.cadastro-card__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-7);
+}
+
+.cadastro-card__cover {
+  position: relative;
+  flex: 0 0 220px;
+  width: 220px;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+
+  background: var(--bg-nav);
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-md);
+}
+
+/* enquanto não há imagem selecionada, o <img src=""> some */
+.cadastro-card__cover-preview[src=""],
+.cadastro-card__cover-preview:not([src]) {
+  display: none;
+}
+
+.cadastro-card__cover-preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* input de arquivo fica escondido visualmente; quem responde ao clique é o label */
+.cadastro-card__cover input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.cadastro-card__cover--label {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+
+  padding: var(--space-4);
+  text-align: center;
+
+  color: var(--ink-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.cadastro-card__cover:hover {
+  border-color: var(--ink-muted);
+}
+
+/* ícone "+" desenhado só em CSS - procurar um SVG*/
+.cadastro-card__cover--label::before {
+  content: "";
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--line-hairline);
+  
+
+  background-image:
+    linear-gradient(var(--ink-secondary), var(--ink-secondary)),
+    linear-gradient(var(--ink-secondary), var(--ink-secondary));
+  background-size: 14px 2px, 2px 14px;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  transition: border-color 0.2s ease;
+}
+
+.cadastro-card__cover--label:hover::before {
+  border-color: var(--ink-secondary);
+}
+
+.cadastro-card__cover--label::after {
+  content: "adicionar capa";
+}
+
+/* quando já existe uma imagem escolhida, o label vira uma faixa no rodapé, visível apenas no hover */
+.cadastro-card__cover:has(.cadastro-card__cover-preview[src]:not([src=""]))
+.cadastro-card__cover--label {
+  inset: auto 0 0 0;
+  flex-direction: row;
+  height: 36px;
+  padding: 0;
+  gap: var(--space-2);
+
+  /* background: color-mix(in srgb, var(--bg-elevated) 55%, transparent); */
+  /* backdrop-filter: blur(2px); */
+  font-size: 12px;
+  /* opacity: 0; */
+}
+
+.cadastro-card__cover:has(.cadastro-card__cover-preview[src]:not([src=""]))
+.cadastro-card__cover--label:hover {
+  /* opacity: 1; */
+  border-color: var(--ink-secondary);
+
+}
+
+.cadastro-card__cover:has(.cadastro-card__cover-preview[src]:not([src=""]))
+.cadastro-card__cover--label::before {
+  width: 16px;
+  height: 16px;
+  background-size: 10px 2px, 2px 10px;
+}
+
+.cadastro-card__cover:has(.cadastro-card__cover-preview[src]:not([src=""]))
+.cadastro-card__cover--label::after {
+  content: "trocar capa";
+}
+
+.cadastro-card__fields {
+  flex: 1;
+  min-width: 0;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5) var(--space-6);
+}
+
+.cadastro-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cadastro-field--full {
+  grid-column: 1 / -1;
+}
+
+.cadastro-field label {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+}
+
+.cadastro-field input,
+.cadastro-field textarea {
+  width: 100%;
+  padding: 0 var(--space-4);
+
+  background: var(--bg-nav);
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-md);
+  outline: 0;
+
+  color: var(--ink-primary);
+  font-size: 14px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.cadastro-field input {
+  height: 44px;
+}
+
+.cadastro-field textarea {
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.5;
+}
+
+.cadastro-field input::placeholder,
+.cadastro-field textarea::placeholder {
+  color: var(--ink-muted);
+}
+
+.cadastro-field input:hover,
+.cadastro-field textarea:hover {
+  border-color: var(--ink-muted);
+}
+
+.cadastro-field input:focus,
+.cadastro-field textarea:focus {
+  /* background: var(--bg-elevated); */
+  border-color: var(--ink-secondary);
+}
+
+.cadastro-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+
+  padding-top: var(--space-5);
+}
+
+.cadastro-form__error {
+  margin: 0;
+  font-size: 13px;
+  color: var(--pastel-rose-text);
+}
+
+.cadastro-actions__buttons {
+  display: flex;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+.cadastro-btn {
+  height: 44px;
+  padding: 0 var(--space-6);
+
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.cadastro-btn--ghost {
+  background: var(--bg-nav);
+  color: var(--ink-secondary);
+}
+
+.cadastro-btn--ghost:hover {
+  background: var(--line-hairline);
+  color: var(--ink-primary);
+}
+
+.cadastro-btn--primary {
+  background: var(--pastel-lilac);
+  color: var(--pastel-lilac-text);
+}
+
+.cadastro-btn--primary:hover {
+  filter: brightness(0.96);
+  transform: translateY(-1px);
+}
+
+
+
