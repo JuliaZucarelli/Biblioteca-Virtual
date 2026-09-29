@@ -130,3 +130,6 @@ Reserva realizada!
 O exemplar foi reservado com sucesso 
 [Ver meus empréstimos]
 
+
+## Tela de login 
+- As informações de conta, empréstimo e histórico só apareceram depois que realizar o login
