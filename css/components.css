@@ -3,16 +3,16 @@
   display: flex;
   align-items: center;
 
-  background: var(--bg-nav);
-  border: 1px solid var(--line-hairline);
+  background: var(--color-bg-nav);
+  border: 1px solid var(--color-border);
   border-radius: 48px;
 
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
 }
 
 .search-bar:hover {
-  /* background: color-mix(in srgb, var(--bg-elevated) 30%, transparent); */
-  border-color: var(--ink-muted);
+  /* background: color-mix(in srgb, var(--color-bg-elevated) 30%, transparent); */
+  border-color: var(--color-text-muted);
 }
 
 .search-bar--compact {
@@ -35,12 +35,12 @@
   outline: 0;
   background: transparent;
 
-  color: var(--ink-muted);
-  font-size: var(--font-body);
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
 }
 
 .search-bar input::placeholder {
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
   opacity: 1;
 }
 
@@ -73,7 +73,7 @@
   flex-shrink: 0;
 
   stroke-width: 2;
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
 }
 
 .hero h1 {
@@ -106,7 +106,7 @@
   align-items: center;
   gap: 10px;
 
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
   text-decoration: none;
 }
 
@@ -117,7 +117,7 @@
 }
 
 .link-arrow:hover {
-  color: var(--ink-primary);
+  color: var(--color-text-primary);
 }
 
 /* BOOK GRID */
@@ -132,8 +132,8 @@
   min-width: 0;
   overflow: hidden;
 
-  background: var(--bg-header-footer);
-  border: 1px solid var(--line-hairline);
+  background: var(--color-bg-header);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
 
   cursor: pointer;
@@ -165,12 +165,12 @@
   min-height: 128px;
   padding: 18px 18px 20px;
 
-  background: var(--bg-header-footer);
+  background: var(--color-bg-header);
 }
 
 .book-card__meta {
   margin: 12px 0 12px;
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
 }
 
 .book-card__disponibilidade {
@@ -178,7 +178,7 @@
   align-items: center;
   gap: 8px;
 
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
 }
 
 .book-card__disponibilidade-dot {
@@ -188,12 +188,8 @@
   border-radius: 50%;
 }
 
-.book-card__disponibilidade-dot--available {
-  background: var(--pastel-sage-text);
-}
-
 .book-card__disponibilidade-dot--disponivel{
-  background: var(--pastel-sage);
+  background: var(--color-success);
 }
 
 .book-card__genre {
@@ -208,7 +204,7 @@
 
 .book-card__author {
   margin: 12px 0 12px;
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
 }
 
 /* EMPRESTIMOS GRID */
@@ -230,8 +226,8 @@
   overflow: hidden;
   position: relative;
 
-  background: var(--bg-header-footer);
-  border: 1px solid var(--line-hairline);
+  background: var(--color-bg-header);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
 
   display: flex;
@@ -291,7 +287,7 @@
 
   padding: 6px 12px;
   border-radius: 12px;
-  background: var(--bg-nav);
+  background: var(--color-bg-nav);
 
   grid-column: 4;
   grid-row: 1/3;
@@ -318,7 +314,7 @@
 .emprestimos-card__devolution {
   grid-column: 2;
 
-  color: var(--pastel-rose);
+  color: var(--color-danger);
   font-weight: 700;
 }
 
@@ -329,7 +325,7 @@
 .emprestimos-card__penalty {
   grid-column: 3;
 
-  color: var(--pastel-rose);
+  color: var(--color-danger);
   font-weight: 500;
 }
 
@@ -345,7 +341,7 @@
   margin: 0;
   white-space: nowrap;
 
-  color: var(--pastel-mostard);
+  color: var(--color-warning);
   cursor: pointer;
   transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -358,7 +354,7 @@
   display: block;
 
   stroke-width: 1;
-  color: var(--pastel-mostard);
+  color: var(--color-warning);
 }
 
 .emprestimos-card__renovation:hover {
@@ -388,8 +384,8 @@
   overflow: hidden;
   position: relative;
 
-  background: var(--bg-header-footer);
-  border: 1px solid var(--line-hairline);
+  background: var(--color-bg-header);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
 
   display: flex;
@@ -412,7 +408,7 @@
   flex-shrink: 0;
   overflow: hidden;
   border-radius: 50%;
-  background: var(--bg-nav);
+  background: var(--color-bg-nav);
 
   display: flex;
   align-items: center;
@@ -448,7 +444,7 @@
   font-family: var(--font-body);
   font-size: 20px;
   font-weight: 500;
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
 }
 
 .perfil-card__email,
@@ -482,7 +478,7 @@
   font-family: var(--font-body);
   font-size: 28px;
   font-weight: 500;
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
 }
 
 .perfil-card__valor {
@@ -490,7 +486,7 @@
   font-family: var(--font-body);
   font-size: 20px;
   font-weight: 500;
-  color: var(--pastel-rose);
+  color: var(--color-danger);
   line-height: 1.2;
 }
 
@@ -499,7 +495,7 @@
   font-family: var(--font-body);
   font-size: 28px;
   font-weight: 500;
-  color: var(--pastel-mostard);
+  color: var(--color-warning);
 }
 
 .perfil-card--stat .perfil-card__text {
@@ -519,7 +515,7 @@
 
 .perfil-card__preference {
   margin: 0 0 8px;
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
   font-weight: 500;
   font-size: 14px;
 }
@@ -532,14 +528,14 @@
 
 .preference-list li {
   padding: 12px 0;
-  border-bottom: 1px solid var(--line-hairline);
-  color: var(--ink-secondary);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
   font-size: 14px;
   cursor: pointer;
 }
 
 .preference-list li:hover {
-  color: var(--ink-primary);
+  color: var(--color-text-primary);
 }
 
 .preference-list li:last-child {
@@ -550,7 +546,7 @@
 .sidebar__admin {
   margin-top: auto;
   padding-top: var(--space-4);
-  border-top: 1px solid var(--line-hairline);
+  border-top: 1px solid var(--color-border);
 
   display: flex;
   flex-direction: column;
@@ -565,5 +561,9 @@
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--ink-muted);
+  color: var(--color-text-muted);
 }
+
+/* ============================================
+   OVERLAY / MODAL DO LIVRO
+   (cole no final do seu style.css)

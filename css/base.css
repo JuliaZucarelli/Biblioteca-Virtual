@@ -44,6 +44,7 @@
   --topbar-height: 80px;
 }
 
+
 /* RESET */
 * {
   box-sizing: border-box;
@@ -57,8 +58,8 @@ html, body {
 }
 
 body {
-  background: var(--bg-base);
-  color: var(--ink-primary);
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
   font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.6;
@@ -70,16 +71,29 @@ h1 {
 
 h2 {
   font-family: var(--font-body);
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
   font-weight: 500;
 }
 
 h3, h4, p{
   font-family: var(--font-body);
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
 }
 
-/* foco vísivel para navagar pelo teclado */
+button, input {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  background: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+/* Foco visível para navegação por teclado */
 :focus-visible {
   outline: 2px solid var(--color-text-primary);
   outline-offset: 3px;

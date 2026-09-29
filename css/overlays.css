@@ -42,8 +42,8 @@ body.modal-open {
   overflow-y: auto;
   padding: 38px 46px;
 
-  background: var(--bg-header-footer);
-  border: 1px solid var(--line-hairline);
+  background: var(--color-bg-header);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
 
   transform: translateY(14px) scale(0.98);
@@ -63,7 +63,7 @@ body.modal-open {
   width: 24px;
   height: 24px;
 
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
   font-size: 28px;
   line-height: 1;
   cursor: pointer;
@@ -71,7 +71,7 @@ body.modal-open {
 }
 
 .book-modal__close:hover {
-  color: var(--ink-primary);
+  color: var(--color-text-primary);
   transform: scale(1.1);
 }
 
@@ -82,7 +82,7 @@ body.modal-open {
   aspect-ratio: 312 / 493;
   overflow: hidden;
   border-radius: 4px;
-  background: var(--bg-nav);
+  background: var(--color-bg-nav);
 }
 
 .book-modal__cover img {
@@ -143,11 +143,11 @@ body.modal-open {
 }
 
 .book-modal__dot--disponivel {
-  background: var(--pastel-sage);
+  background: var(--color-success);
 }
 
 .book-modal__dot--indisponivel {
-  background: var(--pastel-rose);
+  background: var(--color-danger);
 }
 
 /* botão reservar */
@@ -156,9 +156,9 @@ body.modal-open {
   height: 38px;
   width: 100%;
 
-  background: var(--pastel-mostard);
+  background: var(--color-warning);
   border-radius: 8px;
-  color: var(--pastel-mostard-text);
+  color: var(--color-warning-text);
   font-size: 14px;
   cursor: pointer;
   transition: filter 0.2s ease, transform 0.2s ease;
@@ -170,8 +170,8 @@ body.modal-open {
 }
 
 .book-modal__reserve:disabled {
-  background: var(--bg-nav);
-  color: var(--ink-muted);
+  background: var(--color-bg-nav);
+  color: var(--color-text-muted);
   cursor: not-allowed;
   transform: none;
   filter: none;
@@ -194,7 +194,7 @@ body.modal-open {
 
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.25s ease, visibility 0.25 ease;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
 .login-overlay.is-open {
@@ -218,12 +218,12 @@ body.login-open {
   overflow-y: auto;
   padding: 44px 44px 36px;
 
-  background: var(--bg-header-footer);
-  border: 1px solid var(--line-hairline);
+  background: var(--color-bg-header);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
 
   transform: translateY(14px) scale(0.98);
-  transition: transform 0.25 ease;
+  transition: transform 0.25s ease;
 }
 
 .login-overlay.is-open .login-modal {
@@ -238,7 +238,7 @@ body.login-open {
   width: 24px;
   height: 24px;
 
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
   font-size: 28px;
   line-height: 1;
   cursor: pointer;
@@ -246,7 +246,7 @@ body.login-open {
 }
 
 .login-modal__close:hover {
-  color: var(--ink-primary);
+  color: var(--color-text-primary);
 }
 
 .login-modal__logo {
@@ -273,7 +273,7 @@ body.login-open {
   margin-bottom: 6px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
 }
 
 .login-modal__input input {
@@ -282,22 +282,22 @@ body.login-open {
   margin-bottom: var(--space-4);
   padding: 0 var(--space-4);
 
-  background: var(--line-hairline);
-  border: 1px solid var(--line-hairline);
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
   outline: 0;
   border-radius: 8px;
 
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
   font-size: 14px;
   transition: border-color 0.2s ease;
 }
 
 .login-modal__input input:hover {
-  border-color: var(--ink-muted);
+  border-color: var(--color-text-muted);
 }
 
 .login-modal__input input:focus {
-  border-color: var(--ink-muted);
+  border-color: var(--color-text-muted);
 }
 
 
@@ -305,7 +305,7 @@ body.login-open {
   margin: 0;
   min-width: 20px;
   font-size: 14px;
-  color: var(--pastel-rose);
+  color: var(--color-danger);
 }
 
 .login-modal__enter {
@@ -313,9 +313,9 @@ body.login-open {
   width: 100%;
   margin-top: var(--space-2);
 
-  background: var(--pastel-lilac);
+  background: var(--color-lilac);
   border-radius: var(--radius-md);
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
   font-size: 14px;
   font-weight: 500;
 
@@ -333,12 +333,12 @@ body.login-open {
   margin-top: var(--space-4);
   padding: 4px 8px;
 
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
   font-size: 14px;
   cursor: pointer;
 }
 
 .login-modal__Fpassword:hover {
-  color: var(--ink-primary);
+  color: var(--color-text-primary);
   text-decoration: underline;
 }

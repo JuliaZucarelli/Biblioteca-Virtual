@@ -10,8 +10,8 @@
  
   padding: var(--space-6);
 
-  background: var(--bg-header-footer);
-  border: 1px solid var(--line-hairline);
+  background: var(--color-bg-header);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
 }
 
@@ -28,8 +28,8 @@
   aspect-ratio: 2 / 3;
   overflow: hidden;
 
-  background: var(--bg-nav);
-  border: 1px solid var(--line-hairline);
+  background: var(--color-bg-nav);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
 }
 
@@ -74,14 +74,14 @@
   padding: var(--space-4);
   text-align: center;
 
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
   font-size: 13px;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
 }
 
 .cadastro-card__cover:hover {
-  border-color: var(--ink-muted);
+  border-color: var(--color-text-muted);
 }
 
 /* ícone "+" desenhado só em CSS - procurar um SVG*/
@@ -92,13 +92,13 @@
   flex-shrink: 0;
 
   border-radius: 50%;
-  background-color: var(--bg-elevated);
-  border: 1px solid var(--line-hairline);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
   
 
   background-image:
-    linear-gradient(var(--ink-secondary), var(--ink-secondary)),
-    linear-gradient(var(--ink-secondary), var(--ink-secondary));
+    linear-gradient(var(--color-text-secondary), var(--color-text-secondary)),
+    linear-gradient(var(--color-text-secondary), var(--color-text-secondary));
   background-size: 14px 2px, 2px 14px;
   background-position: center;
   background-repeat: no-repeat;
@@ -107,7 +107,7 @@
 }
 
 .cadastro-card__cover--label:hover::before {
-  border-color: var(--ink-secondary);
+  border-color: var(--color-text-secondary);
 }
 
 .cadastro-card__cover--label::after {
@@ -123,7 +123,7 @@
   padding: 0;
   gap: var(--space-2);
 
-  /* background: color-mix(in srgb, var(--bg-elevated) 55%, transparent); */
+  /* background: color-mix(in srgb, var(--color-bg-elevated) 55%, transparent); */
   /* backdrop-filter: blur(2px); */
   font-size: 12px;
   /* opacity: 0; */
@@ -132,7 +132,7 @@
 .cadastro-card__cover:has(.cadastro-card__cover-preview[src]:not([src=""]))
 .cadastro-card__cover--label:hover {
   /* opacity: 1; */
-  border-color: var(--ink-secondary);
+  border-color: var(--color-text-secondary);
 
 }
 
@@ -171,7 +171,7 @@
   margin-bottom: 6px;
   font-size: 13px;
   font-weight: 500;
-  color: var(--ink-secondary);
+  color: var(--color-text-secondary);
 }
 
 .cadastro-field input,
@@ -179,12 +179,12 @@
   width: 100%;
   padding: 0 var(--space-4);
 
-  background: var(--bg-nav);
-  border: 1px solid var(--line-hairline);
+  background: var(--color-bg-nav);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   outline: 0;
 
-  color: var(--ink-primary);
+  color: var(--color-text-primary);
   font-size: 14px;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
@@ -203,18 +203,18 @@
 
 .cadastro-field input::placeholder,
 .cadastro-field textarea::placeholder {
-  color: var(--ink-muted);
+  color: var(--color-text-muted);
 }
 
 .cadastro-field input:hover,
 .cadastro-field textarea:hover {
-  border-color: var(--ink-muted);
+  border-color: var(--color-text-muted);
 }
 
 .cadastro-field input:focus,
 .cadastro-field textarea:focus {
-  /* background: var(--bg-elevated); */
-  border-color: var(--ink-secondary);
+  /* background: var(--color-bg-elevated); */
+  border-color: var(--color-text-secondary);
 }
 
 .cadastro-actions {
@@ -229,7 +229,7 @@
 .cadastro-form__error {
   margin: 0;
   font-size: 13px;
-  color: var(--pastel-rose-text);
+  color: var(--color-danger-text);
 }
 
 .cadastro-actions__buttons {
@@ -249,18 +249,18 @@
 }
 
 .cadastro-btn--ghost {
-  background: var(--bg-nav);
-  color: var(--ink-secondary);
+  background: var(--color-bg-nav);
+  color: var(--color-text-secondary);
 }
 
 .cadastro-btn--ghost:hover {
-  background: var(--line-hairline);
-  color: var(--ink-primary);
+  background: var(--color-border);
+  color: var(--color-text-primary);
 }
 
 .cadastro-btn--primary {
-  background: var(--pastel-lilac);
-  color: var(--pastel-lilac-text);
+  background: var(--color-lilac);
+  color: var(--color-lilac-text);
 }
 
 .cadastro-btn--primary:hover {
