@@ -5,12 +5,12 @@
 
 ## 07/10 a 11/10 — Recuperação e base do Front-end
 
-- [ ] Revisar HTML das páginas existentes.
-- [ ] Organizar e estabilizar o CSS.
-- [ ] Padronizar componentes visuais.
-- [ ] Revisar navbar/sidebar, botões, cards, badges e formulários.
-- [ ] Corrigir problemas visuais existentes.
-- [ ] Garantir que as páginas principais estejam navegáveis.
+- [X] Revisar HTML das páginas existentes.
+- [X] Organizar e estabilizar o CSS.
+- [X] Padronizar componentes visuais.
+- [X] Revisar navbar/sidebar, botões, cards, badges e formulários.
+- [X] Corrigir problemas visuais existentes.
+- [X] Garantir que as páginas principais estejam navegáveis.
 
 **Marco: 11/10 — Base do front-end estabilizada.**
 
