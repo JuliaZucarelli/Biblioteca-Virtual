@@ -1,4 +1,5 @@
 import {Livro} from "./models/livro";
+import {Exemplar, Acervo} from './models/exemplares';
 
 // exemplo temporário pare teste da classe Livro 
 const livroExemplo = new Livro (
@@ -11,5 +12,3 @@ const livroExemplo = new Livro (
     "Uma história sobre encontros, solidão e expectativas durante quatro noites."
 ); 
 
-console.log("Modelo Livro criado com sucesso!");
-console.log(livroExemplo);

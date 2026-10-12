@@ -30,7 +30,7 @@ export class Exemplar {
     }
 
     get status() : StatusExemplar {
-        return this.status // acessa a propriedade interna da própria classe e entrega o valor dela para quem solicitou
+        return this._status // acessa a propriedade interna da própria classe e entrega o valor dela para quem solicitou
     }
 
     /* propriedade computada: ao invés de guardar uma variável extra para saber se o item está livre ou não,
@@ -65,7 +65,7 @@ export class Acervo {
     private exemplares = new Map <string, Exemplar> ()
 
     adicionarLivro (livro : Livro) : void {
-        if (!this.livros.has(livro.id)) { // verifica se aquele id já é um livro cadastrado
+        if (this.livros.has(livro.id)) { // verifica se aquele id já é um livro cadastrado
             throw new Error(`Já existe um livro com o ID ${livro.id}.`)
         }
         this.livros.set(livro.id, livro)
@@ -75,7 +75,7 @@ export class Acervo {
         if (!this.livros.has(exemplar.livroId)) {
             throw new Error(`Livro ${exemplar.livroId} não encontrado.`)
         }
-        if (!this.exemplares.has(exemplar.id)) {
+        if (this.exemplares.has(exemplar.id)) {
             throw new Error(`Já existe um exemplar com o ID ${exemplar.id}`)
         }
         this.exemplares.set(exemplar.id, exemplar)
