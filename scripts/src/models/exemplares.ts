@@ -79,5 +79,29 @@ export class Acervo {
             throw new Error(`Já existe um exemplar com o ID ${exemplar.id}`)
         }
         this.exemplares.set(exemplar.id, exemplar)
-    }    
+    }   
+    
+    listarLivros() : Livro[] {
+        return[...this.livros.values()]
+    }
+
+    obterLivro(id : string) : Livro | undefined {
+        return this.livros.get(id)
+    }
+
+    obterExemplares(livroId : string) : Exemplar[] {
+        return [...this.exemplares.values()].filter(e => e.livroId === livroId)
+    }
+
+    quantidadeTotal(livroId : string) : number {
+        return this.obterExemplares(livroId).length
+    }
+
+    quantidadeDisponivel(livroId : string) : number {
+        return this.obterExemplares(livroId).filter(e => e.disponivel).length
+    }
+
+    livroDisponivel(livroId : string) : boolean {
+        return this.quantidadeDisponivel(livroId) > 0
+    }
 }
