@@ -17,13 +17,13 @@ export class Exemplar {
         status : StatusExemplar = StatusExemplar.DISPONIVEL // inicializa o status do livro como disponível 
     ) {
         if (!id.trim()) {
-            throw new Error('O ID do exemplar é obrigatório.')
+            throw new Error(`O ID do exemplar é obrigatório.`)
         }
         if (!livroId.trim()) {
-            throw new Error('O exemplar deve estar vinculado a um livro.')
+            throw new Error(`O exemplar deve estar vinculado a um livro.`)
         }
         if (!codigo.trim()) {
-            throw new Error('O código do exemplar é obrigatório.')
+            throw new Error(`O código do exemplar é obrigatório.`)
         }
 
         this._status = status
@@ -41,14 +41,14 @@ export class Exemplar {
 
     emprestar() : void {
         if (!this.disponivel) {
-            throw new Error('O exemplar ${this.codigo} não está disponível para empréstimo.')
+            throw new Error(`O exemplar ${this.codigo} não está disponível para empréstimo.`)
         }
         this._status = StatusExemplar.EMPRESTADO
     }
 
     devolver() : void {
         if (this._status !== StatusExemplar.EMPRESTADO) {
-            throw new Error('O exemplar ${this.codigo} não está emprestado.')
+            throw new Error(`O exemplar ${this.codigo} não está emprestado.`)
         }
         this._status = StatusExemplar.DISPONIVEL
     }
@@ -56,4 +56,20 @@ export class Exemplar {
     marcarIndisponivel() : void {
         this._status = StatusExemplar.INDISPONIVEL
     }
+}
+
+/* Guarda livros e exemplares em memória e mantém a relação entre eles */
+export class Acervo {
+    // cria banco de dados temporários na memória
+    private livros = new Map <string, Livro> ()
+    private exemplares = new Map <string, Exemplar> ()
+
+    adicionarLivro (livro : Livro) : void {
+        if (!this.livros.has(livro.id)) { // verifica se aquele id já é um livro cadastrado
+            throw new Error(`Já existe um livro com o ID ${livro.id}.`)
+        }
+        this.livros.set(livro.id, livro)
+    }
+
+    
 }
