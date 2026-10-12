@@ -34,7 +34,20 @@ export class RepositorioMemoria implements RepositorioAcervo {
         return obter()
     }
 
+    listarLivros(): Promise<Livro[]> {
+        return this.responder(() => this.acervo.listarLivros())
+    }
     
+    obterLivro(id: string): Promise<Livro | undefined> {
+        return this.responder(() => this.acervo.obterLivro(id))
+    }
 
+    listarExemplares(livroId: string): Promise<Exemplar[]> {
+        return this.responder(() => this.acervo.obterExemplares(livroId))
+    }
+
+    quantidadeDisponivel(livroId: string): Promise<number> {
+        return this.responder(() => this.acervo.quantidadeDisponivel(livroId))
+    }
 
 }
