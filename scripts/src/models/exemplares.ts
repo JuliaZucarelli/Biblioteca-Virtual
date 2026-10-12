@@ -71,5 +71,13 @@ export class Acervo {
         this.livros.set(livro.id, livro)
     }
 
-    
+    adicionarExemplares(exemplar : Exemplar) : void {
+        if (!this.livros.has(exemplar.livroId)) {
+            throw new Error(`Livro ${exemplar.livroId} não encontrado.`)
+        }
+        if (!this.exemplares.has(exemplar.id)) {
+            throw new Error(`Já existe um exemplar com o ID ${exemplar.id}`)
+        }
+        this.exemplares.set(exemplar.id, exemplar)
+    }    
 }
