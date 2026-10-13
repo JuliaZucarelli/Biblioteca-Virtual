@@ -1,5 +1,5 @@
-import {Livro} from "./models/livro";
-import {Exemplar, Acervo} from './models/exemplares';
+import {Livro} from "../models/livro";
+import {Exemplar, Acervo} from '../models/exemplares';
 
 // exemplo temporário pare teste da classe Livro 
 const livroExemplo = new Livro (
