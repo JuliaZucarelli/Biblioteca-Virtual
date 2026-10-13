@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest"
 import { criarAcervoInicial } from "./data/dados_inicias"
 import { RepositorioMemoria } from "./repositorio"
 
+
 describe("Seed (dados iniciais)", () => {
     it("cria 8 livros", () => {
         expect(criarAcervoInicial().listarLivros()).toHaveLength(8)
@@ -14,6 +15,32 @@ describe("Seed (dados iniciais)", () => {
                 expect(exemplar.livroId).toBe(livro.id)
             }
         }
+    })
+})
+
+describe("Independência entre execuções do seed", () => {
+    it("cria instâncias novas de Livro a cada chamada", () => {
+        const a = criarAcervoInicial()
+        const b = criarAcervoInicial()
+        expect(a.obterLivro("L01")).not.toBe(b.obterLivro("L01"))
+        expect(a.obterLivro("L01")).toEqual(b.obterLivro("L01"))
+    })
+
+    it("cria instâncias novas de Exemplar a cada chamada", () => {
+        const a = criarAcervoInicial()
+        const b = criarAcervoInicial()
+        expect(a.obterExemplares("L01")[0]).not.toBe(b.obterExemplares("L01")[0])
+    })
+
+    it("alterar um acervo não afeta outro", () => {
+        const a = criarAcervoInicial()
+        const b = criarAcervoInicial()
+        a.obterExemplares("L04").forEach(e => e.emprestar())
+        a.obterLivro("L04")!.titulo = "Título alterado"
+
+        expect(a.livroDisponivel("L04")).toBe(false)
+        expect(b.livroDisponivel("L04")).toBe(true)
+        expect(b.obterLivro("L04")!.titulo).toBe("Grande Sertão: Veredas")
     })
 })
 
