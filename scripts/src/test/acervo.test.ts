@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest"
-import {Livro} from "./models/livro";
-import {Exemplar, Acervo, StatusExemplar} from './models/exemplares';
+import {Livro} from "../models/livro";
+import {Exemplar, Acervo, StatusExemplar} from '../models/exemplares';
 
 const criarLivro = (id = "L1") =>
     new Livro(id, "Dom Casmurro", "Machado de Assis", "9788535902778", 1899, "Romance", "Bentinho e Capitu.")

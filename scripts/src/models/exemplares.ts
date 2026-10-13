@@ -63,6 +63,11 @@ export class Acervo {
     // cria banco de dados temporários na memória
     private livros = new Map <string, Livro> ()
     private exemplares = new Map <string, Exemplar> ()
+    private codigosTombo = new Set <string> ()
+
+    private static normalizarTombo(codigo : string) : string {
+        return codigo.trim().toUpperCase()
+    }
 
     adicionarLivro (livro : Livro) : void {
         if (this.livros.has(livro.id)) { // verifica se aquele id já é um livro cadastrado

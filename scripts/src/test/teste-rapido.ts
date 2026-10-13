@@ -1,5 +1,5 @@
-import { criarAcervoInicial } from "./data/dados_inicias"
-import { RepositorioMemoria } from "./repositories/repositorio"
+import { criarAcervoInicial } from "../data/dados_inicias"
+import { RepositorioMemoria } from "../repositories/repositorio"
 
 async function main() {
     const repo = new RepositorioMemoria(criarAcervoInicial(), { latenciaMs: 500 })

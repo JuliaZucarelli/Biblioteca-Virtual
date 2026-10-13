@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest"
-import { criarAcervoInicial } from "./data/dados_inicias"
-import { RepositorioMemoria } from "./repositories/repositorio"
+import { criarAcervoInicial } from "../data/dados_inicias"
+import { RepositorioMemoria } from "../repositories/repositorio"
 
 
 describe("Seed (dados iniciais)", () => {
