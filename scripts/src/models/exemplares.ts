@@ -83,7 +83,12 @@ export class Acervo {
         if (this.exemplares.has(exemplar.id)) {
             throw new Error(`Já existe um exemplar com o ID ${exemplar.id}`)
         }
+        const tombo = Acervo.normalizarTombo(exemplar.codigo)
+        if(this.codigosTombo.has(tombo)) {
+            throw new Error(`Já existe um exemplar com o código de tombo ${exemplar.codigo}.`)
+        }
         this.exemplares.set(exemplar.id, exemplar)
+        this.codigosTombo.add(tombo) // só registra depois de todas as validações
     }   
     
     listarLivros() : Livro[] {

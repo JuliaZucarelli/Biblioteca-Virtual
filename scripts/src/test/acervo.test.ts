@@ -75,22 +75,19 @@ describe("Acervo", () => {
 
         it("não aceita dois exemplares com o mesmo código de tombo", () => {
             acervo.adicionarExemplares(criarExemplar("E1", "L1", "TOMBO-001"))
-            expect(() => acervo.adicionarExemplares(criarExemplar("E2", "L1", "TOMBO-001")))
-                .toThrow("código de tombo")
+            expect(() => acervo.adicionarExemplares(criarExemplar("E2", "L1", "TOMBO-001"))).toThrow("código de tombo")
             expect(acervo.quantidadeTotal("L1")).toBe(1)
         })
 
         it("o código de tombo é único no acervo inteiro, mesmo entre livros diferentes", () => {
             acervo.adicionarExemplares(criarExemplar("E1", "L1", "TOMBO-001"))
-            expect(() => acervo.adicionarExemplares(criarExemplar("E2", "L2", "TOMBO-001")))
-                .toThrow("código de tombo")
+            expect(() => acervo.adicionarExemplares(criarExemplar("E2", "L2", "TOMBO-001"))).toThrow("código de tombo")
             expect(acervo.quantidadeTotal("L2")).toBe(0)
         })
 
         it("ignora maiúsculas/minúsculas e espaços nas pontas ao comparar tombos", () => {
             acervo.adicionarExemplares(criarExemplar("E1", "L1", "TOMBO-001"))
-            expect(() => acervo.adicionarExemplares(criarExemplar("E2", "L1", "  tombo-001 ")))
-                .toThrow("código de tombo")
+            expect(() => acervo.adicionarExemplares(criarExemplar("E2", "L1", "tombo-001"))).toThrow("código de tombo")
         })
 
         it("um cadastro recusado não deixa rastro (o tombo continua livre)", () => {

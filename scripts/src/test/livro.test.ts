@@ -50,11 +50,11 @@ describe("Livro", () => {
 
     describe("campos obrigatórios", () => {
         it.each([
-            ["id", 0, "o ID do livro é obrigatório."],
-            ["título", 1, "o título do livro é obrigatório"], 
-            ["autor", 2, "o autor do livro é obrigatório"],
-            ["ISBN", 3, "o ISBN do livro é obrigatório"],
-            ["gênero", 5, "o gênero do livro é obrigatório"],
+            ["id", 0, "O ID do livro é obrigatório."],
+            ["título", 1, "O título do livro é obrigatório."], 
+            ["autor", 2, "O autor do livro é obrigatório."],
+            ["ISBN", 3, "O ISBN do livro é obrigatório."],
+            ["gênero", 5, "O gênero do livro é obrigatório."],
         ]) ("rejeita %s vazio ou só com espaços", (_nome, indice, mensagem) => {
             expect(() => criarComCampo(indice, "")).toThrow(mensagem)
             expect(() => criarComCampo(indice, "  ")).toThrow(mensagem)
@@ -63,7 +63,7 @@ describe("Livro", () => {
 
     describe("ano", () => {
         it.each([0, -1, -1899, 1.5, NaN, Infinity]) ("rejeita ano %s", (ano) => {
-            expect(() => criarComCampo(4, ano)).toThrow("o ano do livro deve ser um número inteiro positivo.")
+            expect(() => criarComCampo(4, ano)).toThrow("O ano do livro deve ser um número inteiro positivo.")
         })
     })
 })
