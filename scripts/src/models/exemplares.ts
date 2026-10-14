@@ -1,5 +1,6 @@
 import {Livro} from "./livro"
 
+// lançar constantes de status
 export enum StatusExemplar {
     DISPONIVEL = "DISPONIVEL",
     EMPRESTADO = "EMPRESTADO",
@@ -16,6 +17,7 @@ export class Exemplar {
         public readonly codigo : string,
         status : StatusExemplar = StatusExemplar.DISPONIVEL // inicializa o status do livro como disponível 
     ) {
+        // verificação de possíveis erros
         if (!id.trim()) {
             throw new Error(`O ID do exemplar é obrigatório.`)
         }
@@ -77,16 +79,18 @@ export class Acervo {
     }
 
     adicionarExemplares(exemplar : Exemplar) : void {
-        if (!this.livros.has(exemplar.livroId)) {
+        if (!this.livros.has(exemplar.livroId)) { // verifica se aquele livro já existe dentro do exemplar
             throw new Error(`Livro ${exemplar.livroId} não encontrado.`)
         }
-        if (this.exemplares.has(exemplar.id)) {
+        if (this.exemplares.has(exemplar.id)) { // verifica se existe um exemplar
             throw new Error(`Já existe um exemplar com o ID ${exemplar.id}`)
         }
+    
         const tombo = Acervo.normalizarTombo(exemplar.codigo)
-        if(this.codigosTombo.has(tombo)) {
+        if(this.codigosTombo.has(tombo)) { // verifica se já existe um exemplar com aquele código de tombo
             throw new Error(`Já existe um exemplar com o código de tombo ${exemplar.codigo}.`)
         }
+
         this.exemplares.set(exemplar.id, exemplar)
         this.codigosTombo.add(tombo) // só registra depois de todas as validações
     }   
@@ -113,5 +117,9 @@ export class Acervo {
 
     livroDisponivel(livroId : string) : boolean {
         return this.quantidadeDisponivel(livroId) > 0
+    }
+
+    obterExemplar(id: string): Exemplar | undefined {
+        return this.exemplares.get(id)
     }
 }

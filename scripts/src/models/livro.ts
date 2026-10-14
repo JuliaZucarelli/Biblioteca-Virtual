@@ -8,6 +8,7 @@ export class Livro {
         public genero : string, 
         public sinopse: string
     ) {
+        // verificação de possíveis falhas 
         if (!id.trim()) {
             throw new Error("O ID do livro é obrigatório.")
         }

@@ -14,11 +14,11 @@ export interface RegrasEmprestimo {
     readonly maxRenovacoes : number
 }
 
-export const REGRAS_PADRAO : RegrasEmprestimo {
+export const REGRAS_PADRAO: RegrasEmprestimo = {
     limitePorUsuario: 3,
     prazoDias: 14,
     multaPorDiaCentavos: 50, 
-    maxRenovacoes: 1,
+    maxRenovacoes: 2, 
 }
 
 const MS_POR_DIA = 24 * 60 * 60 * 1000
