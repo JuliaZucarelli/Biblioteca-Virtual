@@ -36,7 +36,7 @@
           </a>
           <a class="nav-item" href="acervo.html">
             <svg class="nav-item__icon" aria-hidden="true">
-              <use href="img/icons/icon-inicio.svg"></use>
+              <use href="img/icons/icon-acervo.svg"></use>
             </svg>
             acervo
           </a>
@@ -130,7 +130,7 @@
 
         <main class="content catalog-page">
           <section class="catalog-heading" aria-labelledby="catalogTitle">
-            <h2 class="hero__quote">Livros disponíveis no catálogo</h2>
+            <h2 class="hero__quote" id="resultsTitle">Livros disponíveis no catálogo</h2>
             <p>Encontre sua próxima leitura por título, autor ou ISBN.</p>
           </section>
           
@@ -150,7 +150,7 @@
 
             <div class="book-grid" id="catalogGrid">
               <article
-                class="book-card"
+                class="book-card catalog-book"
                 data-genero="LITERATURA RUSSA"
                 data-titulo="Noites Brancas"
                 data-autor="Fiódor Dostoiévski"
@@ -182,7 +182,7 @@
               </article>
 
               <article
-                class="book-card"
+                class="book-card catalog-book"
                 data-genero="NOVELA"
                 data-titulo="A Metamorfose"
                 data-autor="Franz Kafka"
@@ -214,7 +214,7 @@
               </article>
 
               <article
-                class="book-card"
+                class="book-card catalog-book"
                 data-genero="FILOSOFIA"
                 data-titulo="A Queda"
                 data-autor="Alber Camus"
@@ -246,7 +246,7 @@
               </article>
 
               <article
-                class="book-card"
+                class="book-card catalog-book"
                 data-genero="LITERATURA BRASILEIRA"
                 data-titulo="Água Viva"
                 data-autor="Clarice Linspector"
@@ -358,7 +358,7 @@
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="./scripts/js/script.js"></script>
     <script src="catalogo.js"></script>
 
   </body>
