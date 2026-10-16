@@ -106,14 +106,30 @@
       <div class="main">
         <!-- TOPBAR -->
         <header class="topbar">
-          <div class="search-bar search-bar--compact">
+          <form
+            class="search-bar search-bar--compact"
+            action="acervo.html"
+            method="get"
+            role="search"
+            aria-label="Pesquisar no acervo"
+          >
+            <input
+              type="search"
+              name="q"
+              id="searchBarFull"
+              placeholder="buscar por título, autor, ISBN..."
+              aria-label="Buscar por título, autor ou ISBN"
+              autocomplete="off"
+            />
+          </form>
+          <!-- <div class="search-bar search-bar--compact">
             <input
               type="text"
               name="userSearchBarFull"
               id="searchBarFull"
               placeholder="buscar por título, autor, ISBN..."
             />
-          </div>
+          </div> -->
 
           <div class="topbar__actions">
             <!-- adicionar link para abrir na pagina conta -->
@@ -315,5 +331,6 @@
     </div>
 
     <script src="./scripts/js/script.js"></script>
+    <script src="./scripts/js/catalogo.js"></script>
   </body>
 </html>
