@@ -1,4 +1,4 @@
-import { criarAcervoInicial } from "../data/dados_inicias"
+import { criarAcervoInicial } from "../database/dados_inicias"
 import { RepositorioMemoria } from "../repositories/repositorio"
 
 async function main() {
