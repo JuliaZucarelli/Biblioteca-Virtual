@@ -3,7 +3,7 @@
 ### Regras 
 Máximo de empréstimos: 3
 Prazo: 14 dias
-Multa: R$ 2,50/dia 
+Multa: R$ 0,50/dia 
 Máximo de renovações: 2
 
 

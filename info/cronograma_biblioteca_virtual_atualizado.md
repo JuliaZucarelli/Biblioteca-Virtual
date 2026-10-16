@@ -25,9 +25,9 @@
 ## 12/10 a 18/10 — Migração para TypeScript e infraestrutura
 
 **Sex 16/10 — Organização e linha de base**
-- [ ] Decidir e registrar as regras (multa: R$ 2,50 ou R$ 0,50 por dia; regra de renovação/fila de reserva).
-- [ ] Confirmar com o professor: banco, framework e se a documentação da API é exigida.
-- [ ] Separar o projeto em `web/` (front-end) e `server/` (back-end), com um único `package.json` por pasta.
+- [x] Decidir e registrar as regras (multa: R$ 2,50 ou R$ 0,50 por dia; regra de renovação/fila de reserva).
+- [x] Confirmar com o professor: banco, framework e se a documentação da API é exigida.
+- [x] Separar o projeto em `web/` (front-end) e `server/` (back-end), com um único `package.json` por pasta.
 - [ ] Criar `.gitignore` (`node_modules`, `dist`, `*.db`) e reinstalar as dependências.
 - [ ] Criar `tsconfig.json` com `strict: true` em `server/` e `web/`.
 - [ ] Corrigir o import quebrado em `repositorio.ts` (`./models/...` → `../models/...`).

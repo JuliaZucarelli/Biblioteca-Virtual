@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" href="img/Favicon-Biblioteca-Virtual.png" />
+
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Biblioteca Virtual</title>
+  </head>
+  <body>
+    <div class="layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <img
+          class="sidebar__logo"
+          src="../img/logo-horizontal-Biblioteca-Virtual.png"
+          alt="logo horizontal da plataforma Biblioteca Virtual"
+        />
+
+        <nav class="sidebar__nav">
+          <a class="nav-item" href="index.html">
+            <svg class="nav-item__icon" aria-hidden="true">
+              <use href="../img/icons/icon-inicio.svg"></use>
+            </svg>
+            início
+          </a>
+          <a class="nav-item" href="acervo.html">
+            <svg class="nav-item__icon" aria-hidden="true">
+              <use href="../img/icons/icon-acervo.svg"></use>
+            </svg>
+            acervo
+          </a>
+          <a class="nav-item" href="emprestimos.html">
+            <svg class="nav-item__icon" aria-hidden="true">
+              <use href="../img/icons/icon-emprestimo.svg"></use>
+            </svg>
+            empréstimos
+          </a>
+          <a class="nav-item" href="historico.html">
+            <svg class="nav-item__icon" aria-hidden="true">
+              <use href="../img/icons/icon-historico.svg"></use>
+            </svg>
+            histórico
+          </a>
+          <a class="nav-item" href="conta.html">
+            <svg class="nav-item__icon" aria-hidden="true">
+              <use href="../img/icons/icon-conta.svg"></use>
+            </svg>
+            conta
+          </a>
+        </nav>
+
+        <div class="sidebar__admin">
+          <p class="sidebar__admin-label">admin</p>
+
+          <a class="nav-item" href="cadastro.html">
+            <svg
+              class="nav-item__icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            cadastrar novo livro
+          </a>
+          <a class="nav-item" href="admin.html">
+            <svg
+              class="nav-item__icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+              ></path>
+            </svg>
+            admin
+          </a>
+        </div>
+
+        <div class="sidebar__profile">
+          <div class="avatar avatar--profile">JZ</div>
+          <div class="sidebar__profile-info">
+            <p class="sidebar__profile-name">Julia Zucareli</p>
+            <p class="sidebar__profile-role">membro</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CONTEÚDO PRINCIPAL -->
+      <div class="main">
+        <!-- TOPBAR -->
+        <header class="topbar">
+          <form
+            class="search-bar search-bar--compact"
+            id="catalogSearchForm"            
+            action="acervo.html"
+            method="get"
+            role="search"
+            aria-label="Pesquisar no acervo"
+          >
+            <input
+              type="search"
+              name="q"
+              id="catalogSearchInput"
+              placeholder="buscar por título, autor, ISBN..."
+              aria-label="Buscar por título, autor ou ISBN"
+              autocomplete="off"
+            />
+          </form>
+          <!-- <div class="search-bar search-bar--compact">
+            <input
+              type="text"
+              name="userSearchBarFull"
+              id="searchBarFull"
+              placeholder="buscar por título, autor, ISBN..."
+            />
+          </div> -->
+
+          <div class="topbar__actions">
+            <!-- adicionar link para abrir na pagina conta -->
+            <button class="icon-button" aria-label="Ver notificações">
+              <svg class="icon-button__icon" aria-hidden="true">
+                <use href="../img/icons/icon-notificacao.svg"></use>
+              </svg>
+            </button>
+            <button class="avatar avatar--button" aria-label="Abrir conta">
+              JZ
+            </button>
+          </div>
+        </header>
+
+        <main class="content catalog-page">
+          <section class="catalog-heading" aria-labelledby="catalogTitle">
+            <h2 class="hero__quote" id="resultsTitle">Livros disponíveis no catálogo</h2>
+            <p>Encontre sua próxima leitura por título, autor ou ISBN.</p>
+          </section>
+          
+
+          <!-- ACERVO -->
+          <section class="section">
+            <p class="catalog-count" id="catalogCount" aria-live="polite"></p>
+
+            <p
+              class="catalog-status"
+              id="catalogStatus"
+              role="status"
+              aria-live="polite"
+            >
+              Carregando livros...
+            </p>
+
+            <div class="book-grid" id="catalogGrid">
+              <article
+                class="book-card catalog-book"
+                data-genero="LITERATURA RUSSA"
+                data-titulo="Noites Brancas"
+                data-autor="Fiódor Dostoiévski"
+                data-ano="1848"
+                data-isbn="9780000000001"
+                data-disponibilidade="2 disponíveis / 3 total"
+                data-descricao="Uma história sobre encontros, solidão e expectativas, acompanha um jovem sonhador durante quatro noites pelas ruas de São Petersburgi"
+              >
+                <!-- adicionar imagem de cada livro - provavelmente vai usar um input file -->
+                <div class="book-card__cover book-cover--noite">
+                  <img
+                    src="../img/noites-brancas.jpg"
+                    alt="capa do livro Noites Brancas"
+                    loading="lazy"
+                  />
+                </div>
+
+                <div class="book-card__body">
+                  <h4 class="book-card__genre">LITERATURA RUSSA</h4>
+                  <h3 class="book-card__title">Noites Brancas</h3>
+                  <p class="book-card__meta">Fiódor Dostoiévski &bull; 1848</p>
+                  <div class="book-card__disponibilidade">
+                    <span
+                      class="book-card__disponibilidade-dot book-card__disponibilidade-dot--disponivel"
+                    ></span>
+                    <span><p>2 disponíveis / 3 total</p></span>
+                  </div>
+                </div>
+              </article>
+
+              <article
+                class="book-card catalog-book"
+                data-genero="NOVELA"
+                data-titulo="A Metamorfose"
+                data-autor="Franz Kafka"
+                data-ano="1915"
+                data-isbn="9780000000001"
+                data-disponibilidade="1 disponível / 2 total"
+                data-descricao="A Metamorfose, de Franz Kafka, narra a história de Gregor Samsa, um caixeiro-viajante que acorda certo dia transformado em um inseto gigante. Incapaz de trabalhar, ele passa a ser gradualmente rejeitado e isolado pela própria família. A obra é uma marcante metáfora sobre a alienação, a solidão e como as relações humanas muitas vezes se baseiam apenas na utilidade financeira."
+              >
+                <!-- adicionar imagem de cada livro - provavelmente vai usar um input file -->
+                <div class="book-card__cover book-cover--noite">
+                  <img
+                    src="../img/a-metamorfose.jpg"
+                    alt="capa do livro A Metamorfose"
+                    loading="lazy"
+                  />
+                </div>
+
+                <div class="book-card__body">
+                  <h4 class="book-card__genre">NOVELA</h4>
+                  <h3 class="book-card__title">A Metamorfose</h3>
+                  <p class="book-card__meta">Franz Kafka &bull; 1915</p>
+                  <div class="book-card__disponibilidade">
+                    <span
+                      class="book-card__disponibilidade-dot book-card__disponibilidade-dot--disponivel"
+                    ></span>
+                    <span><p>1 disponível / 2 total</p></span>
+                  </div>
+                </div>
+              </article>
+
+              <article
+                class="book-card catalog-book"
+                data-genero="FILOSOFIA"
+                data-titulo="A Queda"
+                data-autor="Alber Camus"
+                data-ano="1956"
+                data-isbn="9780000000001"
+                data-disponibilidade="Indisponível"
+                data-descricao="A Queda, de Albert Camus, apresenta o perturbador monólogo de Jean-Baptiste Clamence, um ex-advogado parisiense que relata sua decadência moral em um bar de Amsterdã. Após ignorar o suicídio de uma mulher no rio Sena, ele é assombrado pela culpa e abandona sua vida prestigiada. A obra é uma profunda reflexão sobre a hipocrisia, o julgamento alheio e a cumplicidade humana diante da moralidade."
+              >
+                <!-- adicionar imagem de cada livro - provavelmente vai usar um input file -->
+                <div class="book-card__cover book-cover--noite">
+                  <img
+                    src="../img/a-queda.jpg"
+                    alt="capa do livro A Queda"
+                    loading="lazy"
+                  />
+                </div>
+
+                <div class="book-card__body">
+                  <h4 class="book-card__genre">FILOSOFIA</h4>
+                  <h3 class="book-card__title">A Queda</h3>
+                  <p class="book-card__meta">Albet Camus &bull; 1956</p>
+                  <div class="book-card__disponibilidade">
+                    <span
+                      class="book-card__disponibilidade-dot book-card__disponibilidade-dot--disponivel"
+                    ></span>
+                    <span><p>Indisponível</p></span>
+                  </div>
+                </div>
+              </article>
+
+              <article
+                class="book-card catalog-book"
+                data-genero="LITERATURA BRASILEIRA"
+                data-titulo="Água Viva"
+                data-autor="Clarice Linspector"
+                data-ano="1973"
+                data-isbn="9780000000001"
+                data-disponibilidade="2 disponíveis / 2 total"
+                data-descricao="Água Viva, de Clarice Lispector, é um fluxo de consciência em forma de carta escrito por uma pintora anônima a seu ex-amante. Sem uma narrativa tradicional, a obra explora a busca obsessiva pelo "instante-já", a criação artística e os mistérios da existência. É uma intensa reflexão poética sobre a identidade, o tempo e os limites do próprio pensamento."
+              >
+                <!-- adicionar imagem de cada livro - provavelmente vai usar um input file -->
+                <div class="book-card__cover book-cover--noite">
+                  <img
+                    src="../img/agua-viva.jpg"
+                    alt="capa do livro Água Viva"
+                    loading="lazy"
+                  />
+                </div>
+
+                <div class="book-card__body">
+                  <h4 class="book-card__genre">LITERATURA BRASILEIRA</h4>
+                  <h3 class="book-card__title">Água Viva</h3>
+                  <p class="book-card__meta">Clarice Linspector &bull; 1973</p>
+                  <div class="book-card__disponibilidade">
+                    <span
+                      class="book-card__disponibilidade-dot book-card__disponibilidade-dot--disponivel"
+                    ></span>
+                    <span><p>2 disponíveis / 2 total</p></span>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="catalog-empty" id="catalogEmpty" hidden>
+              <h3>Nenhum livro encontrado</h3>
+              <p>
+                Não encontramos livros para essa busca. Confira a escrita ou 
+                tente pesquisar por outro título, autor ou ISBN.
+              </p>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- OVERLAY DO LIVRO -->
+    <div class="book-overlay" id="bookOverlay">
+      <div class="book-modal">
+        <button class="book-modal__close" id="closeBook" aria-label="Fechar">
+          ×
+        </button>
+
+        <div class="book-modal__cover">
+          <img id="modalCover" src="" alt="" />
+        </div>
+
+        <div class="book-modal__info">
+          <p class="book-modal__genre" id="modalGenre"></p>
+          <h2 class="book-modal__title" id="modalTitle"></h2>
+          <p class="book-modal__meta" id="modalMeta"></p>
+          <p class="book-modal__description" id="modalDescription"></p>
+          <p class="book-modal__availability" id="modalAvailability"></p>
+
+          <button class="book-modal__reserve">reservar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OVERLAY DE LOGIN -->
+    <div class="login-overlay" id="loginOverlay">
+      <div
+        class="login-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Login"
+      >
+        <button class="login-modal__close" id="closeLogin" aria-label="Fechar">
+          ×
+        </button>
+
+        <div class="login-modal__logo">
+          <img
+            src="../img/logo-vertical-Biblioteca-Virtual.png"
+            alt="Logo vertical da Biblioteca Virtual"
+          />
+        </div>
+
+        <form class="login-modal__input">
+          <label for="email">email</label>
+          <input
+            type="email"
+            name="loginEmail"
+            id="email"
+            autocomplete="email"
+            placeholder="nome@email.com"
+          />
+          <label for="password">senha</label>
+          <input
+            type="password"
+            name="loginPassword"
+            id="password"
+            autocomplete="current-password"
+            placeholder="senha"
+          />
+
+          <p class="login-modal__error" id="loginError" role="alert"></p>
+
+          <button class="login-modal__enter" type="submit">entrar</button>
+          <button class="login-modal__Fpassword">esqueci minha senha</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/catalogo.js"></script>
+
+  </body>
+</html>

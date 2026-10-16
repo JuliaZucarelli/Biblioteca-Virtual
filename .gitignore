@@ -1,0 +1,18 @@
+# dependencias
+node_modules/
+
+# build
+dist/
+
+# banco de dados local
+*.db
+*.db-journal
+*.sqlite
+
+# variaveis de ambiente (segredos)
+.env
+
+# sistema e editor
+.DS_Store
+Thumbs.db
+*.log
