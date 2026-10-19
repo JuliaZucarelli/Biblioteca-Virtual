@@ -1,0 +1,2 @@
+import "./catalogo";
+import "./modal";
