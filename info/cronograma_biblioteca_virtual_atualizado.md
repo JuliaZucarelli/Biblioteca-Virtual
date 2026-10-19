@@ -28,15 +28,15 @@
 - [x] Decidir e registrar as regras (multa: R$ 2,50 ou R$ 0,50 por dia; regra de renovação/fila de reserva).
 - [x] Confirmar com o professor: banco, framework e se a documentação da API é exigida.
 - [x] Separar o projeto em `web/` (front-end) e `server/` (back-end), com um único `package.json` por pasta.
-- [ ] Criar `.gitignore` (`node_modules`, `dist`, `*.db`) e reinstalar as dependências.
-- [ ] Criar `tsconfig.json` com `strict: true` em `server/` e `web/`.
-- [ ] Corrigir o import quebrado em `repositorio.ts` (`./models/...` → `../models/...`).
-- [ ] `tsc --noEmit` sem erros e todos os testes existentes passando.
+- [x] Criar `.gitignore` (`node_modules`, `dist`, `*.db`) e reinstalar as dependências.
+- [x] Criar `tsconfig.json` com `strict: true` em `server/` e `web/`.
+- [x] Corrigir o import quebrado em `repositorio.ts` (`./models/...` → `../models/...`).
+- [x] `tsc --noEmit` sem erros e todos os testes existentes passando.
 
 **Sáb 17/10 — Front-end em TypeScript**
-- [ ] Configurar o Vite com múltiplas páginas HTML.
-- [ ] Migrar `script.js` e `catalogo.js` para TypeScript (modais, login overlay, busca).
-- [ ] Trocar `<script src="...js">` por `<script type="module" src="...ts">` nas páginas.
+- [x] Configurar o Vite com múltiplas páginas HTML.
+- [x] Migrar `script.js` e `catalogo.js` para TypeScript (modais, login overlay, busca).
+- [x] Trocar `<script src="...js">` por `<script type="module" src="...ts">` nas páginas.
 
 **Dom 18/10 — Banco e API mínima**
 - [ ] Unificar os dados iniciais com os livros do HTML (títulos, capas, ISBNs únicos).

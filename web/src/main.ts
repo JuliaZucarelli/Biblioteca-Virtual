@@ -1,2 +1,2 @@
+import "./script";
 import "./catalogo";
-import "./modal";
