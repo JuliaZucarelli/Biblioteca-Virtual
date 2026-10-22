@@ -14,3 +14,5 @@ PUT e PATCH: o PUT exige o livro completo, e o PATCH altera só os campos enviad
 405: um método não aceito num caminho existente devolve 405 com o cabeçalho Allow. O OPTIONS devolve a lista de métodos. 
 409: ISBN ou tombo repetido, ou excluir livro ou exemplar emprestado ou reservado. 
 400: campo ausente, vazio ou do tipo errado, e campo desconhecido. O id é gerado pelo servidor, então enviá-lo é rejeitado. 
+
+
