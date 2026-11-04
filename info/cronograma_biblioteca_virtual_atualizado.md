@@ -69,7 +69,7 @@ Todo o resto do estudo (ler, rastrear, mexer, explicar) fica nos blocos Estudo A
 *Restam quinta (29/10), sexta, sábado e domingo.*
 
 **Quinta e sexta: aplicar a API que já está pronta**
-- [ ] Instalar as dependências do `server/` (`express`, `better-sqlite3`, `cors`, `supertest` e os tipos).
+- [x] Instalar as dependências do `server/` (`express`, `better-sqlite3`, `cors`, `supertest` e os tipos).
 - [ ] Copiar os arquivos da API, rodar `npm run typecheck` e `npm test` (todos devem passar).
 - [ ] Configurar os scripts `dev` e `db:reset`; subir a API (porta 3000) e o front (proxy do Vite).
 - [ ] Banco SQLite criado e populado com os 9 livros e as capas (o servidor faz isso na primeira execução).
