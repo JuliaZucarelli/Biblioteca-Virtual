@@ -1,6 +1,6 @@
 import cors from "cors"
 import express, { type Express } from "express"
-import { LivrosController } from "./controllers/livros.controller"
+import { LivrosController } from "./controllers/livros.controller.ts"
 import { tratarErros } from "./middlewares/tratar-erros"
 import type { RepositorioAcervo } from "./repositories/repositorio"
 import { criarRotasLivros } from "./routes/livros.routes"

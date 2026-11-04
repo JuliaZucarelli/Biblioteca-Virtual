@@ -14,12 +14,12 @@ export class LivrosController {
     constructor (private readonly servico : ServicoAcervo) {}
 
     // --- /livros ---
-    listar = async(_req : Request, res : Response) : Promise<void> => {
+    listar = async(req : Request, res : Response) : Promise<void> => {
         res.json(await this.servico.listarLivros())
     }
 
     // 202 created + cabeçalho location apontando para o recurso novo 
-    criar = async(_req : Request, res : Response) : Promise<void> => {
+    criar = async(req : Request, res : Response) : Promise<void> => {
         const livro = await this.servico.criarLivro(req.body)
         res.status(201).location(`${req.baseUrl}/${livro.id}`).json(livro)
     }
