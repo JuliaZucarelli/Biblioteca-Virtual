@@ -1,15 +1,19 @@
-# Cronograma — Biblioteca Virtual (v6)
+# Cronograma — Biblioteca Virtual (v8)
 
 **Período:** 07/10/2026 a 06/12/2026
 **Data final de entrega e apresentação:** 06/12/2026 (não muda)
 
 **Stack:** TypeScript em tudo · Front-end com Vite · Back-end com Node + Express · Banco SQLite · API REST (convenções da aula do professor) · Testes com Vitest
 
-**Carga de 04/11 a 06/12:** 175 h disponíveis em 33 dias, com média de 5 h de segunda a sexta e 6 h aos sábados e domingos. As horas incluem implementação manual, estudo, testes e correções.
+**Carga restante de 05/11 a 06/12:** 170 h disponíveis em 32 dias, com média de 5 h de segunda a sexta e 6 h aos sábados e domingos. A estimativa considera a carga inteira de 05/11 disponível. Desconte as horas já trabalhadas hoje. As horas incluem implementação manual, estudo, testes e correções.
 
-**Ponto de partida em 04/11:** a cópia da API ainda está pendente. O ponto de entrada `server/src/server.ts` está ausente. O typecheck e os 120 testes atuais passaram para a base existente. Os testes HTTP e a integração com SQLite ainda precisam ser validados.
+**Situação verificada em 05/11:** arquivos da API de livros e exemplares presentes, dependências e scripts configurados. Typecheck do server e do web passou. Os 277 testes em 9 arquivos passaram com `npm test -- --pool=threads --maxWorkers=1`, incluindo HTTP com memória e SQLite. A API iniciou com banco temporário em memória e respondeu 200 em saúde e catálogo, com 9 livros e 19 exemplares. O front ainda usa cards estáticos e o Vite está sem proxy `/api`. O build do front terminou com avisos de HTML em `web/acervo.html`, linha 273.
+
+**Limites dessa verificação:** falta conferir a persistência ao reiniciar com banco em arquivo e testar a integração no navegador. A execução padrão dos testes neste ambiente encontrou bloqueio de conexões locais e aviso de encerramento do Vite. A suíte passou ao permitir conexões locais e usar um worker. A presença do código e os testes aprovados registram a implementação. A revisão e explicação de cada arquivo seguem nas tarefas de estudo abaixo.
 
 **Estudo diário:** em dias úteis, reserve cerca de 1h30 para ler e experimentar e 3h30 para copiar ou implementar e validar. No fim de semana, reserve 2 h para estudo e 4 h para execução e testes. Para cada arquivo, leia a responsabilidade e os imports, aplique a mudança manualmente, rode a verificação pertinente e registre dúvidas em `info/duvidas.md`. Nas tarefas agrupadas, divida o total entre os dias pela carga diária.
+
+**Ajuste para 06 a 08/11:** a tarde livre de sexta será dedicada à integração do front, estimada em 5 h com leitura durante a implementação manual. Sábado e domingo terão 6 h diárias de estudo e exercícios dos códigos novos, seguindo o guia de API e SQLite. Esse é o plano vigente para a integração, antecipada em relação à observação inicial do guia.
 
 ---
 
@@ -52,15 +56,15 @@
 
 ---
 
-## 04/11 a 08/11 — Copiar e validar a API, depois ligar o catálogo (27 h)
+## 05/11 a 08/11 — Estudar a API implementada e conectar o catálogo (22 h restantes)
 
-- [x] **Qua 04/11 (5 h)** — Localizar a versão pronta da API. Conferir a árvore de arquivos, instalar Supertest e os tipos que faltam. Começar pelos arquivos de banco e repositório SQLite. Ler cada arquivo, identificar seus imports e entender sua função antes de copiá-lo manualmente.
-- [x] **Qui 05/11 (5 h)** — Continuar a cópia manual pelo serviço de acervo, controllers, rotas e middleware de erros. Rastrear uma consulta de livro e um corpo inválido.
-- [x] **Sex 06/11 (5 h)** — Copiar app, ponto de entrada e testes HTTP. Rodar `npm run typecheck` e `npm test`. Comparar com a base de 120 testes e verificar que os testes novos da API foram executados. Marcar a etapa de cópia só quando todos passarem.
-- [ ] **Sáb 07/11 (6 h)** — Ajustar `dev`, `start` e `db:reset`. Subir a API na porta 3000, verificar saúde, os nove livros com capas e o CRUD de livros e exemplares. Conferir os status 200, 201, 204, 400, 404, 405 e 409.
-- [ ] **Dom 08/11 (6 h)** — Configurar o proxy do Vite e ligar catálogo e destaques à API. Conferir busca por título, autor e ISBN, estados de carregamento, vazio e erro, e indicação de indisponibilidade.
+- [x] **Implementação verificada em 05/11** — Arquivos de banco, repositório SQLite, serviço, validação, controllers, rotas, middlewares, app, servidor e testes presentes. Supertest e tipos instalados. Scripts `dev`, `start` e `db:reset` configurados. Typecheck e 277 testes aprovados.
+- [ ] **Qui 05/11 (5 h)** — Estudar `server.ts`, `app.ts`, configuração, schema e seed. Desenhar a inicialização e rastrear `GET /api/livros/L01`. Reservar a execução prática para conferir persistência em banco de desenvolvimento ao reiniciar a API. Entender que `db:reset` apaga os dados antes de usá-lo.
+- [ ] **Sex 06/11, tarde (5 h)** — Integrar o front manualmente, lendo cada mudança. Reservar 30 min para conferir API e corrigir as aspas de `web/acervo.html`; 45 min para proxy do Vite e cliente HTTP; 1h30 para renderizar o catálogo com capas e disponibilidade; 45 min para adaptar busca por título, autor e ISBN aos cards carregados; 1 h para estados de carregamento, vazio e erro, typecheck, build e teste no navegador com API ligada e desligada; 30 min de margem para correções. Conectar destaques se houver tempo após validar o catálogo.
+- [ ] **Sáb 07/11 (6 h)** — Seguir o sábado do guia de estudo: inicialização, app, configuração, schema, seed, domínio, repositórios, serviço e validação. Desenhar as camadas, responder às questões e rastrear uma consulta. Incluir na explicação como o cliente do front recebe o JSON da API.
+- [ ] **Dom 08/11 (6 h)** — Seguir o domingo do guia: rotas, controller, erros, testes e exercícios de criação, PATCH e exclusão. Explicar os status 201, 400, 404, 405 e 409 e apresentar os três rastreamentos em voz alta. Registrar dúvidas com arquivo e função.
 
-**Marco de 08/11** — Catálogo alimentado pela API. Se a cópia original não aparecer em 04/11, tratar a etapa como implementação e reestimar após montar a primeira rota com SQLite. Adiar os extras antes de reduzir testes ou leitura.
+**Marco de 08/11** — Catálogo alimentado pela API e rastreamentos das camadas explicados pela aluna. A integração de sexta tem 5 h estimadas. Se exceder esse tempo, registrar a pendência e usar a margem de 15/11, priorizando catálogo, busca e estados de erro antes de destaques. Preservar o bloco de estudo do fim de semana.
 
 ## 09/11 a 15/11 — Cadastro, login e permissões (37 h)
 
