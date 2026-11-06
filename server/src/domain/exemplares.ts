@@ -122,4 +122,35 @@ export class Acervo {
     obterExemplar(id: string): Exemplar | undefined {
         return this.exemplares.get(id)
     }
+
+    existeTombo(codigo : string) : boolean {
+        return this.codigosTombo.has(Acervo.normalizarTombo(codigo))
+    }
+
+    atualizarLivro(livro : Livro) : void {
+        if (!this.livros.has(livro.id)) {
+            throw new Error(`Livro ${livro.id} não encontrado.`)
+        }
+        this.livros.set(livro.id, livro) // o ID não muda, então os exemplares continuam ligados a ele
+    }
+
+    // remove o livro e também todos os seus exemplares (liberando os códigos de tombo)
+    removerLivro(id : string) : void {
+        if (!this.livros.has(id)) {
+            throw new Error(`Livro ${id} não encontrado.`)
+        }
+        for (const exemplar of this.obterExemplares(id)) {
+            this.removerExemplar(exemplar.id)
+        }
+        this.livros.delete(id)
+    }
+
+    removerExemplar(id : string) : void {
+        const exemplar = this.exemplares.get(id)
+        if (!exemplar) {
+            throw new Error(`Exemplar ${id} não encontrado.`)
+        }
+        this.exemplares.delete(id)
+        this.codigosTombo.delete(Acervo.normalizarTombo(exemplar.codigo))
+    }
 }
