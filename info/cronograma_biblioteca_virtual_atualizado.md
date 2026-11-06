@@ -54,9 +54,9 @@
 
 ## 04/11 a 08/11 — Copiar e validar a API, depois ligar o catálogo (27 h)
 
-- [ ] **Qua 04/11 (5 h)** — Localizar a versão pronta da API. Conferir a árvore de arquivos, instalar Supertest e os tipos que faltam. Começar pelos arquivos de banco e repositório SQLite. Ler cada arquivo, identificar seus imports e entender sua função antes de copiá-lo manualmente.
-- [ ] **Qui 05/11 (5 h)** — Continuar a cópia manual pelo serviço de acervo, controllers, rotas e middleware de erros. Rastrear uma consulta de livro e um corpo inválido.
-- [ ] **Sex 06/11 (5 h)** — Copiar app, ponto de entrada e testes HTTP. Rodar `npm run typecheck` e `npm test`. Comparar com a base de 120 testes e verificar que os testes novos da API foram executados. Marcar a etapa de cópia só quando todos passarem.
+- [x] **Qua 04/11 (5 h)** — Localizar a versão pronta da API. Conferir a árvore de arquivos, instalar Supertest e os tipos que faltam. Começar pelos arquivos de banco e repositório SQLite. Ler cada arquivo, identificar seus imports e entender sua função antes de copiá-lo manualmente.
+- [x] **Qui 05/11 (5 h)** — Continuar a cópia manual pelo serviço de acervo, controllers, rotas e middleware de erros. Rastrear uma consulta de livro e um corpo inválido.
+- [x] **Sex 06/11 (5 h)** — Copiar app, ponto de entrada e testes HTTP. Rodar `npm run typecheck` e `npm test`. Comparar com a base de 120 testes e verificar que os testes novos da API foram executados. Marcar a etapa de cópia só quando todos passarem.
 - [ ] **Sáb 07/11 (6 h)** — Ajustar `dev`, `start` e `db:reset`. Subir a API na porta 3000, verificar saúde, os nove livros com capas e o CRUD de livros e exemplares. Conferir os status 200, 201, 204, 400, 404, 405 e 409.
 - [ ] **Dom 08/11 (6 h)** — Configurar o proxy do Vite e ligar catálogo e destaques à API. Conferir busca por título, autor e ISBN, estados de carregamento, vazio e erro, e indicação de indisponibilidade.
 
