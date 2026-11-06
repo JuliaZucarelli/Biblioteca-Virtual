@@ -8,6 +8,14 @@ export interface RepositorioAcervo {
     obterLivro(id : string) : Promise < Livro | undefined >
     listarExemplares(livroId : string) : Promise < Exemplar[] >
     quantidadeDisponivel(livroId : string) : Promise < number > 
+
+    // escrita (usada por POST, PUT, PATCH e DELETE da API)
+    salvarLivro(livro : Livro) : Promise < void >
+    atualizarLivro(livro : Livro) : Promise < void >
+    removerLivro(id : string) : Promise < void > // remove também os exemplares do livro
+    adicionarExemplar(exemplar : Exemplar) : Promise < void >
+    removerExemplar(id : string) : Promise < void >
+    existeTombo(codigo : string) : Promise < boolean >
 }
 
 export interface OpcoesRepositorioMemoria {
@@ -48,6 +56,30 @@ export class RepositorioMemoria implements RepositorioAcervo {
 
     quantidadeDisponivel(livroId: string): Promise<number> {
         return this.responder(() => this.acervo.quantidadeDisponivel(livroId))
+    }
+
+    salvarLivro(livro: Livro): Promise<void> {
+        return this.responder(() => this.acervo.adicionarLivro(livro))
+    }
+
+    atualizarLivro(livro: Livro): Promise<void> {
+        return this.responder(() => this.acervo.atualizarLivro(livro))
+    }
+
+    removerLivro(id: string): Promise<void> {
+        return this.responder(() => this.acervo.removerLivro(id))
+    }
+
+    adicionarExemplar(exemplar: Exemplar): Promise<void> {
+        return this.responder(() => this.acervo.adicionarExemplares(exemplar))
+    }
+
+    removerExemplar(id: string): Promise<void> {
+        return this.responder(() => this.acervo.removerExemplar(id))
+    }
+
+    existeTombo(codigo: string): Promise<boolean> {
+        return this.responder(() => this.acervo.existeTombo(codigo))
     }
 
 }

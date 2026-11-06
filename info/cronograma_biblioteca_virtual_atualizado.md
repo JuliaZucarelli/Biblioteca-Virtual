@@ -1,11 +1,19 @@
-# Cronograma — Biblioteca Virtual (v2)
+# Cronograma — Biblioteca Virtual (v8)
 
 **Período:** 07/10/2026 a 06/12/2026
-**Data final de entrega:** 06/12/2026
+**Data final de entrega e apresentação:** 06/12/2026 (não muda)
 
-**Stack:** TypeScript em tudo · Front-end com Vite · Back-end com Node + Express · Banco SQLite · API REST · Testes com Vitest
+**Stack:** TypeScript em tudo · Front-end com Vite · Back-end com Node + Express · Banco SQLite · API REST (convenções da aula do professor) · Testes com Vitest
 
-**Estratégia:** cada semana entrega uma funcionalidade **completa** (banco + API + tela). Não existe mais uma "semana de integração" no final, porque a integração acontece junto com cada funcionalidade.
+**Carga restante de 05/11 a 06/12:** 170 h disponíveis em 32 dias, com média de 5 h de segunda a sexta e 6 h aos sábados e domingos. A estimativa considera a carga inteira de 05/11 disponível. Desconte as horas já trabalhadas hoje. As horas incluem implementação manual, estudo, testes e correções.
+
+**Situação verificada em 05/11:** arquivos da API de livros e exemplares presentes, dependências e scripts configurados. Typecheck do server e do web passou. Os 277 testes em 9 arquivos passaram com `npm test -- --pool=threads --maxWorkers=1`, incluindo HTTP com memória e SQLite. A API iniciou com banco temporário em memória e respondeu 200 em saúde e catálogo, com 9 livros e 19 exemplares. O front ainda usa cards estáticos e o Vite está sem proxy `/api`. O build do front terminou com avisos de HTML em `web/acervo.html`, linha 273.
+
+**Limites dessa verificação:** falta conferir a persistência ao reiniciar com banco em arquivo e testar a integração no navegador. A execução padrão dos testes neste ambiente encontrou bloqueio de conexões locais e aviso de encerramento do Vite. A suíte passou ao permitir conexões locais e usar um worker. A presença do código e os testes aprovados registram a implementação. A revisão e explicação de cada arquivo seguem nas tarefas de estudo abaixo.
+
+**Estudo diário:** em dias úteis, reserve cerca de 1h30 para ler e experimentar e 3h30 para copiar ou implementar e validar. No fim de semana, reserve 2 h para estudo e 4 h para execução e testes. Para cada arquivo, leia a responsabilidade e os imports, aplique a mudança manualmente, rode a verificação pertinente e registre dúvidas em `info/duvidas.md`. Nas tarefas agrupadas, divida o total entre os dias pela carga diária.
+
+**Ajuste para 06 a 08/11:** a tarde livre de sexta será dedicada à integração do front, estimada em 5 h com leitura durante a implementação manual. Sábado e domingo terão 6 h diárias de estudo e exercícios dos códigos novos, seguindo o guia de API e SQLite. Esse é o plano vigente para a integração, antecipada em relação à observação inicial do guia.
 
 ---
 
@@ -24,156 +32,108 @@
 
 ## 12/10 a 18/10 — Migração para TypeScript e infraestrutura
 
-**Sex 16/10 — Organização e linha de base**
-- [x] Decidir e registrar as regras (multa: R$ 2,50 ou R$ 0,50 por dia; regra de renovação/fila de reserva).
-- [x] Confirmar com o professor: banco, framework e se a documentação da API é exigida.
-- [x] Separar o projeto em `web/` (front-end) e `server/` (back-end), com um único `package.json` por pasta.
-- [x] Criar `.gitignore` (`node_modules`, `dist`, `*.db`) e reinstalar as dependências.
-- [x] Criar `tsconfig.json` com `strict: true` em `server/` e `web/`.
-- [x] Corrigir o import quebrado em `repositorio.ts` (`./models/...` → `../models/...`).
-- [x] `tsc --noEmit` sem erros e todos os testes existentes passando.
+- [X] Separar o projeto em `web/` e `server/`.
+- [X] Criar `.gitignore` e reinstalar as dependências.
+- [X] Criar `tsconfig.json` com `strict: true` em `server/` e `web/`.
+- [X] Corrigir o import quebrado; `tsc --noEmit` sem erros e testes verdes.
+- [X] Configurar o Vite com múltiplas páginas HTML.
+- [X] Migrar `script.js` e `catalogo.js` para TypeScript.
+- [X] Trocar as tags de script por `<script type="module" src="/src/main.ts">`.
+- [X] Decidir e registrar as regras (multa e regra de renovação/fila de reserva).
+- [X] Confirmar com o professor: banco, framework, Deno e documentação da API.
 
-**Sáb 17/10 — Front-end em TypeScript**
-- [x] Configurar o Vite com múltiplas páginas HTML.
-- [x] Migrar `script.js` e `catalogo.js` para TypeScript (modais, login overlay, busca).
-- [x] Trocar `<script src="...js">` por `<script type="module" src="...ts">` nas páginas.
-
-**Dom 18/10 — Banco e API mínima**
-- [ ] Unificar os dados iniciais com os livros do HTML (títulos, capas, ISBNs únicos).
-- [ ] Criar o esquema SQLite (usuários, livros, exemplares, empréstimos, reservas) e o seed.
-- [ ] Criar Express + `GET /livros` retornando dados do banco.
-- [ ] Front-end listando os livros vindos da API (ponta a ponta funcionando).
-
-**Marco: 18/10 — Base TypeScript pronta: web → API → banco funcionando.**
+*Os itens de banco e API que estavam previstos para 18/10 foram movidos para a semana de 26/10.*
 
 ---
 
-## 19/10 a 25/10 — Busca, filtros e catálogo (banco + API + tela)
+## 19/10 a 25/10 — Semana de recuperação (doença)
 
-- [ ] `RepositorioSQLite` implementando as interfaces de repositório (o `RepositorioMemoria` continua nos testes).
-- [ ] Métodos estáticos de restauração (`Emprestimo.restaurar`, `Exemplar.restaurar`) para reconstruir objetos a partir do banco.
-- [ ] `SearchStrategy` (interface) com `ExactMatchStrategy` (título, autor e ISBN) e `RankedTextStrategy`.
-- [ ] Pesos de relevância: título > autor > sinopse.
-- [ ] `Specification<Livro>` com `AndSpecification` / `OrSpecification` para gênero, ano e disponibilidade.
-- [ ] Endpoint `GET /livros?q=&modo=&genero=&ano=&disponivel=&ordem=`.
-- [ ] `GET /livros/:id` e página de detalhes (sinopse, metadados, lista de exemplares).
-- [ ] Cards gerados a partir dos dados da API, com ISBN, disponibilidade e indicador de relevância.
-- [ ] Filtros laterais, "Limpar filtros" e ordenação (relevância, título, ano).
-- [ ] Estados de loading, vazio e erro (textos do `melhorias.md`).
-- [ ] Testes unitários das estratégias de busca e das specifications.
-
-**Marco: 25/10 — Catálogo, busca e filtros funcionando com banco e API.**
+- [X] Mandar a mensagem ao professor com as dúvidas.
+- [X] Decidir o valor da multa e a regra de renovação, e anotar em `info/`.
+- [X] Criar o `info/caderno-de-apresentacao.md`.
+- [X] Ler `Livro`, `Exemplar` e `Acervo`.
+- [ ] ~~Responder no caderno as perguntas sobre `Exemplar` e `RepositorioAcervo`~~ → **movido para o Estudo A (29/11)**.
 
 ---
 
-## 26/10 a 01/11 — Autenticação e usuários
+## 05/11 a 08/11 — Estudar a API implementada e conectar o catálogo (22 h restantes)
 
-- [ ] Hierarquia `Usuario` → `AdminUser` / `RegularUser`.
-- [ ] `POST /auth/cadastro` (e-mail único, senha com hash/bcrypt).
-- [ ] `POST /auth/login` (token JWT ou sessão).
-- [ ] Papel admin definido por e-mail `nome@admin.com`, salvo no banco.
-- [ ] Middleware de autenticação e de autorização por papel na API.
-- [ ] Telas de cadastro e login conectadas à API.
-- [ ] Menu admin aparece apenas para administradores.
-- [ ] Conta, empréstimos e histórico visíveis somente após o login (botão de login quando deslogado).
-- [ ] Testes de cadastro, login e permissões.
+- [x] **Implementação verificada em 05/11** — Arquivos de banco, repositório SQLite, serviço, validação, controllers, rotas, middlewares, app, servidor e testes presentes. Supertest e tipos instalados. Scripts `dev`, `start` e `db:reset` configurados. Typecheck e 277 testes aprovados.
+- [ ] **Qui 05/11 (5 h)** — Estudar `server.ts`, `app.ts`, configuração, schema e seed. Desenhar a inicialização e rastrear `GET /api/livros/L01`. Reservar a execução prática para conferir persistência em banco de desenvolvimento ao reiniciar a API. Entender que `db:reset` apaga os dados antes de usá-lo.
+- [ ] **Sex 06/11, tarde (5 h)** — Integrar o front manualmente, lendo cada mudança. Reservar 30 min para conferir API e corrigir as aspas de `web/acervo.html`; 45 min para proxy do Vite e cliente HTTP; 1h30 para renderizar o catálogo com capas e disponibilidade; 45 min para adaptar busca por título, autor e ISBN aos cards carregados; 1 h para estados de carregamento, vazio e erro, typecheck, build e teste no navegador com API ligada e desligada; 30 min de margem para correções. Conectar destaques se houver tempo após validar o catálogo.
+- [ ] **Sáb 07/11 (6 h)** — Seguir o sábado do guia de estudo: inicialização, app, configuração, schema, seed, domínio, repositórios, serviço e validação. Desenhar as camadas, responder às questões e rastrear uma consulta. Incluir na explicação como o cliente do front recebe o JSON da API.
+- [ ] **Dom 08/11 (6 h)** — Seguir o domingo do guia: rotas, controller, erros, testes e exercícios de criação, PATCH e exclusão. Explicar os status 201, 400, 404, 405 e 409 e apresentar os três rastreamentos em voz alta. Registrar dúvidas com arquivo e função.
 
-**Marco: 01/11 — Cadastro, login e controle de acesso funcionando.**
+**Marco de 08/11** — Catálogo alimentado pela API e rastreamentos das camadas explicados pela aluna. A integração de sexta tem 5 h estimadas. Se exceder esse tempo, registrar a pendência e usar a margem de 15/11, priorizando catálogo, busca e estados de erro antes de destaques. Preservar o bloco de estudo do fim de semana.
 
----
+## 09/11 a 15/11 — Cadastro, login e permissões (37 h)
 
-## 02/11 a 08/11 — Empréstimos, reservas e renovação (banco + API + tela)
+- [ ] **Seg 09/11 a ter 10/11 (10 h)** — Modelar `Usuario`, `AdminUser` e `RegularUser`. Implementar persistência e cadastro com e-mail único, senha com hash e resposta 201 com `Location`.
+- [ ] **Qua 11/11 a qui 12/11 (10 h)** — Implementar login com JWT, papel administrativo e middlewares 401/403. Proteger as rotas de escrita de livros e exemplares.
+- [ ] **Sex 13/11 (5 h)** — Conectar cadastro e login, incluindo os erros dos formulários.
+- [ ] **Sáb 14/11 (6 h)** — Restringir conta, empréstimos e histórico a usuários autenticados. Mostrar menu admin apenas para administradores.
+- [ ] **Dom 15/11 (6 h)** — Rodar testes de cadastro, login e permissões. Usar o restante para corrigir falhas ou absorver pendências do catálogo.
 
-- [ ] `POST /emprestimos` (limite de 3, prazo de 14 dias, exemplar passa a emprestado).
-- [ ] `POST /emprestimos/:id/devolver` (disponibilidade atualizada).
-- [ ] `POST /emprestimos/:id/renovar` (máximo de 2 renovações, bloqueio se atrasado).
-- [ ] `POST /reservas` (só quando não houver exemplar disponível).
-- [ ] Botão **Emprestar** ou **Reservar** conforme a disponibilidade.
-- [ ] `GET /emprestimos/meus` com situação, multa acumulada e indicador de atraso.
-- [ ] Telas de empréstimos, histórico (status Devolvido/Atrasado) e conta conectadas à API.
-- [ ] Modal de renovação ("Você possui 1 de 2 renovações disponíveis") e mensagem de renovação indisponível.
-- [ ] Barra de progresso do prazo (se sobrar tempo).
-- [ ] Tratamento dos erros da API na interface.
+## 16/11 a 22/11 — Empréstimo, devolução e renovação (37 h)
 
-**Marco: 08/11 — Fluxo completo do usuário: buscar, emprestar, renovar e devolver.**
+- [ ] **Seg 16/11 a ter 17/11 (10 h)** — Ler o serviço existente e ligá-lo ao SQLite. Implementar empréstimo com limite de três, prazo de 14 dias e atualização da disponibilidade.
+- [ ] **Qua 18/11 a qui 19/11 (10 h)** — Implementar devolução, renovação (até duas, bloqueada se houver atraso) e consulta de empréstimos do usuário com situação e multa.
+- [ ] **Sex 20/11 (5 h)** — Conectar a ação de emprestar e as telas de empréstimos, conta e histórico.
+- [ ] **Sáb 21/11 (6 h)** — Conectar devolução e renovação, incluindo o modal e os estados de erro.
+- [ ] **Dom 22/11 (6 h)** — Testar com Supertest e no navegador o fluxo cadastro → login → busca → empréstimo → renovação → devolução. Corrigir falhas antes de ampliar o escopo.
 
----
+## 23/11 a 29/11 — Reservas, multas, administração e busca (37 h)
 
-## 09/11 a 15/11 — Regras de negócio e robustez
+- [ ] **Seg 23/11 a ter 24/11 (10 h)** — Implementar reserva para livro indisponível, bloqueio de renovação por reserva ativa e exibição de multa. Fazer a fila completa se o fluxo principal estiver estável.
+- [ ] **Qua 25/11 a qui 26/11 (10 h)** — Conectar a área administrativa protegida ao CRUD de livros e exemplares, com confirmação para exclusão.
+- [ ] **Sex 27/11 (5 h)** — Se o fluxo principal estiver estável, implementar filtro de disponibilidade e busca exata com testes. Busca ranqueada e composição de filtros ficam condicionadas ao tempo restante.
+- [ ] **Sáb 28/11 (6 h)** — Revisar navegação por teclado, foco visível e fluxo completo. Corrigir regressões.
+- [ ] **Dom 29/11 (6 h)** — Margem para pendências do fluxo principal. Revisar o domínio e rastrear `GET /api/livros/L01` até o SQLite, usando as perguntas do Estudo A.
 
-- [ ] Fila de reservas e regra de renovação definida (reserva ativa bloqueia renovação).
-- [ ] Cálculo e exibição de multas por atraso (valor definido em 16/10).
-- [ ] Revisão do controle de disponibilidade após empréstimo, devolução e reserva.
-- [ ] Validação da busca por relevância com casos de teste.
-- [ ] Revisão das regras de autenticação e acesso.
-- [ ] Testes de integração da API (supertest).
-- [ ] Notificações básicas (vence amanhã, reserva disponível), se houver tempo.
+## 30/11 a 06/12 — Revisão, ensaios e entrega (37 h)
 
-**Marco: 15/11 — Núcleo do sistema funcionando e testado.**
+- [ ] **Seg 30/11 (5 h)** — Preparar roteiro, mapa das camadas e explicação de cinco arquivos-chave. Revisar autenticação com as perguntas do Estudo B.
+- [ ] **Ter 01/12 (5 h)** — Revisar empréstimos, reservas e multas. Atualizar README, documentação da API e justificativa de POO.
+- [ ] **Qua 02/12 (5 h)** — Fazer o primeiro ensaio cronometrado com demonstração. Anotar e corrigir bloqueios.
+- [ ] **Qui 03/12 (5 h)** — Fazer o segundo ensaio. Revisar responsividade e preparar vídeo ou capturas para o plano B.
+- [ ] **Sex 04/12 (5 h)** — Fazer o terceiro ensaio, incluindo perguntas do professor e demonstração com dados iniciais.
+- [ ] **Sáb 05/12 (6 h)** — Validar a instalação do zero, rodar os testes de back-end e conferir o build do front. Reservar o restante para correções críticas.
+- [ ] **Dom 06/12 (6 h disponíveis)** — Conferir os materiais, executar a checagem final, entregar e apresentar.
 
----
+## Marcos revisados
 
-## 16/11 a 22/11 — Área Administrativa
-
-- [ ] Página `admin.html` com controle de acesso.
-- [ ] `POST /livros` (admin) e tela de cadastro de livro.
-- [ ] `POST /livros/:id/exemplares` (admin) com botão de adicionar exemplar nos livros cadastrados.
-- [ ] Atualização da quantidade disponível ao adicionar exemplar.
-- [ ] `DELETE /exemplares/:id` com modal de confirmação.
-- [ ] Gerenciamento do acervo.
-- [ ] Revisão das permissões de usuário e administrador.
-
-**Marco: 22/11 — Área administrativa funcional.**
-
----
-
-## 23/11 a 29/11 — Testes, Acessibilidade e Estados
-
-- [ ] Testar cadastro e login.
-- [ ] Testar busca exata e por relevância.
-- [ ] Testar filtros.
-- [ ] Testar empréstimos, reservas, renovações e devoluções.
-- [ ] Testar multas.
-- [ ] Testar permissões administrativas.
-- [ ] Revisar loading, erro, estados vazios e sucesso.
-- [ ] `:focus-visible` em links, botões, busca, filtros, inputs e cards clicáveis.
-- [ ] Revisar navegação por teclado, labels, textos e feedbacks.
-- [ ] Corrigir bugs encontrados.
-
-**Marco: 29/11 — Sistema completo e testado.**
-
----
-
-## 30/11 a 06/12 — Documentação, polimento e entrega
-
-- [ ] Corrigir bugs restantes.
-- [ ] Revisar responsividade e consistência visual.
-- [ ] Limpar código desnecessário e revisar a organização das pastas.
-- [ ] README: como rodar do zero (instalar, criar banco, iniciar API e front).
-- [ ] Documentação da API (endpoints, exemplos de requisição e resposta).
-- [ ] Atualizar `justificativa-poo.md` com os nomes reais das classes.
-- [ ] Preparar a apresentação (tour de código: interfaces, polimorfismo, encapsulamento, composição).
-- [ ] Executar o projeto do zero em uma máquina limpa para validação final.
-- [ ] Conferir todos os requisitos e os arquivos da entrega.
-- [ ] Realizar a entrega final.
-
-**Marco final: 06/12 — Entrega da Biblioteca Virtual.**
-
----
-
-# Marcos principais
-
-| Data | Marco |
+| Data | Resultado esperado |
 |---|---|
-| **11/10** | Base do front-end estabilizada |
-| **18/10** | Base TypeScript pronta: web → API → banco |
-| **25/10** | Catálogo, busca e filtros com banco e API |
-| **01/11** | Cadastro, login e controle de acesso |
-| **08/11** | Fluxo completo: buscar, emprestar, renovar e devolver |
-| **15/11** | Núcleo do sistema funcionando e testado |
-| **22/11** | Área administrativa funcional |
-| **29/11** | Sistema completo e testado |
-| **06/12** | **Entrega final** |
+| 08/11 | API validada e catálogo conectado |
+| 15/11 | Cadastro, login e permissões validados |
+| 22/11 | Fluxo de empréstimo, renovação e devolução validado |
+| 29/11 | Reservas, multas e administração conforme a capacidade da semana |
+| 04/12 | Três ensaios concluídos |
+| 06/12 | Entrega e apresentação |
+
+---
+
+# Banco de perguntas (o que o professor provavelmente vai perguntar)
+
+Responda em voz alta e por escrito nos blocos Estudo A e B.
+
+| # | Pergunta | Bloco |
+|---|---|---|
+| 1 | O que é encapsulamento? Mostre no `Exemplar`. | A |
+| 2 | O que é uma interface? Para que serve o `RepositorioAcervo`? | A |
+| 3 | O que é polimorfismo? Como trocar o SQLite por outro banco? | A |
+| 4 | O que é injeção de dependência? O que `criarApp(repositorio)` ganha? | A |
+| 5 | O que é uma API REST e o que significa "sem estado"? | A |
+| 6 | Qual a diferença entre `PUT` e `PATCH`? E entre `401` e `403`? | A e B |
+| 7 | Por que a URL é `/livros/L01/exemplares` e não `/getExemplares`? | A |
+| 8 | Por que o serviço não conhece HTTP? | A |
+| 9 | O que são os padrões Strategy e Specification? Onde você usou? | A |
+| 10 | O que é herança? Como `AdminUser` e `RegularUser` se comportam diferente? | B |
+| 11 | Como a senha é guardada e por quê? Como funciona o JWT? | B |
+| 12 | Onde estão as regras do empréstimo? Como testar um atraso sem esperar 14 dias? | B |
+| 13 | O que é composição? Qual a relação entre `Livro`, `Exemplar` e `Acervo`? | A |
+| 14 | Por que testar o repositório contra a memória e o SQLite? | A |
+| 15 | Qual foi a maior dificuldade e o que você faria diferente? | B |
 
 ---
 
@@ -183,9 +143,16 @@
 2. **Requisitos do professor:** TypeScript, POO, banco de dados e API REST
 3. **Regras de negócio** (limite, prazo, multa, renovação)
 4. **Testes e correção de bugs**
-5. **Área administrativa**
-6. **Acessibilidade**
-7. **Polimento visual**
-8. **Extras:** notificações, barra de progresso, "esqueci minha senha"
+5. **Estudo mínimo do código:** os 5 arquivos-chave e o banco de perguntas (não se corta, pois sem ele não dá para apresentar)
+6. **Área administrativa**
+7. **Acessibilidade**
+8. **Polimento visual**
+9. **Extras:** notificações, barra de progresso, "esqueci minha senha", página de detalhes, filtro por ano, ordenação, `RankedTextStrategy`
 
-A última semana (30/11 a 06/12) continua sendo margem de segurança. **Data final não deve ser alterada: 06/12/2026.**
+Se o atraso continuar, corte do último para o primeiro: extras → polimento visual → acessibilidade avançada (manter `:focus-visible` e teclado) → fila de reservas (manter só a reserva simples). Os itens 1 a 5 não são cortados.
+
+## Ponto de controle semanal
+
+Na **quarta-feira** de cada semana, compare o que falta com as horas até domingo. Se a carga não couber, adie os opcionais e use a margem para concluir e testar o fluxo principal.
+
+A última semana é margem de segurança. **Data final não deve ser alterada: 06/12/2026.**

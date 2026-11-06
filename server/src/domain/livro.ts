@@ -6,7 +6,8 @@ export class Livro {
         public isbn : string, 
         public ano : number, 
         public genero : string, 
-        public sinopse: string
+        public sinopse: string,
+        public capa: string = "" // caminho da imagem da capa (opcional)
     ) {
         // verificação de possíveis falhas 
         if (!id.trim()) {
