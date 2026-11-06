@@ -5,6 +5,7 @@ const pagina = (nome: string) =>
   fileURLToPath(new URL(`./${nome}.html`, import.meta.url));
 
 export default defineConfig({
+  base: "./",
   server: { port: 5173 },
   build: {
     rollupOptions: {
