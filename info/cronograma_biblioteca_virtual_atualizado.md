@@ -1,19 +1,34 @@
-# Cronograma — Biblioteca Virtual (v8)
+# Cronograma - Biblioteca Virtual (v9)
 
-**Período:** 07/10/2026 a 06/12/2026
-**Data final de entrega e apresentação:** 06/12/2026 (não muda)
+**Replanejado em 11/11/2026. Apresentação em 02/12/2026.**
 
-**Stack:** TypeScript em tudo · Front-end com Vite · Back-end com Node + Express · Banco SQLite · API REST (convenções da aula do professor) · Testes com Vitest
+**Prazo de preparação:** concluir a versão apresentável e os materiais até 01/12. A data de entrega formal não foi informada novamente. Confirmá-la com o professor e preparar tudo para a apresentação de 02/12.
 
-**Carga restante de 05/11 a 06/12:** 170 h disponíveis em 32 dias, com média de 5 h de segunda a sexta e 6 h aos sábados e domingos. A estimativa considera a carga inteira de 05/11 disponível. Desconte as horas já trabalhadas hoje. As horas incluem implementação manual, estudo, testes e correções.
+**Carga prevista:** 5 h de segunda a sexta e 6 h aos sábados e domingos. De 11/11 a 01/12 são 21 dias e 111 h, sendo 89 h até 27/11 e 22 h para revisão, correções e ensaios de 28/11 a 01/12. A carga considera 11/11 inteiro disponível. Se parte do dia já passou, usar a margem de 15/11 para o que faltar. As horas de 02/12 ficam para a apresentação, fora da capacidade de implementação.
 
-**Situação verificada em 05/11:** arquivos da API de livros e exemplares presentes, dependências e scripts configurados. Typecheck do server e do web passou. Os 277 testes em 9 arquivos passaram com `npm test -- --pool=threads --maxWorkers=1`, incluindo HTTP com memória e SQLite. A API iniciou com banco temporário em memória e respondeu 200 em saúde e catálogo, com 9 livros e 19 exemplares. O front ainda usa cards estáticos e o Vite está sem proxy `/api`. O build do front terminou com avisos de HTML em `web/acervo.html`, linha 273.
+**Situação em 11/11:** a API de livros e exemplares com SQLite está presente. O front continua com cards estáticos e sem proxy da API. Há configuração para publicação estática no GitHub Pages. Cadastro, login e integração de empréstimos com SQLite e HTTP seguem pendentes. O serviço de empréstimos existente trabalha com Acervo e Map em memória e precisará ser adaptado para persistência. O estudo previsto para o último fim de semana fica pendente até ser realizado.
 
-**Limites dessa verificação:** falta conferir a persistência ao reiniciar com banco em arquivo e testar a integração no navegador. A execução padrão dos testes neste ambiente encontrou bloqueio de conexões locais e aviso de encerramento do Vite. A suíte passou ao permitir conexões locais e usar um worker. A presença do código e os testes aprovados registram a implementação. A revisão e explicação de cada arquivo seguem nas tarefas de estudo abaixo.
+**Verificações anteriores:** em 05/11 passaram os typechecks e 277 testes do back-end; a API respondeu com 9 livros e 19 exemplares usando banco temporário. Esses resultados são históricos. Rodar novamente as verificações no início e após cada etapa deste plano.
 
-**Estudo diário:** em dias úteis, reserve cerca de 1h30 para ler e experimentar e 3h30 para copiar ou implementar e validar. No fim de semana, reserve 2 h para estudo e 4 h para execução e testes. Para cada arquivo, leia a responsabilidade e os imports, aplique a mudança manualmente, rode a verificação pertinente e registre dúvidas em `info/duvidas.md`. Nas tarefas agrupadas, divida o total entre os dias pela carga diária.
+## Escopo mínimo para apresentar
 
-**Ajuste para 06 a 08/11:** a tarde livre de sexta será dedicada à integração do front, estimada em 5 h com leitura durante a implementação manual. Sábado e domingo terão 6 h diárias de estudo e exercícios dos códigos novos, seguindo o guia de API e SQLite. Esse é o plano vigente para a integração, antecipada em relação à observação inicial do guia.
+- [ ] Catálogo vindo da API, com capa, disponibilidade e busca simples por título, autor ou ISBN.
+- [ ] Cadastro, login, senha com hash, JWT e controle de acesso no servidor. Hierarquia de usuários com permissões efetivas.
+- [ ] Empréstimo e devolução persistidos no SQLite, com atualização consistente do exemplar e consulta dos empréstimos do próprio usuário.
+- [ ] Limite de 3 empréstimos, prazo de 14 dias, multa de R$ 0,50/dia e até 2 renovações, reaproveitando as regras existentes.
+- [ ] Administração mínima para cadastrar livro e adicionar exemplar, protegida por papel administrativo.
+- [ ] TypeScript, POO, API REST, banco relacional, testes do fluxo principal, documentação de execução e explicação do código.
+- [ ] Carregamento, vazio, erro, navegação por teclado e foco visível nas telas usadas na demonstração.
+
+**Funcionalidades condicionadas à avaliação:** reserva simples e busca com Strategy/Specification estão no documento de requisitos. Conferir em 11/11 se são obrigatórias para a nota. Se forem, usar os blocos de 23 e 24/11 para suas versões mínimas e reduzir o acabamento da administração e das telas secundárias. A fila completa, o ranking por relevância e a composição avançada de filtros ficam adiados pelo plano reduzido, sujeitos a essa conferência.
+
+**Decisões de escopo:** demonstração local com API e Vite. O GitHub Pages publica arquivos estáticos e não executa o servidor Express nem o SQLite. Hospedagem do back-end fica fora da preparação essencial, salvo exigência expressa do professor. Reutilizar as telas existentes, com conta e histórico simplificados a partir das consultas já implementadas.
+
+## Como estudar durante a implementação
+
+Nos dias úteis, reservar 1 h para ler o código e 4 h para implementar manualmente, testar e registrar dúvidas. Nos fins de semana, reservar 1h30 para estudo e 4h30 para execução. Essas horas já estão dentro dos totais diários. Em 28/11 a 01/12, o estudo ocorre durante revisões e ensaios.
+
+Para cada arquivo novo, identificar responsabilidade, entrada, saída e quem o chama. Explicar uma requisição em voz alta ao terminar a sessão. Usar os capítulos pertinentes de `info/guia-estudo-api-sqlite.md`, sem tentar resolver as 36 questões de uma vez. O roteiro datado do guia e as datas das versões anteriores são substituídos por este cronograma.
 
 ---
 
@@ -42,7 +57,7 @@
 - [X] Decidir e registrar as regras (multa e regra de renovação/fila de reserva).
 - [X] Confirmar com o professor: banco, framework, Deno e documentação da API.
 
-*Os itens de banco e API que estavam previstos para 18/10 foram movidos para a semana de 26/10.*
+*A API de acervo foi incorporada posteriormente e está registrada no diagnóstico abaixo.*
 
 ---
 
@@ -52,107 +67,90 @@
 - [X] Decidir o valor da multa e a regra de renovação, e anotar em `info/`.
 - [X] Criar o `info/caderno-de-apresentacao.md`.
 - [X] Ler `Livro`, `Exemplar` e `Acervo`.
-- [ ] ~~Responder no caderno as perguntas sobre `Exemplar` e `RepositorioAcervo`~~ → **movido para o Estudo A (29/11)**.
+- [ ] ~~Responder no caderno as perguntas sobre `Exemplar` e `RepositorioAcervo`~~ → **retomado no estudo diário e na revisão de 28/11**.
 
 ---
 
-## 05/11 a 08/11 — Estudar a API implementada e conectar o catálogo (22 h restantes)
+## 11/11 a 15/11 - Catálogo e autenticação (27 h)
 
-- [x] **Implementação verificada em 05/11** — Arquivos de banco, repositório SQLite, serviço, validação, controllers, rotas, middlewares, app, servidor e testes presentes. Supertest e tipos instalados. Scripts `dev`, `start` e `db:reset` configurados. Typecheck e 277 testes aprovados.
-- [ ] **Qui 05/11 (5 h)** — Estudar `server.ts`, `app.ts`, configuração, schema e seed. Desenhar a inicialização e rastrear `GET /api/livros/L01`. Reservar a execução prática para conferir persistência em banco de desenvolvimento ao reiniciar a API. Entender que `db:reset` apaga os dados antes de usá-lo.
-- [ ] **Sex 06/11, tarde (5 h)** — Integrar o front manualmente, lendo cada mudança. Reservar 30 min para conferir API e corrigir as aspas de `web/acervo.html`; 45 min para proxy do Vite e cliente HTTP; 1h30 para renderizar o catálogo com capas e disponibilidade; 45 min para adaptar busca por título, autor e ISBN aos cards carregados; 1 h para estados de carregamento, vazio e erro, typecheck, build e teste no navegador com API ligada e desligada; 30 min de margem para correções. Conectar destaques se houver tempo após validar o catálogo.
-- [ ] **Sáb 07/11 (6 h)** — Seguir o sábado do guia de estudo: inicialização, app, configuração, schema, seed, domínio, repositórios, serviço e validação. Desenhar as camadas, responder às questões e rastrear uma consulta. Incluir na explicação como o cliente do front recebe o JSON da API.
-- [ ] **Dom 08/11 (6 h)** — Seguir o domingo do guia: rotas, controller, erros, testes e exercícios de criação, PATCH e exclusão. Explicar os status 201, 400, 404, 405 e 409 e apresentar os três rastreamentos em voz alta. Registrar dúvidas com arquivo e função.
+- [ ] **Qua 11/11 (5 h)** - Conferir requisitos obrigatórios e regras de reserva/renovação com o material do professor. Rodar typechecks e testes, corrigir o HTML da sinopse e configurar proxy e cliente HTTP. Iniciar a renderização do catálogo com dados da API. Estudar o caminho front -> rota -> serviço -> repositório.
+- [ ] **Qui 12/11 (5 h)** - Concluir catálogo, capas, disponibilidade, busca simples e estados de carregamento, vazio e erro. Conferir o build, a API desligada e a persistência ao reiniciar. Se houver tempo, iniciar o modelo de usuários.
+- [ ] **Sex 13/11 (5 h)** - Implementar usuários e cadastro com e-mail único, hash da senha, persistência e testes. Modelar Usuario, AdminUser e RegularUser aproveitando a tabela existente. Definir papel conforme a regra do projeto e conferir permissões no servidor.
+- [ ] **Sáb 14/11 (6 h)** - Implementar login, JWT, middleware de autenticação e de administrador. Proteger escrita de livros e exemplares. Testar senha incorreta, token ausente ou inválido e usuário sem permissão.
+- [ ] **Dom 15/11 (6 h)** - Conectar cadastro e login às telas e tratar erros. Bloquear acesso de usuário comum às operações administrativas e conferir navegação autenticada. Reservar as 2 h finais como margem para pendências desta etapa.
 
-**Marco de 08/11** — Catálogo alimentado pela API e rastreamentos das camadas explicados pela aluna. A integração de sexta tem 5 h estimadas. Se exceder esse tempo, registrar a pendência e usar a margem de 15/11, priorizando catálogo, busca e estados de erro antes de destaques. Preservar o bloco de estudo do fim de semana.
+**Aceite de 15/11:** cadastrar, entrar, buscar livros da API e demonstrar 401/403 nas operações protegidas. Se faltar algo, concluir em 16/11 e cortar os opcionais antes de avançar.
 
-## 09/11 a 15/11 — Cadastro, login e permissões (37 h)
+## 16/11 a 22/11 - Fluxo completo de empréstimos (37 h)
 
-- [ ] **Seg 09/11 a ter 10/11 (10 h)** — Modelar `Usuario`, `AdminUser` e `RegularUser`. Implementar persistência e cadastro com e-mail único, senha com hash e resposta 201 com `Location`.
-- [ ] **Qua 11/11 a qui 12/11 (10 h)** — Implementar login com JWT, papel administrativo e middlewares 401/403. Proteger as rotas de escrita de livros e exemplares.
-- [ ] **Sex 13/11 (5 h)** — Conectar cadastro e login, incluindo os erros dos formulários.
-- [ ] **Sáb 14/11 (6 h)** — Restringir conta, empréstimos e histórico a usuários autenticados. Mostrar menu admin apenas para administradores.
-- [ ] **Dom 15/11 (6 h)** — Rodar testes de cadastro, login e permissões. Usar o restante para corrigir falhas ou absorver pendências do catálogo.
+- [ ] **Seg 16/11 (5 h)** - Ler ServicoEmprestimos e Emprestimo. Definir a adaptação para repositórios SQLite, preservando os testes e as regras existentes. Persistir empréstimos e consultar ativos por usuário. Planejar transação entre empréstimo e estado do exemplar.
+- [ ] **Ter 17/11 (5 h)** - Implementar POST de empréstimo com usuário obtido do token, disponibilidade, limite de 3 e prazo de 14 dias. Gravar empréstimo e mudança do exemplar na mesma transação. Testar tentativa repetida e exemplar indisponível.
+- [ ] **Qua 18/11 (5 h)** - Implementar devolução e listagem dos empréstimos do usuário autenticado, impedindo acesso ou alteração de empréstimo alheio. Testar persistência após reiniciar e disponibilidade depois da devolução.
+- [ ] **Qui 19/11 (5 h)** - Conectar botão de emprestar e tela de empréstimos, com devolução e mensagens de erro. Mostrar datas e status usando as telas existentes.
+- [ ] **Sex 20/11 (5 h)** - Integrar renovação e multa ao serviço persistente. Manter até 2 renovações, bloqueio por atraso e multa de R$ 0,50/dia. Validar datas com relógio controlado nos testes.
+- [ ] **Sáb 21/11 (6 h)** - Conectar renovação e exibir atraso e multa. Usar a mesma consulta para uma conta/histórico simples, evitando duplicar regras. Conferir que nenhuma operação essencial perde dados ao reiniciar.
+- [ ] **Dom 22/11 (6 h)** - Testar cadastro -> login -> busca -> empréstimo -> renovação -> devolução, no navegador e com Supertest. Reservar 3 h para corrigir falhas do fluxo principal.
 
-## 16/11 a 22/11 — Empréstimo, devolução e renovação (37 h)
+**Aceite de 22/11:** o fluxo funciona do início ao fim, com isolamento entre usuários e dados persistidos. Se não passar, usar 23 e 24/11 para corrigir e adiar os opcionais desses dias.
 
-- [ ] **Seg 16/11 a ter 17/11 (10 h)** — Ler o serviço existente e ligá-lo ao SQLite. Implementar empréstimo com limite de três, prazo de 14 dias e atualização da disponibilidade.
-- [ ] **Qua 18/11 a qui 19/11 (10 h)** — Implementar devolução, renovação (até duas, bloqueada se houver atraso) e consulta de empréstimos do usuário com situação e multa.
-- [ ] **Sex 20/11 (5 h)** — Conectar a ação de emprestar e as telas de empréstimos, conta e histórico.
-- [ ] **Sáb 21/11 (6 h)** — Conectar devolução e renovação, incluindo o modal e os estados de erro.
-- [ ] **Dom 22/11 (6 h)** — Testar com Supertest e no navegador o fluxo cadastro → login → busca → empréstimo → renovação → devolução. Corrigir falhas antes de ampliar o escopo.
+## 23/11 a 27/11 - Requisitos restantes e versão apresentável (25 h)
 
-## 23/11 a 29/11 — Reservas, multas, administração e busca (37 h)
+- [ ] **Seg 23/11 (5 h)** - Se o núcleo estiver validado, implementar reserva simples de livro indisponível e bloqueio de renovação por reserva ativa, caso obrigatório na avaliação. Definir uma regra mínima de encerramento/cancelamento da reserva e testar. Sem essa exigência, usar o dia para correções e estudo do núcleo.
+- [ ] **Ter 24/11 (5 h)** - Se exigido na avaliação, implementar a menor versão de Strategy e Specification que cumpra a rubrica, com testes e filtro de disponibilidade. Se ranking ou múltiplas estratégias forem obrigatórios e não couberem, ajustar o escopo com o professor. Sem essa exigência, usar o dia para estabilizar empréstimos e autenticação.
+- [ ] **Qua 25/11 (5 h)** - Criar administração mínima para cadastrar livro e adicionar exemplar, consumindo o CRUD já existente e respeitando as permissões. Conferir validação e erros. Edição e exclusão por tela ficam condicionadas ao tempo.
+- [ ] **Qui 26/11 (5 h)** - Revisar o que falta nos requisitos essenciais. Conferir teclado, foco visível, mensagens e layout nas telas da apresentação. Corrigir bugs, sem iniciar novos extras.
+- [ ] **Sex 27/11 (5 h)** - Fechar a versão apresentável. Rodar testes, typechecks e build. Preparar dados de demonstração coerentes, conferir capas e reinício do banco. Atualizar README e documentação da API com o que realmente foi implementado.
 
-- [ ] **Seg 23/11 a ter 24/11 (10 h)** — Implementar reserva para livro indisponível, bloqueio de renovação por reserva ativa e exibição de multa. Fazer a fila completa se o fluxo principal estiver estável.
-- [ ] **Qua 25/11 a qui 26/11 (10 h)** — Conectar a área administrativa protegida ao CRUD de livros e exemplares, com confirmação para exclusão.
-- [ ] **Sex 27/11 (5 h)** — Se o fluxo principal estiver estável, implementar filtro de disponibilidade e busca exata com testes. Busca ranqueada e composição de filtros ficam condicionadas ao tempo restante.
-- [ ] **Sáb 28/11 (6 h)** — Revisar navegação por teclado, foco visível e fluxo completo. Corrigir regressões.
-- [ ] **Dom 29/11 (6 h)** — Margem para pendências do fluxo principal. Revisar o domínio e rastrear `GET /api/livros/L01` até o SQLite, usando as perguntas do Estudo A.
+**Aceite de 27/11:** fluxo principal demonstrável, administração mínima e requisitos obrigatórios conferidos. Congelar funcionalidades e concentrar os dias seguintes em correções e apresentação.
 
-## 30/11 a 06/12 — Revisão, ensaios e entrega (37 h)
+## 28/11 a 01/12 - Revisão, margem e ensaios (22 h)
 
-- [ ] **Seg 30/11 (5 h)** — Preparar roteiro, mapa das camadas e explicação de cinco arquivos-chave. Revisar autenticação com as perguntas do Estudo B.
-- [ ] **Ter 01/12 (5 h)** — Revisar empréstimos, reservas e multas. Atualizar README, documentação da API e justificativa de POO.
-- [ ] **Qua 02/12 (5 h)** — Fazer o primeiro ensaio cronometrado com demonstração. Anotar e corrigir bloqueios.
-- [ ] **Qui 03/12 (5 h)** — Fazer o segundo ensaio. Revisar responsividade e preparar vídeo ou capturas para o plano B.
-- [ ] **Sex 04/12 (5 h)** — Fazer o terceiro ensaio, incluindo perguntas do professor e demonstração com dados iniciais.
-- [ ] **Sáb 05/12 (6 h)** — Validar a instalação do zero, rodar os testes de back-end e conferir o build do front. Reservar o restante para correções críticas.
-- [ ] **Dom 06/12 (6 h disponíveis)** — Conferir os materiais, executar a checagem final, entregar e apresentar.
+- [ ] **Sáb 28/11 (6 h)** - Revisar domínio, API e SQLite por 2 h, responder às perguntas prioritárias por 1 h e reservar 3 h para bugs pendentes. Desenhar o mapa das camadas e preparar roteiro com cinco arquivos-chave.
+- [ ] **Dom 29/11 (6 h)** - Fazer o primeiro ensaio completo e cronometrado. Conferir instalação do zero em pasta limpa ou outra máquina, sem apagar a versão de trabalho. Usar o restante para corrigir bloqueios e atualizar instruções de execução.
+- [ ] **Seg 30/11 (5 h)** - Fazer o segundo ensaio, incluindo perguntas sobre POO, HTTP, autenticação, transações e testes. Corrigir a justificativa de POO com os nomes reais das classes. Gravar um vídeo curto ou capturas do fluxo como plano B.
+- [ ] **Ter 01/12 (5 h)** - Fazer o terceiro ensaio e checagem final de testes, build, dados e materiais. Separar cópia do projeto e instruções para execução. Reservar o restante para problemas críticos.
 
-## Marcos revisados
+## 02/12 - Apresentação
 
-| Data | Resultado esperado |
+- [ ] Conferir a inicialização local, os dados de demonstração e o plano B antes do horário da apresentação.
+- [ ] Demonstrar cadastro, login, busca, empréstimo e devolução. Incluir renovação, multa e administração conforme o roteiro ensaiado.
+- [ ] Explicar o caminho de uma requisição, uma regra de negócio, uma transação e um teste.
+- [ ] Apresentar o escopo efetivamente concluído e as limitações registradas.
+
+## Marcos e critérios para reduzir o escopo
+
+| Data | Marco |
 |---|---|
-| 08/11 | API validada e catálogo conectado |
-| 15/11 | Cadastro, login e permissões validados |
-| 22/11 | Fluxo de empréstimo, renovação e devolução validado |
-| 29/11 | Reservas, multas e administração conforme a capacidade da semana |
-| 04/12 | Três ensaios concluídos |
-| 06/12 | Entrega e apresentação |
+| 15/11 | Catálogo integrado, cadastro e login com permissões |
+| 22/11 | Empréstimo, renovação e devolução persistentes e testados |
+| 27/11 | Versão apresentável e requisitos obrigatórios conferidos |
+| 01/12 | Três ensaios, instalação validada e materiais prontos |
+| 02/12 | Apresentação |
 
----
+Os dias 15 e 22/11 incluem margem dentro das horas indicadas. Os blocos de 23 e 24/11 podem absorver atraso quando as funcionalidades propostas para eles forem dispensáveis na avaliação. Os dias 28/11 a 01/12 incluem correções, estudo e ensaios, sem capacidade adicional escondida.
 
-# Banco de perguntas (o que o professor provavelmente vai perguntar)
+Adiar primeiro notificações, barra de progresso, recuperação de senha, nova página de detalhes, destaques dinâmicos, filtros por ano, ordenação e polimento visual. Depois adiar fila completa de reservas, busca ranqueada e filtros avançados quando a rubrica permitir. Simplificar conta, histórico e administração usando componentes existentes. Preservar autenticação, persistência, limite/prazo/multa/renovação do fluxo principal, testes e capacidade de explicar o código.
 
-Responda em voz alta e por escrito nos blocos Estudo A e B.
+Se o marco de 22/11 falhar, concentrar 23 a 27/11 no núcleo e registrar as funcionalidades adiadas. Se algum item dispensável for requisito obrigatório, confirmar a redução com o professor, sem assumir que o corte atende à avaliação.
 
-| # | Pergunta | Bloco |
-|---|---|---|
-| 1 | O que é encapsulamento? Mostre no `Exemplar`. | A |
-| 2 | O que é uma interface? Para que serve o `RepositorioAcervo`? | A |
-| 3 | O que é polimorfismo? Como trocar o SQLite por outro banco? | A |
-| 4 | O que é injeção de dependência? O que `criarApp(repositorio)` ganha? | A |
-| 5 | O que é uma API REST e o que significa "sem estado"? | A |
-| 6 | Qual a diferença entre `PUT` e `PATCH`? E entre `401` e `403`? | A e B |
-| 7 | Por que a URL é `/livros/L01/exemplares` e não `/getExemplares`? | A |
-| 8 | Por que o serviço não conhece HTTP? | A |
-| 9 | O que são os padrões Strategy e Specification? Onde você usou? | A |
-| 10 | O que é herança? Como `AdminUser` e `RegularUser` se comportam diferente? | B |
-| 11 | Como a senha é guardada e por quê? Como funciona o JWT? | B |
-| 12 | Onde estão as regras do empréstimo? Como testar um atraso sem esperar 14 dias? | B |
-| 13 | O que é composição? Qual a relação entre `Livro`, `Exemplar` e `Acervo`? | A |
-| 14 | Por que testar o repositório contra a memória e o SQLite? | A |
-| 15 | Qual foi a maior dificuldade e o que você faria diferente? | B |
+## Perguntas prioritárias para o estudo e os ensaios
 
----
+1. Qual a diferença entre Livro, Exemplar e Emprestimo? Onde estão seus dados e comportamentos?
+2. Onde aparece encapsulamento no Exemplar e no Emprestimo?
+3. Como RepositorioMemoria e RepositorioSQLite atendem à mesma interface?
+4. Como uma requisição GET percorre rota, controller, serviço e banco?
+5. Onde nascem os erros 400, 404 e 409? Qual a diferença entre 401 e 403?
+6. O que diferencia PUT de PATCH? Para que servem Location e Allow?
+7. Como o token identifica o usuário e como a API impede alterar empréstimos de outra pessoa?
+8. Por que a senha é armazenada com hash? Como o papel de administrador é verificado?
+9. Como impedir que exista empréstimo sem atualizar o exemplar se uma gravação falhar?
+10. Como limite, prazo, multa e renovação são testados sem esperar dias?
+11. O que persiste ao reiniciar a API? Qual é o efeito de db:reset?
+12. Como a hierarquia de usuários representa herança e diferenças de permissão?
+13. Se houver Strategy/Specification na versão entregue, quais classes as implementam e qual problema resolvem?
+14. Qual teste demonstra uma regra e qual demonstra o fluxo HTTP?
+15. Quais funcionalidades foram adiadas e por quê?
 
-# Prioridade em caso de atraso
+**Meta da explicação:** apresentar cinco arquivos reais e rastrear consulta, cadastro inválido e operação bloqueada sem depender do texto do guia. Conferir a divergência de regras de reserva e renovação em `info/requisitos_sistema_biblioteca.md` antes de implementá-las.
 
-1. **Fluxo completo:** cadastro → login → busca → empréstimo → devolução
-2. **Requisitos do professor:** TypeScript, POO, banco de dados e API REST
-3. **Regras de negócio** (limite, prazo, multa, renovação)
-4. **Testes e correção de bugs**
-5. **Estudo mínimo do código:** os 5 arquivos-chave e o banco de perguntas (não se corta, pois sem ele não dá para apresentar)
-6. **Área administrativa**
-7. **Acessibilidade**
-8. **Polimento visual**
-9. **Extras:** notificações, barra de progresso, "esqueci minha senha", página de detalhes, filtro por ano, ordenação, `RankedTextStrategy`
-
-Se o atraso continuar, corte do último para o primeiro: extras → polimento visual → acessibilidade avançada (manter `:focus-visible` e teclado) → fila de reservas (manter só a reserva simples). Os itens 1 a 5 não são cortados.
-
-## Ponto de controle semanal
-
-Na **quarta-feira** de cada semana, compare o que falta com as horas até domingo. Se a carga não couber, adie os opcionais e use a margem para concluir e testar o fluxo principal.
-
-A última semana é margem de segurança. **Data final não deve ser alterada: 06/12/2026.**
+**Prazo vigente de apresentação: 02/12/2026. Preparação concluída até 01/12/2026.**
