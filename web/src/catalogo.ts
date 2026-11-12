@@ -12,17 +12,31 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   card.dataset.autor = livro.autor
   card.dataset.isbn = livro.isbn
 
+  // corpo do card
   const corpo = document.createElement("div")
   corpo.className = "book-card__body"
 
+  // título do card
   const titulo = document.createElement("h3")
   titulo.className = "book-card__title"
   titulo.textContent = livro.titulo
 
+  // informações gerais do card
   const informacoes = document.createElement("p")
   informacoes.className = "book-card__meta"
   informacoes.textContent = `${livro.autor} • ${livro.ano}`
 
+  // disponibilidade do card
+  const disponibilidade = document.createElement("p")
+  disponibilidade.className = "book-card__meta"
+
+  if(livro.disponiveis > 0) {
+    disponibilidade.textContent = `${livro.disponiveis} disponíveis / ${livro.total} total`
+  } else {
+    disponibilidade.textContent = "Indisponível"
+  }
+
+  // capa do card
   const capa = document.createElement("div")
   capa.className = "book-card__cover"
 
@@ -31,7 +45,7 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   imagem.alt = `Capa do livro ${livro.titulo}`
   imagem.loading = "lazy"
 
-  corpo.append(titulo, informacoes)
+  corpo.append(titulo, informacoes, disponibilidade)
   card.append(capa, corpo)
   capa.append(imagem)
 
