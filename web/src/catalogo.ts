@@ -1,4 +1,24 @@
 import { porId } from "./dom";
+import { listarLivros } from "./api";
+import type { LivroResumo } from "./api";
+
+// função que recebe um livro e monsta a estrutura em memoria
+function criarCardLivro(livro: LivroResumo): HTMLElement {
+  const card = document.createElement("article")
+  card.className = "book-card catalog-book"
+
+  const corpo = document.createElement("div")
+  card.className = "book-card__body"
+
+  const titulo = document.createElement("h3")
+  titulo.className = "book-card__title"
+  titulo.textContent = livro.titulo
+
+  corpo.append(titulo)
+  card.append(corpo)
+
+  return card
+}
 
 function iniciarCatalogo(): void {
   // seleciona os elementos da página do acervo e guarda as referências
@@ -10,6 +30,17 @@ function iniciarCatalogo(): void {
   const catalogCount = porId("catalogCount"); // contador de livros listados
 
   if (!searchInput || !catalogGrid || !catalogEmpty || !catalogStatus || !catalogCount) return;
+
+  // garante que a consulta só aconteça nas páginas que possuem elementos do catálogo
+  listarLivros()
+  // recebe a lista quando a consulta funciona
+  .then((livros) => {
+    console.log("Livros recebidos da API:", livros)
+  })
+  // recebe uma falha
+  .catch((erro: unknown) => {
+    console.log("Erro ao consultar os livros:", erro)
+  })
 
   // converte os cards dentro do grid em um array
   const books = Array.from(catalogGrid.querySelectorAll<HTMLElement>(".catalog-book"));
