@@ -19,13 +19,21 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   titulo.className = "book-card__title"
   titulo.textContent = livro.titulo
 
-  // corpo.append(titulo)
   const informacoes = document.createElement("p")
   informacoes.className = "book-card__meta"
   informacoes.textContent = `${livro.autor} • ${livro.ano}`
 
+  const capa = document.createElement("div")
+  capa.className = "book-card__cover"
+
+  const imagem = document.createElement("img")
+  imagem.src = livro.capa
+  imagem.alt = `Capa do livro ${livro.titulo}`
+  imagem.loading = "lazy"
+
   corpo.append(titulo, informacoes)
-  card.append(corpo)
+  card.append(capa, corpo)
+  capa.append(imagem)
 
   return card
 }
@@ -108,12 +116,6 @@ function iniciarCatalogo(): void {
 
     const hasQuery = query.length > 0;
     const hasResults = visibleCount > 0;
-
-    console.log("Diagnóstico de busca:", {
-      termo: query,
-      cardsReconhecidos: books.length, 
-      resultados: visibleCount,
-    })
 
     catalogGrid!.hidden = !hasResults; // sem resultado, esconde o grid
 
