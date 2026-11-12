@@ -7,6 +7,11 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   const card = document.createElement("article")
   card.className = "book-card catalog-book"
 
+  // acessar atributos personalizados -> guardam informações no elemento, mas não produzem texto visível 
+  card.dataset.titulo = livro.titulo
+  card.dataset.autor = livro.autor
+  card.dataset.isbn = livro.isbn
+
   const corpo = document.createElement("div")
   corpo.className = "book-card__body"
 
@@ -36,12 +41,12 @@ function iniciarCatalogo(): void {
 
   if (!searchInput || !catalogGrid || !catalogEmpty || !catalogStatus || !catalogCount) return;
 
-  // reconhecer os cards recebidos da API
+  // reconhecer os cards recebidos da API -> se procurar antes da resposta sempre vai retornar uma lista vazia 
   let books: HTMLElement[] = []
 
   // garante que a consulta só aconteça nas páginas que possuem elementos do catálogo
   listarLivros()
-  // recebe a lista quando a consulta funciona
+  // recebe a lista quando a consulta funciona -> cria o card
   .then((livros) => {
   console.log("Livros recebidos da API:", livros);
 
@@ -50,6 +55,7 @@ function iniciarCatalogo(): void {
     catalogGrid.append(card);
   }
 
+  // buscar elementos que entram na página
   books = Array.from(
     catalogGrid.querySelectorAll<HTMLElement>(".catalog-book")
   );
@@ -102,6 +108,12 @@ function iniciarCatalogo(): void {
 
     const hasQuery = query.length > 0;
     const hasResults = visibleCount > 0;
+
+    console.log("Diagnóstico de busca:", {
+      termo: query,
+      cardsReconhecidos: books.length, 
+      resultados: visibleCount,
+    })
 
     catalogGrid!.hidden = !hasResults; // sem resultado, esconde o grid
 
