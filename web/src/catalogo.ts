@@ -8,7 +8,7 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   card.className = "book-card catalog-book"
 
   const corpo = document.createElement("div")
-  card.className = "book-card__body"
+  corpo.className = "book-card__body"
 
   const titulo = document.createElement("h3")
   titulo.className = "book-card__title"
@@ -36,25 +36,33 @@ function iniciarCatalogo(): void {
 
   if (!searchInput || !catalogGrid || !catalogEmpty || !catalogStatus || !catalogCount) return;
 
+  // reconhecer os cards recebidos da API
+  let books: HTMLElement[] = []
+
   // garante que a consulta só aconteça nas páginas que possuem elementos do catálogo
   listarLivros()
   // recebe a lista quando a consulta funciona
   .then((livros) => {
-    console.log("Livros recebidos da API:", livros)
+  console.log("Livros recebidos da API:", livros);
 
-    // percorre a lista e para cada livro monta o elemento e insere na página
-    for (const livro of livros) {
-      const card = criarCardLivro(livro) 
-      catalogGrid.append(card)
-    }
+  for (const livro of livros) {
+    const card = criarCardLivro(livro);
+    catalogGrid.append(card);
+  }
+
+  books = Array.from(
+    catalogGrid.querySelectorAll<HTMLElement>(".catalog-book")
+  );
+
+  filterBooks();
   })
+
   // recebe uma falha
   .catch((erro: unknown) => {
     console.log("Erro ao consultar os livros:", erro)
   })
 
-  // converte os cards dentro do grid em um array
-  const books = Array.from(catalogGrid.querySelectorAll<HTMLElement>(".catalog-book"));
+
 
   // ignorar maiúsculas/minúsculas, acentos e espaços extras
   function normalizeText(value: string): string {
@@ -70,7 +78,8 @@ function iniciarCatalogo(): void {
     return value.replace(/[^0-9Xx]/g, "").toLowerCase();
   }
 
-  function filterBooks(): void {
+  function filterBooks() : void {
+
     const query = searchInput!.value.trim(); // texto do usuário sem espaços nas pontas
     const normalizedQuery = normalizeText(query);
     const normalizedIsbnQuery = normalizeIsbn(query);
