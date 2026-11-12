@@ -14,7 +14,12 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   titulo.className = "book-card__title"
   titulo.textContent = livro.titulo
 
-  corpo.append(titulo)
+  // corpo.append(titulo)
+  const informacoes = document.createElement("p")
+  informacoes.className = "book-card__meta"
+  informacoes.textContent = `${livro.autor} • ${livro.ano}`
+
+  corpo.append(titulo, informacoes)
   card.append(corpo)
 
   return card
