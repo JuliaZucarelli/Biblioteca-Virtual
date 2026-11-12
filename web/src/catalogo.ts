@@ -36,6 +36,12 @@ function iniciarCatalogo(): void {
   // recebe a lista quando a consulta funciona
   .then((livros) => {
     console.log("Livros recebidos da API:", livros)
+
+    // percorre a lista e para cada livro monta o elemento e insere na página
+    for (const livro of livros) {
+      const card = criarCardLivro(livro) 
+      catalogGrid.append(card)
+    }
   })
   // recebe uma falha
   .catch((erro: unknown) => {
