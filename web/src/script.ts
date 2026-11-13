@@ -112,18 +112,31 @@ function iniciarModalLivro(): void {
     lastFocused?.focus();
   }
 
-  /* Torna cada card clicável e acessível pelo teclado */
+  /* Configura o teclado nos cards já presentes no HTML */
   document.querySelectorAll<HTMLElement>(".book-card").forEach((card) => {
     card.setAttribute("tabindex", "0");
     card.setAttribute("role", "button");
 
-    card.addEventListener("click", () => openBook(card));
     card.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         openBook(card);
       }
     });
+
+  });
+
+  /* Reconhece cliques também nos cards criados depois pela API */
+  document.addEventListener("click", (evento) => {
+    const alvo = evento.target;
+
+    if (!(alvo instanceof Element)) return;
+
+    const card = alvo.closest<HTMLElement>(".book-card");
+
+    if (!card) return;
+
+    openBook(card);
   });
 
   /* Fechar: botão, clique no fundo e tecla Esc */

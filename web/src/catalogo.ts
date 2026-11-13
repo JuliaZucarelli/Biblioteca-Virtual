@@ -11,6 +11,9 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   card.dataset.titulo = livro.titulo
   card.dataset.autor = livro.autor
   card.dataset.isbn = livro.isbn
+  card.dataset.genero = livro.genero
+  card.dataset.ano = String(livro.ano)
+  card.dataset.descricao = livro.sinopse
 
   // corpo do card
   const corpo = document.createElement("div")
@@ -35,6 +38,9 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   } else {
     disponibilidade.textContent = "Indisponível"
   }
+  
+  // copia o texto de disponibilidade para o atributo data-disponibilidade para escolher a cor do indicador  
+  card.dataset.disponibilidade = disponibilidade.textContent ?? ""
 
   // capa do card
   const capa = document.createElement("div")
@@ -134,7 +140,7 @@ function iniciarCatalogo(): void {
         !normalizedQuery || // busca vazia -> mostra tudo
         title.includes(normalizedQuery) || // contido no título
         autor.includes(normalizedQuery) || // contido no autor
-        (normalizedIsbnQuery.length > 0 && isbn.includes(normalizedIsbnQuery)); // contido no ISBN
+        (normalizedIsbnQuery.length > 0 && isbn === normalizedIsbnQuery)
 
       book.hidden = !matches;
       if (matches) visibleCount += 1;
