@@ -92,9 +92,14 @@ function iniciarCatalogo(): void {
   filterBooks();
   })
 
-  // recebe uma falha
+  // recebe uma falha -> unknow: indica que precisa verificar o valor antes de acessar propriedades
   .catch((erro: unknown) => {
-    console.log("Erro ao consultar os livros:", erro)
+    console.error("Erro ao consultar os livros:", erro)
+
+    catalogStatus.textContent = "Não foi possível carregar o catálogo. Verifique se a API está disponível e recarregue a página."
+    catalogCount.textContent = ""
+    catalogEmpty.hidden = true
+    searchInput.disabled = true
   })
 
 
@@ -141,17 +146,25 @@ function iniciarCatalogo(): void {
     catalogGrid!.hidden = !hasResults; // sem resultado, esconde o grid
 
     // "Nenhum resultado" só aparece quando há busca E nenhum livro encontrado
-    catalogEmpty!.hidden = hasResults || !hasQuery;
+    catalogEmpty!.hidden = books.length === 0 || hasResults || !hasQuery;
     catalogCount!.textContent = `${visibleCount} ${visibleCount === 1 ? "livro" : "livros"}`;
 
-    if (!hasQuery) {
-      catalogStatus!.textContent = `Exibindo todos os ${visibleCount} livros do catálogo.`;
+    if (books.length === 0) {
+      catalogStatus!.textContent =
+        "O acervo ainda não possui livros cadastrados.";
+    } else if (!hasQuery) {
+      catalogStatus!.textContent =
+        `Exibindo todos os ${visibleCount} livros do catálogo.`;
     } else if (hasResults) {
-      catalogStatus!.textContent = `${visibleCount} ${
-        visibleCount === 1 ? "resultado encontrado" : "resultados encontrados"
-      } para “${query}”.`;
+      catalogStatus!.textContent =
+        `${visibleCount} ${
+          visibleCount === 1
+            ? "resultado encontrado"
+            : "resultados encontrados"
+        } para “${query}”.`;
     } else {
-      catalogStatus!.textContent = `Nenhum resultado encontrado para “${query}”.`;
+      catalogStatus!.textContent =
+        `Nenhum resultado encontrado para “${query}”.`;
     }
   }
 
