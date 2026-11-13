@@ -7,6 +7,10 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   const card = document.createElement("article")
   card.className = "book-card catalog-book"
 
+  // abrir os cards pelo teclado
+  card.tabIndex = 0
+  card.setAttribute("role", "button")
+
   // acessar atributos personalizados -> guardam informações no elemento, mas não produzem texto visível 
   card.dataset.titulo = livro.titulo
   card.dataset.autor = livro.autor
@@ -38,7 +42,7 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   } else {
     disponibilidade.textContent = "Indisponível"
   }
-  
+
   // copia o texto de disponibilidade para o atributo data-disponibilidade para escolher a cor do indicador  
   card.dataset.disponibilidade = disponibilidade.textContent ?? ""
 
