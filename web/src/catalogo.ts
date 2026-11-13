@@ -66,6 +66,12 @@ function iniciarCatalogo(): void {
   // reconhecer os cards recebidos da API -> se procurar antes da resposta sempre vai retornar uma lista vazia 
   let books: HTMLElement[] = []
 
+  // informar que a consulta está acontecendo e impedir pesquisar antes dos cards existirem
+  catalogStatus.textContent = "Carregando livros..."
+  catalogCount.textContent = ""
+  catalogEmpty.hidden = true
+  searchInput.disabled = true
+
   // garante que a consulta só aconteça nas páginas que possuem elementos do catálogo
   listarLivros()
   // recebe a lista quando a consulta funciona -> cria o card
@@ -82,6 +88,7 @@ function iniciarCatalogo(): void {
     catalogGrid.querySelectorAll<HTMLElement>(".catalog-book")
   );
 
+  searchInput.disabled = false
   filterBooks();
   })
 
@@ -159,7 +166,7 @@ function iniciarCatalogo(): void {
   // atualiza os resultados enquanto a pessoa digita
   searchInput.addEventListener("input", filterBooks);
 
-  filterBooks();
+  // filterBooks();
 
   if (initialQuery) {
     searchInput.focus();
