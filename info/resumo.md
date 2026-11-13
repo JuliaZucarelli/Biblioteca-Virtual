@@ -27,5 +27,21 @@
         insere na página 
         atualiza books 
         executa filterBooks()
-    
+- cria capa dos livros 
+    - src: recebe o caminho enviado pela API 
+    - alt: descreve a imagem para leitores de tela quando ela não puder ser exibida
+    - loading = "lazy": permite adiar o carregamento das imagens que estão fora da área visível 
+- adiciona disponibilidade dos livros
+- normaliza o ISBN e faz verificações
 
+
+13/11 - Sexta-feira
+- clique para abrir o modal dos cards recebidos da API pela técnica de delegação de eventos
+- mudança de localização das imagens para vite fazer carregamento correto das imagens de capa 
+- testes de pesquisas no site e integração básica do catálogo concluída e validada localmente 
+    - livros carregados pela API
+    - capas e disponibilidade 
+    - busca por título, autor e ISBN completo
+    - pesquisa recebida pela URL
+    - modal com detalhes do livro 
+    - estados de carregamento, vazio e erro 
