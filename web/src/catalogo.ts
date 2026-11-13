@@ -7,10 +7,6 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   const card = document.createElement("article")
   card.className = "book-card catalog-book"
 
-  // abrir os cards pelo teclado
-  card.tabIndex = 0
-  card.setAttribute("role", "button")
-
   // acessar atributos personalizados -> guardam informações no elemento, mas não produzem texto visível 
   card.dataset.titulo = livro.titulo
   card.dataset.autor = livro.autor
@@ -51,7 +47,8 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   capa.className = "book-card__cover"
 
   const imagem = document.createElement("img")
-  imagem.src = livro.capa
+  // replace: remove a barra inicial / import.meta.env.BASE_URL: fornece a base configurada pelo vite
+  imagem.src = import.meta.env.BASE_URL + livro.capa.replace(/^\/+/, "")
   imagem.alt = `Capa do livro ${livro.titulo}`
   imagem.loading = "lazy"
 
