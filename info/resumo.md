@@ -45,3 +45,6 @@
     - pesquisa recebida pela URL
     - modal com detalhes do livro 
     - estados de carregamento, vazio e erro 
+- a API foi hospedada no Render e o o GitHub foi configurado para receber essa API 
+    - GitHub Pages -> interface do site 
+    - Render -> API Express e banco SQLite 
