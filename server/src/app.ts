@@ -1,10 +1,14 @@
 import cors from "cors"
 import express, { type Express } from "express"
+import { EmprestimosController } from "./controllers/emprestimos.controller"
 import { LivrosController } from "./controllers/livros.controller"
 import { tratarErros } from "./middlewares/tratar-erros"
+import type { RepositorioEmprestimos } from "./repositories/repositorio-emprestimos"
 import type { RepositorioAcervo } from "./repositories/repositorio"
+import { criarRotasEmprestimos, criarRotasReservas } from "./routes/emprestimos.routes"
 import { criarRotasLivros } from "./routes/livros.routes"
 import { ServicoAcervo } from "./services/servico-acervo"
+import { ServicoCirculacao } from "./services/servico-circulacao"
 
 const ENDPOINTS = [
     "GET /api/livros",
@@ -19,9 +23,23 @@ const ENDPOINTS = [
     "DELETE /api/livros/:id/exemplares/:exemplarId",
 ]
 
+// só aparecem em GET /api quando a aplicação recebe o repositório de empréstimos
+const ENDPOINTS_EMPRESTIMOS = [
+    "GET /api/emprestimos",
+    "POST /api/emprestimos",
+    "GET /api/emprestimos/:id",
+    "POST /api/emprestimos/:id/devolucao",
+    "POST /api/emprestimos/:id/renovacoes",
+    "GET /api/reservas",
+    "POST /api/reservas",
+    "GET /api/reservas/:id",
+    "DELETE /api/reservas/:id",
+]
+
 /* Monta a aplicação Express SEM abrir porta (quem abre é o server.ts).
-Recebe o repositório de fora: a API usa SQLite, os testes podem usar memória. */
-export function criarApp(repositorio: RepositorioAcervo): Express {
+Recebe os repositórios de fora: a API usa SQLite, os testes podem usar memória.
+O repositório de empréstimos é opcional: sem ele, as rotas /emprestimos e /reservas não existem. */
+export function criarApp(repositorio: RepositorioAcervo, repositorioEmprestimos?: RepositorioEmprestimos): Express {
     const app = express()
 
     app.disable("x-powered-by")
@@ -35,7 +53,8 @@ export function criarApp(repositorio: RepositorioAcervo): Express {
         res.json({
             nome: "Biblioteca Virtual API",
             livros: "/api/livros",
-            endpoints: ENDPOINTS,
+            ...(repositorioEmprestimos ? { emprestimos: "/api/emprestimos", reservas: "/api/reservas" } : {}),
+            endpoints: repositorioEmprestimos ? [...ENDPOINTS, ...ENDPOINTS_EMPRESTIMOS] : ENDPOINTS,
         })
     })
 
@@ -45,6 +64,12 @@ export function criarApp(repositorio: RepositorioAcervo): Express {
 
     const servicoAcervo = new ServicoAcervo(repositorio)
     app.use("/api/livros", criarRotasLivros(new LivrosController(servicoAcervo)))
+
+    if (repositorioEmprestimos) {
+        const controller = new EmprestimosController(new ServicoCirculacao(repositorioEmprestimos))
+        app.use("/api/emprestimos", criarRotasEmprestimos(controller))
+        app.use("/api/reservas", criarRotasReservas(controller))
+    }
 
     app.use((_req, res) => {
         res.status(404).json({ erro: "Rota não encontrada." })
