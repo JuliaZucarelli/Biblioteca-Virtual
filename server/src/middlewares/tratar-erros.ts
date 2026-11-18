@@ -1,8 +1,10 @@
 import type { NextFunction, Request, Response } from "express"
-import { ErroConflito, ErroNaoEncontrado, ErroValidacao } from "../domain/erros"
+import { ErroConflito, ErroNaoAutenticado, ErroNaoEncontrado, ErroProibido, ErroValidacao } from "../domain/erros"
 
 /* Último middleware: transforma qualquer erro em uma resposta JSON { erro: "mensagem" }.
   ErroValidacao      -> 400 Bad Request
+  ErroNaoAutenticado -> 401 Unauthorized
+  ErroProibido       -> 403 Forbidden
   ErroNaoEncontrado  -> 404 Not Found
   ErroConflito       -> 409 Conflict
   JSON malformado    -> 400 (o body-parser do Express sinaliza com type "entity.parse.failed")
@@ -10,6 +12,14 @@ import { ErroConflito, ErroNaoEncontrado, ErroValidacao } from "../domain/erros"
 export function tratarErros(erro: unknown, _req: Request, res: Response, _next: NextFunction): void {
     if (erro instanceof ErroValidacao) {
         res.status(400).json({ erro: erro.message })
+        return
+    }
+    if (erro instanceof ErroNaoAutenticado) {
+        res.status(401).json({ erro: erro.message })
+        return
+    }
+    if (erro instanceof ErroProibido) {
+        res.status(403).json({ erro: erro.message })
         return
     }
     if (erro instanceof ErroNaoEncontrado) {
