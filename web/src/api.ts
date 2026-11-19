@@ -12,6 +12,21 @@ export interface LivroResumo {
     disponiveis : number 
 }
 
+// descreve os campos enviados pelo formulário
+export interface DadosCadastroUsuario {
+    nome : string
+    email : string
+    senha : string
+}
+
+// descreve os dados públicos devolvidos pela API
+export interface UsuarioResumo {
+    id : string
+    nome : string
+    email : string
+    papel : "ADMIN" | "MEMBRO"
+}
+
 // função para busca de livro - entrega uma lista de livros
 export async function listarLivros(): Promise<LivroResumo[]> {
     // faz uma requisição GET
