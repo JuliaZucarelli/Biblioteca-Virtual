@@ -48,3 +48,8 @@
 - a API foi hospedada no Render e o o GitHub foi configurado para receber essa API 
     - GitHub Pages -> interface do site 
     - Render -> API Express e banco SQLite 
+
+
+19/11 - Quinta-feira 
+- vai ser utilizado bcrpths em JS com suporte para TS que oferece funções para gerar o hash e comparar uma senha com o hash armazenado (https://github.com/dcodeIO/bcrypt.js)
+    - como funciona: o hash será gravado na coluna 'senha_hash' que será usada na comparação da biblioteca para verificar se a senha informada corresponde ao valor informado.  
