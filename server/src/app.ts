@@ -5,6 +5,10 @@ import { tratarErros } from "./middlewares/tratar-erros"
 import type { RepositorioAcervo } from "./repositories/repositorio"
 import { criarRotasLivros } from "./routes/livros.routes"
 import { ServicoAcervo } from "./services/servico-acervo"
+import { UsuariosController } from "./controllers/usuarios.controller"
+import type { RepositorioUsuarios } from "./repositories/repositorio-usuarios"
+import { criarRotasUsuarios } from "./routes/usuarios.routes"
+import { ServicoUsuarios } from "./services/servico-usuarios"
 
 const ENDPOINTS = [
     "GET /api/livros",
@@ -21,7 +25,7 @@ const ENDPOINTS = [
 
 /* Monta a aplicação Express SEM abrir porta (quem abre é o server.ts).
 Recebe o repositório de fora: a API usa SQLite, os testes podem usar memória. */
-export function criarApp(repositorio: RepositorioAcervo): Express {
+export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : RepositorioUsuarios): Express {
     const app = express()
 
     app.disable("x-powered-by")
@@ -45,6 +49,21 @@ export function criarApp(repositorio: RepositorioAcervo): Express {
 
     const servicoAcervo = new ServicoAcervo(repositorio)
     app.use("/api/livros", criarRotasLivros(new LivrosController(servicoAcervo)))
+
+    /* 
+    - verifica se o repositório de usuários foi fornecido
+    - cria o serviço usando esse repositório
+    - cria o controller usando o serviço 
+    - registra o agrupamento no endereço /api/usuarios
+    */
+    if(repositorioUsuario) {
+        const servicoUsuarios = new ServicoUsuarios(repositorioUsuario)
+        const controllerUsuarios = new UsuariosController(servicoUsuarios)
+
+        app.use(
+            "/api/usuarios", criarRotasUsuarios(controllerUsuarios)
+        )
+    }
 
     app.use((_req, res) => {
         res.status(404).json({ erro: "Rota não encontrada." })
