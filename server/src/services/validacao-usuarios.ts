@@ -24,7 +24,7 @@ export function lerCadastro(corpo : unknown) : DadosCadastro {
         corpo === null || 
         Array.isArray(corpo) // rejeita listas 
     ) {
-        throw new Error ("O corpo da requisição deve ser um objeto JSON.")
+        throw new ErroValidacao("O corpo da requisição deve ser um objeto JSON.")
     }
 
     // Record<string, unknown> : permite acessar os campos mantendo seus valores como desconhecidos até verificar os tipos
