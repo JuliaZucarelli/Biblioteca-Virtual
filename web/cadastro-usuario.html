@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biblioteca Virtual</title>
+
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <main class="content">
+      <h1>Criar conta</h1>
+      <p>Preencha seus dadaos para cadastrar na biblioteca.</p>
+
+      <form id="cadastroUsuarioForm" class="cadastro-form" method="post">
+        <div class="cadastro-field">
+          <label for="cadastroUsuarioNome">Nome</label>
+          <input
+            type="text"
+            name="nome"
+            id="cadastroUsuarioNome"
+            autocomplete="name"
+            required
+          />
+        </div>
+
+        <div class="cadastro-field">
+          <label for="cadastroUsuarioEmail">E-mail</label>
+          <input
+            type="email"
+            name="email"
+            id="cadastroUsuarioEmail"
+            autocomplete="email"
+            required
+          />
+        </div>
+
+        <div class="cadastro-field">
+          <label for="cadastroUsuarioSenha">Senha</label>
+          <input
+            type="password"
+            name="senha"
+            id="cadastroUsuarioSenha"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <p id="cadastroUsuarioMensagem" role="status" aria-live="polite"></p>
+
+        <button id="cadastroUsuarioBotao" type="submit" disabled>
+          Cadastrar
+        </button>
+      </form>
+
+      <a href="./index.html">Voltar ao início</a>
+    </main>
+
+    <script type="module" src="/scr/main.ts"></script>
+  </body>
+</html>
