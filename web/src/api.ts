@@ -43,3 +43,34 @@ export async function listarLivros(): Promise<LivroResumo[]> {
     const livros: LivroResumo[] = await resposta.json()
     return livros
 }
+
+// função que envia cadastro para a API
+export async function cadastrasUsuario(dados : DadosCadastroUsuario) : Promise<UsuarioResumo> {
+    // utiliza o endereço do Render na publicação, localmente o valor vazio permite usar o proxy do vite
+    const enderecoApi = import.meta.env.VITE_API_URL ?? ""
+
+    const resposta = await fetch(`${enderecoApi}/api/usuarios`, {
+        method : "POST", // solicita criação do usuário
+        headers : {
+            "Content-Type" : "application/json"
+        }, // informa que o corpo contém JSON
+        body : JSON.stringify(dados)
+    })
+
+    // trata respostas de erro como 400 e 409 tentando ler a mensagem enviada pelo backend
+    if(!resposta.ok) {
+        // se não puder ser interpretado como JSON, o trecho devolve null
+        const dadosErro = await resposta.json().catch(() => null)
+
+        // permite consultar erro 
+        const mensagem = dadosErro?.erro
+
+        // utiliza a mensagem recebida quando ela é texto, caso contrario utiliza a mensagem genérica
+        throw new Error(typeof mensagem === "string" ? mensagem : "Não foi possível realizar o cadastro.")
+    }
+
+    const usuario : UsuarioResumo = await resposta.json()
+
+    return usuario
+    
+}
