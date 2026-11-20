@@ -209,6 +209,42 @@ function iniciarLogin(): void {
     });
   }
 
+  const voltarLoginBtn = porId<HTMLButtonElement>("voltarParaLogin");
+
+  if(voltarLoginBtn && cadastroOverlay) {
+    voltarLoginBtn.addEventListener("click", () => {
+      cadastroOverlay.classList.remove("is-open");
+      loginOverlay.classList.add("is-open");
+      emailInput.focus();
+    })
+  }
+
+  const fecharCadastroBtn = porId<HTMLButtonElement>("fecharCadastroUsuario");
+
+  if(fecharCadastroBtn && cadastroOverlay) {
+    function fecharCadastro() : void {
+      cadastroOverlay!.classList.remove("is-open");
+      closeLogin();
+    }
+
+    fecharCadastroBtn.addEventListener("click", fecharCadastro);
+
+    cadastroOverlay.addEventListener("click", (evento) => {
+      if(evento.target === cadastroOverlay) {
+        fecharCadastro();
+      }
+    });
+
+    document.addEventListener("keydown", (evento) => {
+      if(
+        evento.key === "Escape"  &&
+        cadastroOverlay.classList.contains("is-open")
+      ) {
+        fecharCadastro();
+      }
+    })
+  }
+
   loginOverlay.addEventListener("click", (e) => {
     if (e.target === loginOverlay) closeLogin();
   });
