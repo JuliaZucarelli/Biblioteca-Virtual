@@ -45,7 +45,7 @@ export async function listarLivros(): Promise<LivroResumo[]> {
 }
 
 // função que envia cadastro para a API
-export async function cadastrasUsuario(dados : DadosCadastroUsuario) : Promise<UsuarioResumo> {
+export async function cadastrarUsuario(dados : DadosCadastroUsuario) : Promise<UsuarioResumo> {
     // utiliza o endereço do Render na publicação, localmente o valor vazio permite usar o proxy do vite
     const enderecoApi = import.meta.env.VITE_API_URL ?? ""
 

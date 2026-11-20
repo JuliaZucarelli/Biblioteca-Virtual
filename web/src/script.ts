@@ -1,4 +1,5 @@
 import { elementoFocado, porId } from "./dom";
+import { cadastrarUsuario } from "./api";
 
 /* ========== MODAL DO LIVRO ========== */
 
@@ -243,6 +244,49 @@ function iniciarLogin(): void {
         fecharCadastro();
       }
     })
+  }
+
+  const cadastroForm = porId<HTMLFormElement>("cadastroUsuarioForm");
+  const cadastroEmail = porId<HTMLInputElement>("cadastroUsuarioEmail");
+  const cadastroSenha = porId<HTMLInputElement>("cadastroUsuarioSenha");
+  const cadastroMensagem = porId("cadastroUsuarioMensagem");
+  const cadastroBotao = porId<HTMLButtonElement>("cadastroUsuarioBotao");
+
+  if(
+    cadastroForm &&
+    cadastroNome &&
+    cadastroEmail &&
+    cadastroSenha &&
+    cadastroMensagem &&
+    cadastroBotao
+  ) {
+    cadastroForm.addEventListener("submit", async(evento) => {
+      evento.preventDefault();
+
+      if(cadastroBotao.disabled) return; 
+
+      cadastroBotao.disabled = true;
+      cadastroMensagem.textContent = "Cadastrando..."
+
+      try {
+        const usuario = await cadastrarUsuario({
+          nome : cadastroNome.value,
+          email : cadastroEmail.value,
+          senha : cadastroSenha.value,
+        });
+
+        cadastroForm.reset();
+
+        cadastroMensagem.textContent = `Conta de ${usuario.nome} criada com sucesso!`;
+      } catch (erro : unknown) {
+        cadastroMensagem.textContent = 
+          erro instanceof Error ? erro.message : "Não foi possível realizar o cadastro.";
+      } finally {
+        cadastroBotao.disabled = false;
+      }
+    });
+
+    cadastroBotao.disabled = false;
   }
 
   loginOverlay.addEventListener("click", (e) => {
