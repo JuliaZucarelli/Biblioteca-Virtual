@@ -197,6 +197,18 @@ function iniciarLogin(): void {
   openBtn.addEventListener("click", openLogin);
   closeBtn.addEventListener("click", closeLogin);
 
+  const abrirCadastroBtn = porId<HTMLButtonElement>("abrirCadastroUsuario")
+
+  const cadastroOverlay = porId("cadastroUsuarioOverlay");
+  const cadastroNome = porId<HTMLInputElement>("cadastroUsuarioNome")
+
+  if(abrirCadastroBtn && cadastroOverlay && cadastroNome) {
+    abrirCadastroBtn.addEventListener("click", () => {
+      loginOverlay.classList.remove("is-open");
+      cadastroOverlay.classList.add("is-open");
+    });
+  }
+
   loginOverlay.addEventListener("click", (e) => {
     if (e.target === loginOverlay) closeLogin();
   });
