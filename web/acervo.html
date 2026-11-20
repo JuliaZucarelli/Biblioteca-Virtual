@@ -244,7 +244,86 @@
           <p class="login-modal__error" id="loginError" role="alert"></p>
 
           <button class="login-modal__enter" type="submit">entrar</button>
-          <button class="login-modal__Fpassword">esqueci minha senha</button>
+          <button class="login-modal__Fpassword" type="button">
+            esqueci minha senha
+          </button>
+          <button
+            class="login-modal__Fpassword"
+            id="abrirCadastroUsuario"
+            type="button"
+          >
+            Não tem conta? Cadastre-se
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- OVERLAY DE CADASTRO -->
+    <div class="login-overlay" id="cadastroUsuarioOverlay">
+      <div
+        class="login-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cadastroUsuarioTitulo"
+      >
+        <button
+          class="login-modal__close"
+          id="fecharCadastroUsuario"
+          type="button"
+          aria-label="Fechar cadastro"
+        >
+          ×
+        </button>
+
+        <h2 id="cadastroUsuarioTitulo">Criar conta</h2>
+
+        <form class="login-modal__input" id="cadastroUsuarioForm" method="post">
+          <label for="cadastroUsuarioNome">Nome</label>
+          <input
+            type="text"
+            name="nome"
+            id="cadastroUsuarioNome"
+            autocomplete="name"
+            required
+          />
+
+          <label for="cadastroUsuarioEmail">E-mail</label>
+          <input
+            type="email"
+            name="email"
+            id="cadastroUsuarioEmail"
+            autocomplete="email"
+            required
+          />
+
+          <label for="cadastroUsuarioSenha">Senha</label>
+          <input
+            type="password"
+            name="senha"
+            id="cadastroUsuarioSenha"
+            autocomplete="new-password"
+            minlength="8"
+            required
+          />
+
+          <p id="cadastroUsuarioMensagem" role="status" aria-live="polite"></p>
+
+          <button
+            class="login-modal__enter"
+            id="cadastroUsuarioBotao"
+            type="submit"
+            disabled
+          >
+            Cadastrar
+          </button>
+
+          <button
+            class="login-modal__Fpassword"
+            id="voltarParaLogin"
+            type="button"
+          >
+            Já tenho conta. Entrar
+          </button>
         </form>
       </div>
     </div>
