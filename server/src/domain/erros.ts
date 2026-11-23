@@ -21,3 +21,10 @@ export class ErroConflito extends Error {
         this.name = "ErroConflito"
     }
 }
+
+export class ErroAutenticacao extends Error {
+    constructor(mensagem : string) {
+        super(mensagem)
+        this.name = "ErroAutenticacao"
+    }
+}
