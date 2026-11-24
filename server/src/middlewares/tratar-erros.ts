@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express"
-import { ErroConflito, ErroNaoEncontrado, ErroValidacao } from "../domain/erros"
+import { ErroAutenticacao, ErroConflito, ErroNaoEncontrado, ErroValidacao, ErroPermissao, ErroNaoAutenticado, ErroProibido } from "../domain/erros"
 
 /* Último middleware: transforma qualquer erro em uma resposta JSON { erro: "mensagem" }.
   ErroValidacao      -> 400 Bad Request
@@ -8,29 +8,39 @@ import { ErroConflito, ErroNaoEncontrado, ErroValidacao } from "../domain/erros"
   JSON malformado    -> 400 (o body-parser do Express sinaliza com type "entity.parse.failed")
   qualquer outro     -> 500, com mensagem genérica (o detalhe fica só no log do servidor) */
 export function tratarErros(erro: unknown, _req: Request, res: Response, _next: NextFunction): void {
+    if(erro instanceof ErroAutenticacao || erro instanceof ErroNaoAutenticado) {
+        res.status(401).json({ erro : erro.message })
+        return
+    }
+    
     if (erro instanceof ErroValidacao) {
-        res.status(400).json({ erro: erro.message })
+        res.status(400).json({ erro : erro.message })
         return
     }
     if (erro instanceof ErroNaoEncontrado) {
-        res.status(404).json({ erro: erro.message })
+        res.status(404).json({ erro : erro.message })
         return
     }
     if (erro instanceof ErroConflito) {
-        res.status(409).json({ erro: erro.message })
+        res.status(409).json({ erro : erro.message })
         return
     }
 
     const tipo = typeof erro === "object" && erro !== null && "type" in erro ? erro.type : undefined
     if (tipo === "entity.parse.failed") {
-        res.status(400).json({ erro: "O corpo da requisição não é um JSON válido." })
+        res.status(400).json({ erro : "O corpo da requisição não é um JSON válido." })
         return
     }
     if (tipo === "entity.too.large") {
-        res.status(413).json({ erro: "O corpo da requisição é grande demais." })
+        res.status(413).json({ erro : "O corpo da requisição é grande demais." })
         return
     }
 
+    if (erro instanceof ErroPermissao || erro instanceof ErroProibido) {
+        res.status(403).json({ erro : erro.message })
+        return 
+    }
+
     console.error("Erro na API:", erro)
-    res.status(500).json({ erro: "Não foi possível processar a requisição." })
+    res.status(500).json({ erro : "Não foi possível processar a requisição." })
 }

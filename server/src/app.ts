@@ -9,6 +9,16 @@ import { UsuariosController } from "./controllers/usuarios.controller"
 import type { RepositorioUsuarios } from "./repositories/repositorio-usuarios"
 import { criarRotasUsuarios } from "./routes/usuarios.routes"
 import { ServicoUsuarios } from "./services/servico-usuarios"
+import { SessoesController } from "./controllers/sessoes-controller"
+import { criarRotasSessoes } from "./routes/sessoes.routes"
+import { ServicoSessoes } from "./services/servico-sessoes"
+import type { ServicoTokens } from "./services/servico-tokens"
+
+import { EmprestimosController } from "./controllers/emprestimos.controller"
+import { autenticar } from "./middlewares/autenticar"
+import type { RepositorioEmprestimos } from "./repositories/repositorio-emprestimos"
+import { criarRotasEmprestimos, criarRotasReservas } from "./routes/emprestimos.routes"
+import { ServicoCirculacao } from "./services/servico-circulacao"
 
 const ENDPOINTS = [
     "GET /api/livros",
@@ -23,9 +33,26 @@ const ENDPOINTS = [
     "DELETE /api/livros/:id/exemplares/:exemplarId",
 ]
 
+const ENDPOINTS_EMPRESTIMOS = [
+    "GET /api/emprestimos",
+    "POST /api/emprestimos",
+    "GET /api/emprestimos/:id",
+    "POST /api/emprestimos/:id/devolucao",
+    "POST /api/emprestimos/:id/renovacoes",
+    "GET /api/reservas",
+    "POST /api/reservas",
+    "GET /api/reservas/:id",
+    "DELETE /api/reservas/:id",
+]
+
 /* Monta a aplicação Express SEM abrir porta (quem abre é o server.ts).
 Recebe o repositório de fora: a API usa SQLite, os testes podem usar memória. */
-export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : RepositorioUsuarios): Express {
+export function criarApp(
+    repositorio: RepositorioAcervo,
+    repositorioUsuario?: RepositorioUsuarios,
+    tokens?: ServicoTokens,
+    repositorioEmprestimos?: RepositorioEmprestimos
+): Express {
     const app = express()
 
     app.disable("x-powered-by")
@@ -39,7 +66,8 @@ export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : R
         res.json({
             nome: "Biblioteca Virtual API",
             livros: "/api/livros",
-            endpoints: ENDPOINTS,
+            ...(repositorioEmprestimos && tokens ? { emprestimos: "/api/emprestimos", reservas: "/api/reservas" } : {}),
+            endpoints: repositorioEmprestimos && tokens ? [...ENDPOINTS, ...ENDPOINTS_EMPRESTIMOS] : ENDPOINTS,
         })
     })
 
@@ -50,19 +78,35 @@ export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : R
     const servicoAcervo = new ServicoAcervo(repositorio)
     app.use("/api/livros", criarRotasLivros(new LivrosController(servicoAcervo)))
 
-    /* 
-    - verifica se o repositório de usuários foi fornecido
-    - cria o serviço usando esse repositório
-    - cria o controller usando o serviço 
-    - registra o agrupamento no endereço /api/usuarios
-    */
     if(repositorioUsuario) {
         const servicoUsuarios = new ServicoUsuarios(repositorioUsuario)
+
         const controllerUsuarios = new UsuariosController(servicoUsuarios)
 
+        app.use("/api/usuarios", criarRotasUsuarios(controllerUsuarios))
+    }
+
+    /* 
+    - repositório + serviço de tokens 
+    - serviço de sessões 
+    - controller 
+    - POST /api/sessoes
+    */
+   // verifica se as duas dependência foram fornecidas antes de registrar o login 
+    if(repositorioUsuario && tokens) {
+        const servicoSessoes = new ServicoSessoes(repositorioUsuario, tokens)
+        const controllerSessoes = new SessoesController(servicoSessoes)
+
         app.use(
-            "/api/usuarios", criarRotasUsuarios(controllerUsuarios)
+            "/api/sessoes", criarRotasSessoes(controllerSessoes)
         )
+    }
+
+    if (repositorioEmprestimos && tokens) {
+        const autenticarUsuario = autenticar(tokens)
+        const controller = new EmprestimosController(new ServicoCirculacao(repositorioEmprestimos))
+        app.use("/api/emprestimos", criarRotasEmprestimos(controller, autenticarUsuario))
+        app.use("/api/reservas", criarRotasReservas(controller, autenticarUsuario))
     }
 
     app.use((_req, res) => {
