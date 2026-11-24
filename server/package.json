@@ -2,7 +2,7 @@
   "name": "biblioteca-virtual-server",
   "version": "1.0.0",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "tsx watch --env-file=.env src/server.ts",
     "start": "tsx src/server.ts",
     "db:reset": "tsx src/database/resetar.ts",
     "test": "vitest run",
