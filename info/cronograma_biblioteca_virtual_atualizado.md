@@ -1,16 +1,16 @@
-# Cronograma - Biblioteca Virtual (v11)
+# Cronograma - Biblioteca Virtual (v12)
 
-**Plano de referência de 11/11/2026, com conclusão das tarefas conferida em 19/11/2026. Apresentação em 02/12/2026.**
+**Atualizado em 24/11/2026. Apresentação em 02/12/2026.**
 
-**Prazo de preparação:** concluir a versão apresentável e os materiais até 01/12. A data de entrega formal não foi informada novamente. Confirmá-la com o professor e preparar tudo para a apresentação de 02/12.
+**Prazo de preparação:** concluir a versão apresentável e os materiais até 01/12. A data de entrega formal deve seguir o combinado com o professor.
 
-**Carga de referência:** 5 h de segunda a sexta e 6 h aos sábados e domingos. O plano iniciado em 11/11 prevê 111 h até 01/12. Esses totais pertencem à janela original, incluindo os dias já transcorridos. As datas das tarefas abaixo são previsões do plano. Os itens marcados indicam conclusão confirmada até 19/11, mesmo quando realizados depois da data prevista.
+**Capacidade de referência:** 5 h de segunda a sexta e 6 h aos sábados e domingos. A janela de 24/11 a 01/12 tem 42 h nominais, incluindo o trabalho já realizado em 24/11. De 25/11 a 01/12, restam 37 h previstas. Os blocos incluem leitura, implementação manual, testes e correções. As horas de 02/12 são destinadas à apresentação.
 
-**Situação em 19/11:** catálogo integrado à API, capas, disponibilidade, busca simples, modal e estados de carregamento, vazio e erro concluídos. Publicação do catálogo validada no GitHub Pages com a API no Render. Cadastro de usuários com hierarquia, hash, SQLite, rota HTTP e overlays na home e no acervo validado localmente. A publicação e o teste online dessa nova versão do cadastro estão pendentes. Login, JWT, autorização das rotas e integração dos empréstimos com SQLite e HTTP continuam pendentes.
+**Situação em 24/11:** catálogo e cadastro publicados e conferidos online. Login da API com comparação de senha, emissão e verificação de JWT concluído localmente. Middleware de autenticação criado e testado numa aplicação isolada. O front ainda precisa enviar o login e utilizar o token. ErroPermissao e seu tratamento HTTP 403 foram implementados e passaram no typecheck informado pela usuária. A verificação administrativa e a aplicação das proteções às rotas reais continuam pendentes. Empréstimos, devolução, renovação e multa possuem regras em memória e ainda precisam da integração com SQLite, HTTP e telas.
 
-**Verificações registradas:** a execução informada em 19/11 passou em 291 testes de 14 arquivos, além do typecheck do back-end. Depois da integração dos overlays, a usuária confirmou typecheck e build do front sem erros. Os testes manuais de criação, duplicidade de e-mail e persistência após reiniciar a API local também passaram. Esses resultados se referem aos cenários efetivamente executados.
+**Verificações registradas:** em 19/11, a usuária confirmou 291 testes de 14 arquivos e typecheck do back-end. Em 23 e 24/11, confirmou 12 testes novos em quatro arquivos, nas execuções direcionadas de sessões, tokens, rota HTTP e autenticação. Também confirmou login local 201 com token e senha incorreta com 401. A suíte completa deve ser executada novamente depois de aplicar as proteções.
 
-**Regra de acompanhamento:** usar [X] para uma entrega concluída e [ ] para uma pendência. Tarefas com cadastro e login foram separadas para registrar o avanço de cada parte. O método de permissão das classes foi implementado; a aplicação dessa permissão às rotas faz parte da autenticação ainda pendente.
+**Regra de acompanhamento:** [X] indica conclusão confirmada; [ ] indica pendência. Backend local, integração ao front e publicação são acompanhados separadamente. A disponibilidade do método de permissão e do middleware em testes não conclui a autorização das rotas reais.
 
 ## Escopo mínimo para apresentar
 
@@ -18,17 +18,26 @@
 - [X] Modelar Usuario, AdminUser e RegularUser, normalizar e-mail e definir papel conforme a regra do projeto.
 - [X] Cadastro com e-mail único, hash da senha, persistência SQLite, testes e POST /api/usuarios.
 - [X] Cadastro pelo overlay da home, mensagens de sucesso e duplicidade e navegação entre login e cadastro. Estrutura e troca dos overlays também conferidas no acervo.
-- [ ] Publicar a nova versão do cadastro no Render e no GitHub Pages e testar criação e duplicidade pelo site online.
-- [ ] Implementar login, JWT e aplicar autenticação e papel administrativo nas rotas protegidas.
+- [X] Publicar o cadastro no Render e no GitHub Pages e testar criação e duplicidade pelo site online.
+- [X] Implementar login da API, comparação de senha, emissão e verificação de JWT e configuração local de JWT_SECRET.
+- [X] Testar POST /api/sessoes com 201, 401 e 400 e o middleware de autenticação em rota isolada.
+- [X] Implementar ErroPermissao e sua conversão em resposta HTTP 403, com typecheck aprovado em 24/11.
+- [ ] Implementar e testar o middleware de autorização administrativa e aplicar as proteções às rotas reais.
+- [ ] Conectar o overlay de login à API, organizar o uso do token, a saída da conta e a navegação autenticada.
+- [ ] Configurar JWT_SECRET no Render e publicar e validar online o login e as proteções.
 - [ ] Empréstimo e devolução persistidos no SQLite, com atualização consistente do exemplar e consulta dos empréstimos do próprio usuário.
 - [ ] Integrar as regras existentes de limite de 3 empréstimos, prazo de 14 dias, multa de R$ 0,50/dia e até 2 renovações à API e às telas.
-- [ ] Administração mínima para cadastrar livro e adicionar exemplar, protegida por papel administrativo.
+- [ ] Administração por tela para cadastrar livro e adicionar exemplar, condicionada à conclusão do fluxo principal e ao recorte já alinhado com o professor. O CRUD de acervo da API já existe e precisa de proteção.
 - [X] Base de TypeScript, POO, API REST, banco relacional e testes de acervo e cadastro.
 - [ ] Testar o fluxo autenticado completo e concluir documentação de execução e preparação da explicação.
 - [X] Estados de carregamento, vazio e erro no catálogo.
 - [ ] Revisar acessibilidade das telas da demonstração. A abertura dos cards pelo teclado foi adiada por escolha da usuária; fechamento dos overlays por Escape foi conferido.
 
-**Funcionalidades condicionadas à avaliação:** reserva simples e busca com Strategy/Specification estão no documento de requisitos. Conferir em 11/11 se são obrigatórias para a nota. Se forem, usar os blocos de 23 e 24/11 para suas versões mínimas e reduzir o acabamento da administração e das telas secundárias. A fila completa, o ranking por relevância e a composição avançada de filtros ficam adiados pelo plano reduzido, sujeitos a essa conferência.
+**Prioridade para o prazo restante:** concluir autenticação e autorização e entregar o fluxo cadastro -> login -> busca -> empréstimo -> devolução com persistência e testes. Renovação, multa nas telas, conta/histórico com acabamento e administração por tela entram se o núcleo estiver estável e houver capacidade. As regras já existentes de renovação e multa devem ser preservadas no domínio e apresentadas com a cobertura disponível, mesmo quando sua integração ficar parcial.
+
+**Recorte e avaliação:** os requisitos descrevem o projeto completo. O alinhamento com o professor já foi marcado como concluído pela usuária. Registrar quais reduções foram efetivamente aceitas. Reservas/fila, Strategy/Specification e busca avançada não possuem bloco adicional garantido nesta janela. Se forem obrigatórios na entrega, explicitar a substituição de tarefas com base no acordo. Os documentos do projeto completo permanecem como referência.
+
+**Limite da previsão:** o volume restante é alto para 37 h a partir de 25/11 e desenvolvimento manual. As datas são metas sujeitas aos pontos de controle. Não considerar funcionalidades concluídas apenas por estarem programadas.
 
 **Decisões de escopo:** demonstração local com API e Vite e catálogo online já validado. GitHub Pages publica o front; Render executa Express e SQLite. O plano gratuito do Render pode perder o arquivo do banco após reinício, suspensão ou republicação. A persistência local após reiniciar foi testada. Preparar dados de demonstração e considerar essa limitação no uso online. Reutilizar as telas existentes para conta, histórico e administração.
 
@@ -79,52 +88,69 @@ Para cada arquivo novo, identificar responsabilidade, entrada, saída e quem o c
 
 ---
 
-## 11/11 a 15/11 - Tarefas anteriores com avanço conferido até 19/11
+## Histórico das tarefas previstas para 11 a 15/11, conferido até 24/11
 
 As datas representam as previsões anteriores. O registro detalhado do desenvolvimento está em `info/resumo.md`.
 
 - [X] **Documentação e organização** - Atualizar cronograma, requisitos do projeto completo e justificativa de POO. Elaborar guia de estudo de API e SQLite em Markdown e PDF.
-- [x] **Alinhamento com o professor** - Confirmar quais itens do projeto completo são obrigatórios na apresentação e quais cortes são aceitos.
+- [X] **Alinhamento com o professor** - Confirmar quais itens do projeto completo são obrigatórios na apresentação e quais cortes são aceitos.
 - [X] **Previsto para 11/11** - Configurar proxy e cliente HTTP, corrigir o HTML da sinopse e renderizar os livros da API. Estudar durante a implementação o caminho front -> rota -> serviço -> repositório.
 - [X] **Previsto para 12/11** - Concluir catálogo, capas, disponibilidade, busca, pesquisa pela URL e estados de carregamento, vazio e erro. Validar typecheck e build.
 - [X] **GitHub Pages e Render** - Validar publicação do index.html, corrigir caminhos das imagens, incluir arquivos públicos e conectar VITE_API_URL ao build. Conferir catálogo, busca e modal online usando a API hospedada.
 - [X] **Previsto para 13/11, concluído até 19/11** - Modelar usuários, definir papel, implementar cadastro com e-mail único, hash, persistência, rota e testes. Métodos de permissão das classes conferidos.
-- [ ] **Previsto para 14/11** - Implementar login, JWT, middleware de autenticação e administrador. Proteger escrita de livros e exemplares. Testar senha incorreta, token ausente ou inválido e falta de permissão.
+- [X] **Parte de login prevista para 14/11, concluída em 23 e 24/11** - Implementar comparação de credenciais, JWT, configuração local, controller, rota e middleware de autenticação. Confirmar testes direcionados.
+- [ ] **Complemento de autorização previsto para 14/11** - Implementar exigência de administrador, proteger escrita de livros e exemplares e testar as permissões. A classe de erro e seu tratamento 403 foram concluídos em 24/11.
 - [X] **Parte de cadastro prevista para 15/11** - Conectar formulário à API, criar overlay na home e no acervo, tratar sucesso e duplicidade e conferir abertura, fechamento e retorno ao login.
 - [ ] **Parte de login prevista para 15/11** - Conectar login à API e restringir operações administrativas e áreas autenticadas.
-- [ ] **Publicação do cadastro** - Levar a versão de cadastro para a main, aguardar as duas publicações e validar o formulário no site público.
-- [ ] **Revisão identificada antes da publicação** - Em validacao-usuarios.ts, revisar a rejeição de corpo que não seja objeto: ela lança Error genérico e pode virar 500. Acrescentar cobertura para esperar 400 nesse caso. Conferir também a inclusão de POST /api/usuarios na apresentação dos endpoints em GET /api.
+- [X] **Publicação do cadastro** - Levar a versão de cadastro para a main, aguardar as duas publicações e validar o formulário no site público.
+- [X] **Correção da validação do cadastro** - Substituir Error genérico por ErroValidacao no corpo inválido.
+- [ ] **Cobertura e documentação complementar** - Testar corpo inválido no cadastro e incluir POST /api/usuarios e POST /api/sessoes na apresentação dos endpoints de GET /api, conforme os módulos montados.
 
-**Marco parcial de cadastro e autenticação:** catálogo online e cadastro local concluídos. Login, JWT e autorização permanecem abertos. A próxima implementação prioritária é autenticação, antes das tarefas que dependem do usuário identificado.
+**Marco parcial atualizado:** catálogo e cadastro online concluídos. Login e JWT funcionam na API local. A prioridade atual é finalizar autorização, aplicar as proteções e conectar o login ao front.
 
-## 16/11 a 22/11 - Fluxo completo de empréstimos (37 h)
+## 16/11 a 22/11 - Registro do marco anterior
 
-- [ ] **Seg 16/11 (5 h)** - Ler ServicoEmprestimos e Emprestimo. Definir a adaptação para repositórios SQLite, preservando os testes e as regras existentes. Persistir empréstimos e consultar ativos por usuário. Planejar transação entre empréstimo e estado do exemplar.
-- [ ] **Ter 17/11 (5 h)** - Implementar POST de empréstimo com usuário obtido do token, disponibilidade, limite de 3 e prazo de 14 dias. Gravar empréstimo e mudança do exemplar na mesma transação. Testar tentativa repetida e exemplar indisponível.
-- [ ] **Qua 18/11 (5 h)** - Implementar devolução e listagem dos empréstimos do usuário autenticado, impedindo acesso ou alteração de empréstimo alheio. Testar persistência após reiniciar e disponibilidade depois da devolução.
-- [ ] **Qui 19/11 (5 h)** - Conectar botão de emprestar e tela de empréstimos, com devolução e mensagens de erro. Mostrar datas e status usando as telas existentes.
-- [ ] **Sex 20/11 (5 h)** - Integrar renovação e multa ao serviço persistente. Manter até 2 renovações, bloqueio por atraso e multa de R$ 0,50/dia. Validar datas com relógio controlado nos testes.
-- [ ] **Sáb 21/11 (6 h)** - Conectar renovação e exibir atraso e multa. Usar a mesma consulta para uma conta/histórico simples, evitando duplicar regras. Conferir que nenhuma operação essencial perde dados ao reiniciar.
-- [ ] **Dom 22/11 (6 h)** - Testar cadastro -> login -> busca -> empréstimo -> renovação -> devolução, no navegador e com Supertest. Reservar 3 h para corrigir falhas do fluxo principal.
+O marco de fluxo completo de empréstimos não foi atingido nessa janela. A etapa foi ocupada pela conclusão do cadastro e sua publicação. As pendências foram transferidas para o plano abaixo.
 
-**Aceite de 22/11:** o fluxo funciona do início ao fim, com isolamento entre usuários e dados persistidos. Se não passar, usar 23 e 24/11 para corrigir e adiar os opcionais desses dias.
+- [ ] Adaptar ServicoEmprestimos para persistência SQLite preservando regras e testes.
+- [ ] Implementar API de empréstimo, consulta do titular e devolução.
+- [ ] Garantir transação entre empréstimo e alteração do exemplar e testar falhas e tentativas repetidas.
+- [ ] Conectar essas operações às telas e verificar dados após reinício.
+- [ ] Integrar renovação e multa à API e às telas conforme a capacidade do recorte.
 
-## 23/11 a 27/11 - Requisitos restantes e versão apresentável (25 h)
+## 23 e 24/11 - Login, JWT e autenticação
 
-- [ ] **Seg 23/11 (5 h)** - Se o núcleo estiver validado, implementar reserva simples de livro indisponível e bloqueio de renovação por reserva ativa, caso obrigatório na avaliação. Definir uma regra mínima de encerramento/cancelamento da reserva e testar. Sem essa exigência, usar o dia para correções e estudo do núcleo.
-- [ ] **Ter 24/11 (5 h)** - Se exigido na avaliação, implementar a menor versão de Strategy e Specification que cumpra a rubrica, com testes e filtro de disponibilidade. Se ranking ou múltiplas estratégias forem obrigatórios e não couberem, ajustar o escopo com o professor. Sem essa exigência, usar o dia para estabilizar empréstimos e autenticação.
-- [ ] **Qua 25/11 (5 h)** - Criar administração mínima para cadastrar livro e adicionar exemplar, consumindo o CRUD já existente e respeitando as permissões. Conferir validação e erros. Edição e exclusão por tela ficam condicionadas ao tempo.
-- [ ] **Qui 26/11 (5 h)** - Revisar o que falta nos requisitos essenciais. Conferir teclado, foco visível, mensagens e layout nas telas da apresentação. Corrigir bugs, sem iniciar novos extras.
-- [ ] **Sex 27/11 (5 h)** - Fechar a versão apresentável. Rodar testes, typechecks e build. Preparar dados de demonstração coerentes, conferir capas e reinício do banco. Atualizar README e documentação da API com o que realmente foi implementado.
+- [X] **23/11** - Criar ErroAutenticacao e tratamento 401. Validar dados de login e comparar a senha com o hash existente.
+- [X] **23/11** - Instalar jsonwebtoken e seus tipos, gerar e verificar JWT com HS256, validade de 1 h, emissor e destinatário.
+- [X] **23/11** - Preparar configuração local de JWT_SECRET, carregamento de .env no comando dev e leitura pelo servidor. A chave privada permanece fora da documentação.
+- [X] **23/11** - Montar controller, rota POST /api/sessoes e dependências em app.ts e server.ts. Conferir login 201 e senha incorreta com 401 pelo PowerShell.
+- [X] **23 e 24/11** - Confirmar os 4 testes de serviço de sessões e 3 de tokens.
+- [X] **24/11** - Restaurar o registro de cadastro em app.ts, corrigir importação duplicada e confirmar os 3 testes HTTP de sessões.
+- [X] **24/11** - Criar autenticar e confirmar 2 testes em uma aplicação isolada, cobrindo ausência de token e identidade validada.
+- [X] **24/11** - Atualizar resumo de desenvolvimento com funções, alterações, testes e pendências.
+- [X] **24/11** - Criar ErroPermissao em domain/erros.ts e acrescentar sua conversão em HTTP 403 em tratar-erros.ts. Typecheck concluído sem erros conforme confirmação da usuária.
+- [ ] **Próxima ação em 24/11, dentro do tempo que restar do dia** - Implementar o middleware de administrador. Testar membro e administrador antes de aplicar às rotas de escrita. Se exceder o dia, levar para o primeiro bloco de 25/11.
 
-**Aceite de 27/11:** fluxo principal demonstrável, administração mínima e requisitos obrigatórios conferidos. Congelar funcionalidades e concentrar os dias seguintes em correções e apresentação.
+**Ponto de controle:** ErroPermissao e seu tratamento 403 estão concluídos. O middleware de autorização administrativa, os testes de permissão e a aplicação às rotas reais seguem pendentes. Middleware de autenticação testado isoladamente precisa ser aplicado às rotas reais. A carga nominal de 24/11 é de 5 h e inclui o que já foi realizado.
 
-## 28/11 a 01/12 - Revisão, margem e ensaios (22 h)
+## 25 a 28/11 - Núcleo da versão apresentável (21 h)
 
-- [ ] **Sáb 28/11 (6 h)** - Revisar domínio, API e SQLite por 2 h, responder às perguntas prioritárias por 1 h e reservar 3 h para bugs pendentes. Desenhar o mapa das camadas e preparar roteiro com cinco arquivos-chave.
-- [ ] **Dom 29/11 (6 h)** - Fazer o primeiro ensaio completo e cronometrado. Conferir instalação do zero em pasta limpa ou outra máquina, sem apagar a versão de trabalho. Usar o restante para corrigir bloqueios e atualizar instruções de execução.
-- [ ] **Seg 30/11 (5 h)** - Fazer o segundo ensaio, incluindo perguntas sobre POO, HTTP, autenticação, transações e testes. Corrigir a justificativa de POO com os nomes reais das classes. Gravar um vídeo curto ou capturas do fluxo como plano B.
-- [ ] **Ter 01/12 (5 h)** - Fazer o terceiro ensaio e checagem final de testes, build, dados e materiais. Separar cópia do projeto e instruções para execução. Reservar o restante para problemas críticos.
+- [ ] **Qua 25/11 (5 h)** - Finalizar autorização e proteção da escrita do acervo, preservando consultas públicas. Conectar o overlay de login à API, organizar uso do token e saída da conta. Rodar testes pertinentes. Configurar JWT_SECRET no Render antes de publicar o servidor e conferir autenticação no ambiente de demonstração.
+- [ ] **Qui 26/11 (5 h)** - Adaptar persistência dos empréstimos ao SQLite e implementar criação e consulta do titular autenticado. Reaproveitar as regras existentes de limite, disponibilidade e prazo. Gravar empréstimo e mudança do exemplar na mesma transação. Testar o caminho principal e o limite.
+- [ ] **Sex 27/11 (5 h)** - Implementar devolução persistente e impedir acesso a empréstimo alheio. Testar repetição, atualização da disponibilidade e reinício da API. Iniciar conexão dessas operações às telas existentes se o back-end estiver validado.
+- [ ] **Sáb 28/11 (6 h)** - Reservar até 4 h para concluir as telas mínimas e testar o fluxo cadastro -> login -> busca -> empréstimo -> devolução. Reservar 2 h para mapa das camadas, roteiro e estudo dos arquivos que serão apresentados.
+
+**Aceite de 25/11:** autenticação utilizável e operações administrativas protegidas no servidor. Se não passar, usar o início de 26/11 para corrigir e reestimar a entrega de empréstimos.
+
+**Aceite de 28/11:** núcleo executável e limitações registradas. Congelar novas funcionalidades. Renovação, multa e administração por tela usam apenas eventual capacidade liberada antes desse congelamento. Os testes e os ensaios possuem tempo reservado dentro dos blocos.
+
+**Critério para contingência:** se o núcleo ainda não estiver demonstrável em 28/11, concentrar as correções em autenticação, empréstimo e devolução. Registrar com clareza o que funciona pela API, o que está conectado à tela e o que permanece no domínio. Usar o recorte aceito pelo professor para decidir qualquer redução adicional.
+
+## 29/11 a 01/12 - Instalação, correções e três ensaios (16 h)
+
+- [ ] **Dom 29/11 (6 h)** - Reservar 3 h para validar a execução do zero em pasta limpa ou outra máquina e conferir os dados de demonstração. Fazer o primeiro ensaio completo e cronometrado em 1 h. Usar 2 h para corrigir os bloqueios encontrados e atualizar o README.
+- [ ] **Seg 30/11 (5 h)** - Fazer o segundo ensaio e responder perguntas sobre POO, HTTP, autenticação, transações e testes. Revisar documentação da API e a correspondência entre a justificativa e o código apresentado. Preparar vídeo ou capturas como plano B e usar o restante para correções críticas.
+- [ ] **Ter 01/12 (5 h)** - Fazer o terceiro ensaio, rodar a suíte completa, typechecks e build, conferir banco, materiais e instruções. Separar cópia do projeto e usar a margem restante para problemas críticos.
 
 ## 02/12 - Apresentação
 
@@ -135,19 +161,19 @@ As datas representam as previsões anteriores. O registro detalhado do desenvolv
 
 ## Marcos e critérios para reduzir o escopo
 
-| Data | Marco |
+| Data | Marco e situação |
 |---|---|
-| 19/11 | Catálogo online e cadastro local concluídos; login, permissões e publicação do cadastro pendentes |
-| 22/11 | Empréstimo, renovação e devolução persistentes e testados |
-| 27/11 | Versão apresentável e requisitos obrigatórios conferidos |
-| 01/12 | Três ensaios, instalação validada e materiais prontos |
+| Até 24/11 | Catálogo e cadastro online concluídos; login e JWT local testados; autorização e integração do front pendentes |
+| 25/11 | Meta de autenticação utilizável e escrita do acervo protegida |
+| 28/11 | Meta de fluxo de empréstimo/devolução demonstrável e congelamento de funcionalidades |
+| 01/12 | Três ensaios, instalação conferida e materiais prontos |
 | 02/12 | Apresentação |
 
-O plano original previa margem em 15 e 22/11. As datas anteriores são mantidas como referência, e tarefas pendentes continuam abertas mesmo após o prazo previsto. Os blocos de 23 e 24/11 podem absorver atraso quando as funcionalidades propostas para eles forem dispensáveis na avaliação. Os dias 28/11 a 01/12 incluem correções, estudo e ensaios, sem capacidade adicional escondida.
+As 37 h previstas de 25/11 a 01/12 são distribuídas em 21 h até 28/11 e 16 h de validação e preparação de 29/11 a 01/12. A implementação divide os blocos com estudo e testes. O plano não pressupõe horas adicionais.
 
-Adiar primeiro notificações, barra de progresso, recuperação de senha, nova página de detalhes, destaques dinâmicos, filtros por ano, ordenação e polimento visual. Depois adiar fila completa de reservas, busca ranqueada e filtros avançados quando a rubrica permitir. Simplificar conta, histórico e administração usando componentes existentes. Preservar autenticação, persistência, limite/prazo/multa/renovação do fluxo principal, testes e capacidade de explicar o código.
+Priorizar o fluxo autenticado com persistência e correção dos dados. Adiar notificações, recuperação de senha, destaques dinâmicos, filtros avançados, reformulação visual e demais extras. A integração de renovação/multa, administração por tela e outros requisitos deve refletir o recorte efetivamente acordado com o professor.
 
-Se o marco de 22/11 falhar, concentrar 23 a 27/11 no núcleo e registrar as funcionalidades adiadas. Se algum item dispensável for requisito obrigatório, confirmar a redução com o professor, sem assumir que o corte atende à avaliação.
+Preservar os três ensaios. Quando uma meta falhar, atualizar a previsão e o registro do escopo em vez de marcar a tarefa como concluída.
 
 ## Perguntas prioritárias para o estudo e os ensaios
 

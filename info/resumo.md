@@ -1,6 +1,6 @@
 # Resumo de desenvolvimento e estudo - Biblioteca Virtual
 
-**Registro atualizado em 19/11/2026.**
+**Registro atualizado em 24/11/2026.**
 
 Este documento reúne as alterações realizadas, o funcionamento de cada parte e os testes feitos durante o desenvolvimento guiado. As datas organizam o histórico de trabalho e estudo. O cronograma registra as entregas concluídas e as próximas tarefas.
 
@@ -12,7 +12,7 @@ A interface em TypeScript e Vite consulta a API REST em Express. A API utiliza s
 Navegador -> cliente HTTP -> rota -> controller -> serviço -> repositório -> SQLite
 ```
 
-O catálogo já foi validado online. O cadastro de usuários foi validado localmente, incluindo o formulário em overlay. A publicação dessa nova versão de cadastro é o próximo passo de entrega. O formulário de login ainda tem comportamento simulado.
+O catálogo e o cadastro pelo overlay foram publicados e validados online. Em 23 e 24/11, foram implementados o login da API, a emissão e verificação de JWT e um middleware de autenticação testado isoladamente. O formulário de login do front ainda tem comportamento simulado. A proteção das rotas reais, a autorização administrativa e a publicação dessa nova versão de autenticação continuam nas próximas etapas.
 
 ## 2. Base anterior - domínio, banco e API do acervo
 
@@ -209,7 +209,7 @@ Foram testados hash diferente da senha, correspondência correta, rejeição de 
 
 Cada if identifica uma condição inválida e interrompe o processamento com uma exceção. O operador OU permite rejeitar por qualquer condição suficiente e evita executar métodos em valores de tipo errado.
 
-**Revisão identificada no código:** o primeiro bloco, que rejeita corpo sem estrutura de objeto, lança Error genérico. O middleware transforma erros genéricos em 500. Esse caso precisa usar a categoria de validação e receber teste para esperar 400. Os testes aprovados de senha curta e campo extra não cobrem esse ramo.
+**Correção posterior à revisão de 19/11:** o primeiro bloco, que rejeita corpo sem estrutura de objeto, foi alterado de Error genérico para ErroValidacao. O middleware pode, assim, responder 400 para essa entrada. O código salvo confirma a correção. Um teste HTTP específico para corpo que não seja objeto ainda pode complementar a cobertura.
 
 ## 8. 19/11 - Serviço, controller e rota de cadastro
 
@@ -307,72 +307,322 @@ A consulta ao elemento pode retornar null. O if confere todos os elementos antes
 
 A usuária confirmou criação de conta pelo overlay da home, mensagem de sucesso, limpeza dos campos e mensagem de e-mail duplicado. A troca entre os overlays também foi conferida no acervo. Typecheck e build do front terminaram sem erros após as alterações.
 
-## 10. 23/11 - Emissão de JWT 
+## 10. 23/11 - Login da API e emissão de JWT
 
-## JWT (JSON Web Token)
-É um formato de token que a API pode emitir depois de verificar o login. O navegador apresenta esse token nas próximas requisições para comprovar a autenticação. 
+### Conceito de JWT
+
+JWT significa JSON Web Token. É um formato de token emitido após a autenticação. Ele possui três partes separadas por pontos.
 
 ```text
-Usuário informe e-mail e senha -> API encontra o usuário no SQLite -> brcypt.compare verifica a senha -> API gera um JWT com validade limitada -> Navegador recebe o token -> Envia o token nas operações protegidas
+cabeçalho.conteúdo.assinatura
 ```
 
-Ele possui três partes separadas por pontos: cabeçalho.conteúdo.assinatura
-- Cabeçalho: informa o tipo de token e o algoritmo de assinatura.
-- Conteúdo, chamado payload: contém informações como o identificador do usuário e o horário de expiração. 
-- Assinatura: permite verificar se o token foi assinado com a chave esperada e se seu conteúdo permanece íntegro. 
+O cabeçalho identifica o algoritmo. O conteúdo, chamado payload, transporta os dados necessários à identificação. A assinatura permite conferir a origem esperada e a integridade do token. O conteúdo pode ser lido por quem possui o token, por isso os dados de senha e hash permanecem fora dele.
 
-O conteúdo do JWT pode ser lido por quem possui o token. Por isso, mantenha a senha hash fora dele. A chave utiliza para assinar deve ficar protegida no back-end. 
+O fluxo pretendido da interface autenticada é o seguinte.
 
-Ao solicitar uma operação protegida, ele envia um cabeçalho HTTP. Por exemplo, ao tentar realizar um empréstimo, a API deverá: 
-1. Encontrar o token nesse cabeçalho. 
-2. Verificar a assinatura e a validade. 
-3. Identificar o usuário autenticado. 
-4. Conferir se ele tem permissão para a operação. 
-
-## Verifica o e-mail e senha
- 
 ```text
-Validar entrada -> consultar usuário -> comparar senha -> devolver usuário ou lançar ErroAutenticacao
-
-servico-sessoes.ts recebe o repositório, assim, o serviço utiliza o contrato de consulta que você já implementou. Ele valida os campos e normaliza o e-mail, procura o cadastro e recupera o usuário com seu hash. 
-As rejeições usam a mesma resposta, assim, a resposta informa que as credenciais são inválidas sem revelar qual delas falhou. Em seguida retorna a identidade autenticada, com ID, e-mail e papel.
+E-mail e senha
+-> API consulta o SQLite
+-> bcrypt.compare verifica a senha
+-> API emite token com validade
+-> navegador envia Authorization: Bearer TOKEN nas operações protegidas
+-> middleware verifica a identidade
+-> autorização confere a permissão da operação
 ```
 
-## 11. Situação antes do próximo commit e deploy
+A emissão pelo back-end já foi implementada. O envio pelo formulário de login e o uso do token nas operações do front pertencem à próxima integração.
+
+### ErroAutenticacao e resposta 401
+
+Em `server/src/domain/erros.ts`, foi acrescentada a classe ErroAutenticacao, que estende Error e identifica as falhas de autenticação.
+
+Em `server/src/middlewares/tratar-erros.ts`, foi adicionada a condição que reconhece essa classe e responde com status 401 e JSON no formato habitual de erro. O return encerra o tratamento daquela falha.
+
+Essa mudança mantém a decisão de autenticação no serviço e a tradução para HTTP no middleware.
+
+| Situação | Tratamento |
+|---|---|
+| Campos de login ausentes ou com tipo inválido | ErroValidacao, convertido em 400 |
+| E-mail não cadastrado ou senha incorreta | ErroAutenticacao, convertido em 401 |
+| Token ausente, inválido ou expirado | ErroAutenticacao na verificação, convertido em 401 |
+| Usuário autenticado sem permissão administrativa | ErroPermissao é convertido em 403; a verificação do papel será aplicada pelo middleware de autorização |
+
+### Validação da entrada de login
+
+Foi criado `server/src/services/validacao-sessoes.ts`, com DadosLogin e a função lerLogin.
+
+DadosLogin descreve os campos email e senha. lerLogin recebe unknown e verifica os dados antes de utilizá-los.
+
+1. O primeiro if exige um objeto e rejeita null, listas e outros tipos.
+2. O segundo obtém os nomes dos campos com Object.keys e usa some/includes para rejeitar propriedades extras. Os campos permitidos são email e senha.
+3. O terceiro exige e-mail em texto e preenchido após trim.
+4. O quarto exige senha em texto com comprimento maior que zero.
+5. O retorno normaliza o e-mail com trim e toLowerCase e preserva a senha digitada.
+
+O operador OU interrompe a avaliação quando encontra uma condição verdadeira. Por exemplo, se email não for string, a operação trim não é executada. Isso permite verificar o tipo antes de chamar seus métodos.
+
+No login, o preenchimento e o tipo são conferidos nessa função. A correspondência com um usuário é verificada pelo serviço na consulta ao banco.
+
+### ServicoSessoes e verificação das credenciais
+
+Foi criado `server/src/services/servico-sessoes.ts`. O construtor recebe RepositorioUsuarios e ServicoTokens, fornecidos por injeção de dependência.
+
+O método autenticar executa esta sequência.
+
+```text
+lerLogin(corpo)
+-> obterPorEmail(email normalizado)
+-> verificar existência e limite de bytes
+-> bcrypt.compare(senha informada, hash salvo)
+-> devolver o usuário ou lançar ErroAutenticacao
+```
+
+Se o usuário estiver ausente, a autenticação é rejeitada. bcrypt.truncates também rejeita senhas que excedem os 72 bytes suportados, evitando que uma parte da entrada seja ignorada na comparação.
+
+bcrypt.compare devolve um booleano. Quando o resultado é false, o serviço lança o erro de autenticação. As rejeições utilizam a mesma mensagem, E-mail ou senha inválidos., sem informar qual credencial falhou.
+
+O método criarSessao reaproveita autenticar. Após o sucesso, chama gerarToken e devolve um objeto com token e usuario. Se a autenticação falhar, a execução é interrompida antes da emissão.
+
+### Dependências e ServicoTokens
+
+Foram instalados jsonwebtoken como dependência de execução e @types/jsonwebtoken como dependência de desenvolvimento. Os registros ficam em package.json e package-lock.json do server.
+
+Foi criado `server/src/services/servico-tokens.ts`, com a classe ServicoTokens. O construtor recebe a chave secreta e exige pelo menos 32 bytes, medidos por Buffer.byteLength.
+
+O método gerarToken utiliza jwt.sign e configura os dados abaixo.
+
+| Campo ou opção | Finalidade |
+|---|---|
+| papel | Papel obtido do usuário autenticado |
+| algorithm = HS256 | Algoritmo utilizado para assinar |
+| subject | ID do usuário, registrado como sub |
+| expiresIn = 1h | Validade de uma hora |
+| issuer = biblioteca-virtual | Identificação da API emissora |
+| audience = biblioteca-virtual-web | Identificação do destinatário |
+| iat e exp | Instante de emissão e expiração incluídos pela biblioteca conforme a configuração |
+
+A assinatura usa a chave recebida pelo serviço. A verificação usa essa mesma chave e limita os algoritmos aceitos a HS256.
+
+O método verificarToken chama jwt.verify para conferir assinatura, validade, emissor e destinatário. Depois valida se o conteúdo é um objeto, se sub é texto preenchido e se papel é ADMIN ou MEMBRO.
+
+Quando tudo está correto, devolve a identidade simplificada com id e papel. As falhas de verificação da biblioteca são convertidas em ErroAutenticacao. As demais exceções são relançadas.
+
+Na configuração de geração a opção é algorithm. Na configuração de verificação, algorithms recebe uma lista. Foi corrigido um erro de digitação em algorith que impedia a verificação de tipos.
+
+### Configuração da chave no desenvolvimento
+
+Foi preparado `server/.env`, com a variável JWT_SECRET. O valor privado da chave permanece fora deste resumo e do código versionado.
+
+A chave foi gerada a partir de 32 bytes aleatórios, representados por 64 caracteres hexadecimais. A entrada .env no .gitignore já protege o arquivo contra inclusão automática em novos commits.
+
+Em `server/package.json`, o comando dev passou a ser.
+
+```text
+tsx watch --env-file=.env src/server.ts
+```
+
+A opção env-file carrega a configuração antes de executar a aplicação. watch reinicia o servidor ao alterar arquivos monitorados.
+
+Em `server/src/config/ambiente.ts`, lerSegredoJwt consulta process.env.JWT_SECRET, rejeita uma variável ausente ou vazia e devolve a chave. A validação ocorre quando a função é chamada. Os testes fornecem uma chave própria diretamente ao serviço.
+
+O comando start continua sendo tsx src/server.ts. Na hospedagem, JWT_SECRET deve ser configurada no ambiente do Render antes de publicar esta versão, pois o arquivo local .env fica fora do repositório. A variável VITE_API_URL continua sendo a configuração pública do front, com finalidade diferente da chave de assinatura.
+
+### Controller e rota de sessões
+
+Foi criado `server/src/controllers/sessoes-controller.ts`. SessoesController recebe o serviço, utiliza req.body e chama criarSessao. Em sucesso, responde 201 com token e um objeto de usuário contendo apenas id, nome, email e papel.
+
+Foi criado `server/src/routes/sessoes.routes.ts`. O router associa POST ao método criar do controller e utiliza metodoNaoPermitido para os demais métodos, seguindo o padrão da API.
+
+```text
+POST /api/sessoes
+-> SessoesController.criar
+-> ServicoSessoes.criarSessao
+-> autenticar as credenciais
+-> ServicoTokens.gerarToken
+-> resposta 201 com token e dados públicos
+```
+
+O código do projeto usa o nome de arquivo sessoes-controller.ts, com hífen.
+
+### Montagem da aplicação e inicialização
+
+Em `server/src/app.ts`, criarApp passou a receber também tokens como terceiro parâmetro opcional.
+
+- Com repositório de acervo, monta as rotas de livros.
+- Com repositório de usuários, monta o cadastro em /api/usuarios.
+- Com repositório de usuários e serviço de tokens, monta o login em /api/sessoes.
+
+Esses registros ficam antes da resposta genérica de rota inexistente. Os parâmetros opcionais mantêm compatíveis os testes que montam apenas parte da aplicação.
+
+Em `server/src/server.ts`, ServicoTokens é construído com lerSegredoJwt antes de abrir o banco. Depois é passado como terceiro argumento de criarApp. A chave e seu tamanho são conferidos durante a montagem do servidor.
+
+Durante o teste local, a porta 3000 estava ocupada por outra execução da API. Após encerrar a execução anterior, npm run dev iniciou normalmente. A mensagem de rota não encontrada na raiz foi diferenciada da consulta correta a /api/saude.
+
+### Testes manuais e de serviços em 23/11
+
+Pelo PowerShell, foi enviado POST /api/sessoes com dados de um usuário local. O resultado confirmado foi status 201, dados públicos e presença de um token.
+
+A resposta foi convertida com ConvertFrom-Json. Conferiu-se a existência do token sem publicar seu conteúdo. Outro pedido, com senha incorreta, retornou 401 e a mensagem de credenciais inválidas.
+
+No serviço de sessões, foram confirmados quatro testes.
+
+| Cenário | Verificação |
+|---|---|
+| E-mail e senha corretos | Normalização e recuperação do mesmo usuário cadastrado |
+| Senha incorreta | Lançamento de ErroAutenticacao |
+| E-mail ausente no banco | Lançamento de ErroAutenticacao |
+| Criação de sessão | Token válido com ID e papel correspondentes ao cadastro |
+
+No serviço de tokens, foram confirmados três testes.
+
+| Cenário | Verificação |
+|---|---|
+| Geração de JWT | Assinatura verificável e campos sub, papel, iss, aud e exp |
+| Leitura da identidade | Retorno de id e papel pelo verificarToken |
+| Chave diferente | Rejeição da assinatura como ErroAutenticacao |
+
+As chaves desses testes são fictícias e específicas do ambiente de teste. A biblioteca verifica a expiração no uso normal. Um cenário automatizado com relógio avançado para token expirado ainda pode complementar a cobertura.
+
+## 11. 24/11 - Testes HTTP e middleware de autenticação
+
+### Testes da rota de login
+
+Foi criado `server/src/tests/sessoes-api.test.ts`, utilizando Supertest e SQLite em memória. O beforeEach monta a aplicação com repositórios e serviço de tokens. O afterEach fecha o banco.
+
+Foram confirmados três cenários.
+
+1. Cadastrar um usuário pela API e fazer login. A resposta deve ser 201, conter token e usuario, manter os dados públicos iguais aos retornados pelo cadastro e apresentar JWT verificável com o ID e papel corretos.
+2. Enviar senha incorreta para um usuário existente. A resposta deve ser 401, com a mensagem genérica de credenciais inválidas.
+3. Enviar o login sem senha. A resposta deve ser 400, com a mensagem de campo obrigatório.
+
+A verificação de Object.keys confere os campos externos exatos da resposta de sucesso. A leitura do token confere o vínculo entre a identidade emitida e o usuário que acabou de entrar.
+
+### Correções durante os testes HTTP
+
+O teste foi inicialmente executado na raiz do projeto e não encontrou package.json. A execução foi ajustada para a pasta server.
+
+O primeiro POST do teste recebeu 404 porque o registro de /api/usuarios havia sido retirado de app.ts ao incluir o login. O bloco de cadastro foi restaurado antes do registro de sessões e do tratamento de rota inexistente.
+
+Em seguida, foi corrigida uma importação que repetia ServicoUsuarios duas vezes na mesma linha. Essa duplicação impedia o processamento do arquivo e a execução dos testes.
+
+Depois das correções, a usuária confirmou a aprovação dos três testes HTTP.
+
+### Middleware autenticar
+
+Foi criado `server/src/middlewares/autenticar.ts`. A função recebe ServicoTokens e devolve um RequestHandler do Express.
+
+O processamento é o seguinte.
+
+```text
+Ler Authorization
+-> exigir formato Bearer TOKEN
+-> capturar token
+-> verificar assinatura, validade e conteúdo
+-> guardar identidade em res.locals.usuario
+-> chamar next()
+```
+
+req.get lê o cabeçalho. Quando ele está ausente, o código utiliza texto vazio. A expressão regular reconhece Bearer seguido de espaço e um token sem espaços. A captura de posição 1 contém o token.
+
+Se o formato estiver ausente ou incorreto, o middleware lança ErroAutenticacao. Se a verificação do JWT falhar, a falha também é encaminhada ao tratamento de erros.
+
+res.locals compartilha a identidade entre os middlewares e o controller daquela requisição. next permite continuar. next(erro) encaminha o problema ao middleware de erros.
+
+### Testes do middleware
+
+Foi criado `server/src/tests/autenticar.test.ts`. Ele monta uma aplicação pequena de teste com uma rota /protegida e registra autenticar antes do handler.
+
+- Sem token, a rota deve responder 401.
+- Com token válido, deve responder 200 e disponibilizar id e papel em res.locals.usuario.
+
+Os dois testes passaram conforme a confirmação da usuária.
+
+A rota /protegida pertence somente à aplicação do teste. O middleware ainda precisa ser conectado às rotas reais do projeto para protegê-las.
+
+### Autenticação e autorização
+
+Autenticação identifica o usuário a partir de credenciais ou de um token válido. Autorização decide se essa identidade pode executar uma operação.
+
+Em 24/11, foi criada ErroPermissao em domain/erros.ts e acrescentado seu tratamento em middlewares/tratar-erros.ts. A usuária confirmou que a verificação de tipos terminou sem erros.
+
+ErroPermissao estende Error, recebe a mensagem por super e identifica sua categoria pela propriedade name. Em tratarErros, instanceof reconhece essa categoria, res.status(403).json devolve a mensagem e return encerra o tratamento antes da resposta genérica 500.
+
+Esse tratamento prepara a resposta para uma operação negada por falta de permissão. O middleware que verifica o papel administrativo, seus testes e a aplicação às rotas reais continuam pendentes.
+
+A futura ordem das operações protegidas será.
+
+```text
+Requisição
+-> autenticar o JWT
+-> conferir permissão
+-> executar a operação
+```
+
+A presença do campo papel no token permite consultar a categoria validada. A aplicação da permissão deve ocorrer no servidor.
+
+### Registro dos testes novos
+
+| Arquivo | Testes confirmados na execução direcionada |
+|---|---|
+| servico-sessoes.test.ts | 4 |
+| servico-tokens.test.ts | 3 |
+| sessoes-api.test.ts | 3 |
+| autenticar.test.ts | 2 |
+
+São 12 testes novos em quatro arquivos, confirmados nas execuções direcionadas durante as etapas de 23 e 24/11. A última execução completa registrada anteriormente teve 291 testes de 14 arquivos em 19/11. Uma nova execução completa deve ser registrada após integrar as proteções. Esta atualização do resumo foi feita pela leitura do código e pelos resultados relatados, sem executar novamente a suíte.
+
+## 12. Situação consolidada em 24/11
 
 ### Concluído
 
 - [X] Catálogo, imagens, busca, modal e estados de interface conectados à API.
-- [X] Publicação do catálogo em GitHub Pages e API no Render validada.
+- [X] Publicação e validação online do catálogo.
 - [X] Hierarquia Usuario/AdminUser/RegularUser e atribuição de papel.
-- [X] Cadastro com normalização, hash, SQLite, testes e POST /api/usuarios.
-- [X] Cadastro pelo overlay da home e estrutura compartilhada de comportamento com o acervo.
-- [X] Teste local de criação e duplicidade, testes automatizados e verificação de tipos/build registrados.
+- [X] Cadastro com hash, SQLite, testes e POST /api/usuarios.
+- [X] Overlays de cadastro na home e no acervo.
+- [X] Publicação e validação online do cadastro, com criação e rejeição de e-mail duplicado confirmadas pela usuária.
+- [X] Correção da categoria de erro para corpo inválido no cadastro.
+- [X] Validação de login e comparação de credenciais.
+- [X] Geração e verificação de JWT com configuração local da chave.
+- [X] POST /api/sessoes montado e conferido localmente.
+- [X] Testes direcionados de sessões, tokens, rota HTTP e middleware de autenticação.
+- [X] Middleware de autenticação funcionando na aplicação isolada de teste.
 
-### Pendências e pontos de atenção
+### Próximas tarefas
 
-- [ ] Revisar o Error genérico do corpo inválido e testar a resposta 400 correspondente.
-- [ ] Atualizar a apresentação dos endpoints em GET /api para incluir o cadastro, quando o módulo estiver montado.
-- [ ] Publicar e validar esta nova versão do cadastro no Render e no GitHub Pages. Os testes online já concluídos referem-se ao catálogo.
-- [ ] Implementar login, comparação de credenciais, emissão e validação de JWT.
-- [ ] Aplicar a permissão administrativa e a titularidade dos dados nas rotas.
-- [ ] Ligar a conta, o histórico e as operações de empréstimo à API e ao SQLite.
-- [ ] Integrar devolução, renovação, multa e as demais funcionalidades do recorte acordado.
-- [ ] Reavaliar as tarefas de estudo e os requisitos obrigatórios com o prazo da apresentação.
+- [X] Acrescentar a classe ErroPermissao em domain/erros.ts, conforme a conferência final de 24/11.
+- [X] Implementar o tratamento HTTP 403 para ErroPermissao e concluir o typecheck, conforme confirmação da usuária em 24/11.
+- [ ] Implementar e testar a exigência de papel administrativo.
+- [ ] Aplicar autenticação e autorização às rotas reais de escrita do acervo.
+- [ ] Conectar o formulário de login do front a POST /api/sessoes e organizar o uso do token nas requisições.
+- [ ] Implementar saída da conta e comportamento da navegação autenticada.
+- [ ] Configurar JWT_SECRET no ambiente do Render antes do deploy desta versão. A inicialização agora exige essa configuração.
+- [ ] Atualizar a apresentação de GET /api para incluir os módulos de cadastro e sessões montados.
+- [ ] Conferir os testes complementares de expiração, token inválido e corpo inválido conforme a cobertura necessária.
+- [ ] Rodar a suíte completa e registrar o resultado atualizado.
+- [ ] Publicar e validar online o login e as proteções.
+- [ ] Integrar empréstimos, devoluções, renovação e multa com SQLite, API e telas.
+- [ ] Preparar o recorte funcional, os materiais e os ensaios para a apresentação.
 
-O formulário de login ainda apenas valida preenchimento e registra o e-mail no console. O botão de reservar também possui comportamento demonstrativo. A presença dos overlays e dos métodos de permissão não conclui esses fluxos.
+No código do front, o formulário de login ainda valida o preenchimento e registra o e-mail no console. O botão de reservar também tem comportamento demonstrativo. Em app.ts, o middleware autenticar ainda não está aplicado às rotas de livros.
 
-O cabeçalho Location do cadastro é testado como endereço do usuário criado. A rota de consulta GET /api/usuarios/:id ainda requer definição e implementação conforme a autenticação e as regras de acesso.
+O cabeçalho Location do cadastro aponta para o identificador criado. A rota GET /api/usuarios/:id ainda depende da definição de consulta e de suas regras de acesso.
 
-## 12. Roteiro curto para estudar e explicar
+## 13. Roteiro curto para estudar e explicar
 
 1. Seguir um GET /api/livros desde a página até a consulta SQLite.
 2. Explicar por que os cards precisam existir antes de atualizar books.
 3. Comparar textContent com dataset.
-4. Explicar a diferença entre acervo vazio, busca sem resultado e falha de comunicação.
-5. Mostrar como VITE_API_URL é utilizada durante o build e por que o proxy local não atende a publicação.
+4. Diferenciar acervo vazio, pesquisa sem resultado e falha de comunicação.
+5. Mostrar como VITE_API_URL é utilizada no build e qual é a função do proxy local.
 6. Comparar Usuario, AdminUser e RegularUser e explicar o método de permissão.
 7. Seguir POST /api/usuarios desde o overlay até a gravação do hash.
-8. Explicar a diferença entre normalização de e-mail e preservação da senha.
-9. Mostrar como o teste HTTP verifica 201, Location, dados públicos, 400 e 409.
-10. Explicar quais funcionalidades já foram entregues e quais ainda dependem de autenticação e persistência.
+8. Explicar a normalização do e-mail e a preservação da senha.
+9. Seguir POST /api/sessoes desde o controller até a comparação do bcrypt e a assinatura do JWT.
+10. Explicar sub, papel, exp, issuer, audience e algoritmo do token.
+11. Explicar como JWT_SECRET chega ao servidor e como as chaves dos testes são fornecidas.
+12. Diferenciar 400, 401 e 403.
+13. Explicar Authorization Bearer, res.locals.usuario, next e next(erro).
+14. Mostrar um teste de login válido, um de senha incorreta e um de rota sem token.
+15. Apontar as proteções já testadas e as integrações que ainda precisam ser realizadas.
