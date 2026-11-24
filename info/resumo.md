@@ -307,7 +307,38 @@ A consulta ao elemento pode retornar null. O if confere todos os elementos antes
 
 A usuária confirmou criação de conta pelo overlay da home, mensagem de sucesso, limpeza dos campos e mensagem de e-mail duplicado. A troca entre os overlays também foi conferida no acervo. Typecheck e build do front terminaram sem erros após as alterações.
 
-## 10. Situação antes do próximo commit e deploy
+## 10. 23/11 - Emissão de JWT 
+
+## JWT (JSON Web Token)
+É um formato de token que a API pode emitir depois de verificar o login. O navegador apresenta esse token nas próximas requisições para comprovar a autenticação. 
+
+```text
+Usuário informe e-mail e senha -> API encontra o usuário no SQLite -> brcypt.compare verifica a senha -> API gera um JWT com validade limitada -> Navegador recebe o token -> Envia o token nas operações protegidas
+```
+
+Ele possui três partes separadas por pontos: cabeçalho.conteúdo.assinatura
+- Cabeçalho: informa o tipo de token e o algoritmo de assinatura.
+- Conteúdo, chamado payload: contém informações como o identificador do usuário e o horário de expiração. 
+- Assinatura: permite verificar se o token foi assinado com a chave esperada e se seu conteúdo permanece íntegro. 
+
+O conteúdo do JWT pode ser lido por quem possui o token. Por isso, mantenha a senha hash fora dele. A chave utiliza para assinar deve ficar protegida no back-end. 
+
+Ao solicitar uma operação protegida, ele envia um cabeçalho HTTP. Por exemplo, ao tentar realizar um empréstimo, a API deverá: 
+1. Encontrar o token nesse cabeçalho. 
+2. Verificar a assinatura e a validade. 
+3. Identificar o usuário autenticado. 
+4. Conferir se ele tem permissão para a operação. 
+
+## Verifica o e-mail e senha
+ 
+```text
+Validar entrada -> consultar usuário -> comparar senha -> devolver usuário ou lançar ErroAutenticacao
+
+servico-sessoes.ts recebe o repositório, assim, o serviço utiliza o contrato de consulta que você já implementou. Ele valida os campos e normaliza o e-mail, procura o cadastro e recupera o usuário com seu hash. 
+As rejeições usam a mesma resposta, assim, a resposta informa que as credenciais são inválidas sem revelar qual delas falhou. Em seguida retorna a identidade autenticada, com ID, e-mail e papel.
+```
+
+## 11. Situação antes do próximo commit e deploy
 
 ### Concluído
 
@@ -333,7 +364,7 @@ O formulário de login ainda apenas valida preenchimento e registra o e-mail no 
 
 O cabeçalho Location do cadastro é testado como endereço do usuário criado. A rota de consulta GET /api/usuarios/:id ainda requer definição e implementação conforme a autenticação e as regras de acesso.
 
-## 11. Roteiro curto para estudar e explicar
+## 12. Roteiro curto para estudar e explicar
 
 1. Seguir um GET /api/livros desde a página até a consulta SQLite.
 2. Explicar por que os cards precisam existir antes de atualizar books.

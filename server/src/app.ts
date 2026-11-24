@@ -9,6 +9,10 @@ import { UsuariosController } from "./controllers/usuarios.controller"
 import type { RepositorioUsuarios } from "./repositories/repositorio-usuarios"
 import { criarRotasUsuarios } from "./routes/usuarios.routes"
 import { ServicoUsuarios } from "./services/servico-usuarios"
+import { SessoesController } from "./controllers/sessoes-controller"
+import { criarRotasSessoes } from "./routes/sessoes.routes"
+import { ServicoSessoes } from "./services/servico-sessoes"
+import type { ServicoTokens } from "./services/servico-tokens"
 
 const ENDPOINTS = [
     "GET /api/livros",
@@ -25,7 +29,7 @@ const ENDPOINTS = [
 
 /* Monta a aplicação Express SEM abrir porta (quem abre é o server.ts).
 Recebe o repositório de fora: a API usa SQLite, os testes podem usar memória. */
-export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : RepositorioUsuarios): Express {
+export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : RepositorioUsuarios, tokens? : ServicoTokens): Express {
     const app = express()
 
     app.disable("x-powered-by")
@@ -51,17 +55,18 @@ export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : R
     app.use("/api/livros", criarRotasLivros(new LivrosController(servicoAcervo)))
 
     /* 
-    - verifica se o repositório de usuários foi fornecido
-    - cria o serviço usando esse repositório
-    - cria o controller usando o serviço 
-    - registra o agrupamento no endereço /api/usuarios
+    - repositório + serviço de tokens 
+    - serviço de sessões 
+    - controller 
+    - POST /api/sessoes
     */
-    if(repositorioUsuario) {
-        const servicoUsuarios = new ServicoUsuarios(repositorioUsuario)
-        const controllerUsuarios = new UsuariosController(servicoUsuarios)
+   // verifica se as duas dependência foram fornecidas antes de registrar o login 
+    if(repositorioUsuario && tokens) {
+        const servicoSessoes = new ServicoSessoes(repositorioUsuario, tokens)
+        const controllerSessoes = new SessoesController(servicoSessoes)
 
         app.use(
-            "/api/usuarios", criarRotasUsuarios(controllerUsuarios)
+            "/api/sessoes", criarRotasSessoes(controllerSessoes)
         )
     }
 
@@ -72,3 +77,5 @@ export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : R
 
     return app
 }
+
+
