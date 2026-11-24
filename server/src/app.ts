@@ -54,6 +54,14 @@ export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : R
     const servicoAcervo = new ServicoAcervo(repositorio)
     app.use("/api/livros", criarRotasLivros(new LivrosController(servicoAcervo)))
 
+    if(repositorioUsuario) {
+        const servicoUsuarios = new ServicoUsuarios(repositorioUsuario)
+
+        const controllerUsuarios = new UsuariosController(servicoUsuarios)
+
+        app.use("/api/usuarios", criarRotasUsuarios(controllerUsuarios))
+    }
+
     /* 
     - repositório + serviço de tokens 
     - serviço de sessões 
