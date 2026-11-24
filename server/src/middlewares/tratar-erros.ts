@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express"
-import { ErroAutenticacao, ErroConflito, ErroNaoEncontrado, ErroValidacao } from "../domain/erros"
+import { ErroAutenticacao, ErroConflito, ErroNaoEncontrado, ErroValidacao, ErroPermissao } from "../domain/erros"
 
 /* Último middleware: transforma qualquer erro em uma resposta JSON { erro: "mensagem" }.
   ErroValidacao      -> 400 Bad Request
@@ -34,6 +34,11 @@ export function tratarErros(erro: unknown, _req: Request, res: Response, _next: 
     if (tipo === "entity.too.large") {
         res.status(413).json({ erro : "O corpo da requisição é grande demais." })
         return
+    }
+
+    if (erro instanceof ErroPermissao) {
+        res.status(403).json({ erro : erro.message })
+        return 
     }
 
     console.error("Erro na API:", erro)
