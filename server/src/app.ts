@@ -1,5 +1,5 @@
 import cors from "cors"
-import express, { type Express } from "express"
+import express, { type Express, type RequestHandler } from "express"
 import { LivrosController } from "./controllers/livros.controller"
 import { tratarErros } from "./middlewares/tratar-erros"
 import type { RepositorioAcervo } from "./repositories/repositorio"
@@ -13,6 +13,7 @@ import { SessoesController } from "./controllers/sessoes-controller"
 import { criarRotasSessoes } from "./routes/sessoes.routes"
 import { ServicoSessoes } from "./services/servico-sessoes"
 import type { ServicoTokens } from "./services/servico-tokens"
+import { ErroAutenticacao } from "./domain/erros"
 
 import { EmprestimosController } from "./controllers/emprestimos.controller"
 import { autenticar } from "./middlewares/autenticar"
@@ -76,7 +77,14 @@ export function criarApp(
     })
 
     const servicoAcervo = new ServicoAcervo(repositorio)
-    app.use("/api/livros", criarRotasLivros(new LivrosController(servicoAcervo)))
+
+    const autenticarAcervo : RequestHandler = tokens
+        ? autenticar(tokens) // verifica se os serviços de tokens foi fornecido 
+        :(_req, _res, next) => { // define o comportamento quando o serviço não é fornecido, nesse caso as operações protegidas são bloqueadas com 401
+            next(new ErroAutenticacao("A autenticação não está disponível nesta aplicação.")) // passa os dois argumentos exigidos pela função e corrige o erro de compilação
+        }
+
+    app.use("/api/livros", criarRotasLivros(new LivrosController(servicoAcervo), autenticarAcervo))
 
     if(repositorioUsuario) {
         const servicoUsuarios = new ServicoUsuarios(repositorioUsuario)
