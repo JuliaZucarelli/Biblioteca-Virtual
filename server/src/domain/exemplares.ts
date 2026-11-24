@@ -58,6 +58,30 @@ export class Exemplar {
     marcarIndisponivel() : void {
         this._status = StatusExemplar.INDISPONIVEL
     }
+
+    // devolução com fila de reservas: a unidade vai direto para o primeiro da fila, sem passar por DISPONIVEL
+    reservar() : void {
+        if (this._status !== StatusExemplar.EMPRESTADO) {
+            throw new Error(`O exemplar ${this.codigo} não está emprestado.`)
+        }
+        this._status = StatusExemplar.RESERVADO
+    }
+
+    // o titular da reserva retira a unidade que estava guardada para ele
+    emprestarReservado() : void {
+        if (this._status !== StatusExemplar.RESERVADO) {
+            throw new Error(`O exemplar ${this.codigo} não está reservado.`)
+        }
+        this._status = StatusExemplar.EMPRESTADO
+    }
+
+    // a reserva foi cancelada e ninguém mais da fila precisa desta unidade
+    liberarReserva() : void {
+        if (this._status !== StatusExemplar.RESERVADO) {
+            throw new Error(`O exemplar ${this.codigo} não está reservado.`)
+        }
+        this._status = StatusExemplar.DISPONIVEL
+    }
 }
 
 /* Guarda livros e exemplares em memória e mantém a relação entre eles */

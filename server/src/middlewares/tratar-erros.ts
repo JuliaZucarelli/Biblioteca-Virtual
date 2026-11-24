@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express"
-import { ErroAutenticacao, ErroConflito, ErroNaoEncontrado, ErroValidacao, ErroPermissao } from "../domain/erros"
+import { ErroAutenticacao, ErroConflito, ErroNaoEncontrado, ErroValidacao, ErroPermissao, ErroNaoAutenticado, ErroProibido } from "../domain/erros"
 
 /* Último middleware: transforma qualquer erro em uma resposta JSON { erro: "mensagem" }.
   ErroValidacao      -> 400 Bad Request
@@ -8,7 +8,7 @@ import { ErroAutenticacao, ErroConflito, ErroNaoEncontrado, ErroValidacao, ErroP
   JSON malformado    -> 400 (o body-parser do Express sinaliza com type "entity.parse.failed")
   qualquer outro     -> 500, com mensagem genérica (o detalhe fica só no log do servidor) */
 export function tratarErros(erro: unknown, _req: Request, res: Response, _next: NextFunction): void {
-    if(erro instanceof ErroAutenticacao) {
+    if(erro instanceof ErroAutenticacao || erro instanceof ErroNaoAutenticado) {
         res.status(401).json({ erro : erro.message })
         return
     }
@@ -36,7 +36,7 @@ export function tratarErros(erro: unknown, _req: Request, res: Response, _next: 
         return
     }
 
-    if (erro instanceof ErroPermissao) {
+    if (erro instanceof ErroPermissao || erro instanceof ErroProibido) {
         res.status(403).json({ erro : erro.message })
         return 
     }

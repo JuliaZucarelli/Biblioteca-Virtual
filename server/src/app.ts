@@ -14,6 +14,12 @@ import { criarRotasSessoes } from "./routes/sessoes.routes"
 import { ServicoSessoes } from "./services/servico-sessoes"
 import type { ServicoTokens } from "./services/servico-tokens"
 
+import { EmprestimosController } from "./controllers/emprestimos.controller"
+import { autenticar } from "./middlewares/autenticar"
+import type { RepositorioEmprestimos } from "./repositories/repositorio-emprestimos"
+import { criarRotasEmprestimos, criarRotasReservas } from "./routes/emprestimos.routes"
+import { ServicoCirculacao } from "./services/servico-circulacao"
+
 const ENDPOINTS = [
     "GET /api/livros",
     "POST /api/livros",
@@ -27,9 +33,26 @@ const ENDPOINTS = [
     "DELETE /api/livros/:id/exemplares/:exemplarId",
 ]
 
+const ENDPOINTS_EMPRESTIMOS = [
+    "GET /api/emprestimos",
+    "POST /api/emprestimos",
+    "GET /api/emprestimos/:id",
+    "POST /api/emprestimos/:id/devolucao",
+    "POST /api/emprestimos/:id/renovacoes",
+    "GET /api/reservas",
+    "POST /api/reservas",
+    "GET /api/reservas/:id",
+    "DELETE /api/reservas/:id",
+]
+
 /* Monta a aplicação Express SEM abrir porta (quem abre é o server.ts).
 Recebe o repositório de fora: a API usa SQLite, os testes podem usar memória. */
-export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : RepositorioUsuarios, tokens? : ServicoTokens): Express {
+export function criarApp(
+    repositorio: RepositorioAcervo,
+    repositorioUsuario?: RepositorioUsuarios,
+    tokens?: ServicoTokens,
+    repositorioEmprestimos?: RepositorioEmprestimos
+): Express {
     const app = express()
 
     app.disable("x-powered-by")
@@ -43,7 +66,8 @@ export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : R
         res.json({
             nome: "Biblioteca Virtual API",
             livros: "/api/livros",
-            endpoints: ENDPOINTS,
+            ...(repositorioEmprestimos && tokens ? { emprestimos: "/api/emprestimos", reservas: "/api/reservas" } : {}),
+            endpoints: repositorioEmprestimos && tokens ? [...ENDPOINTS, ...ENDPOINTS_EMPRESTIMOS] : ENDPOINTS,
         })
     })
 
@@ -78,6 +102,13 @@ export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : R
         )
     }
 
+    if (repositorioEmprestimos && tokens) {
+        const autenticarUsuario = autenticar(tokens)
+        const controller = new EmprestimosController(new ServicoCirculacao(repositorioEmprestimos))
+        app.use("/api/emprestimos", criarRotasEmprestimos(controller, autenticarUsuario))
+        app.use("/api/reservas", criarRotasReservas(controller, autenticarUsuario))
+    }
+
     app.use((_req, res) => {
         res.status(404).json({ erro: "Rota não encontrada." })
     })
@@ -85,5 +116,3 @@ export function criarApp(repositorio: RepositorioAcervo, repositorioUsuario? : R
 
     return app
 }
-
-

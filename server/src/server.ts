@@ -2,6 +2,7 @@ import { criarApp } from "./app"
 import { DB_PATH, PORT, lerSegredoJwt } from "./config/ambiente"
 import { abrirBanco } from "./config/banco"
 import { semearSeVazio } from "./database/seed"
+import { RepositorioEmprestimosSQLite } from "./repositories/repositorio-emprestimos-sqlite"
 import { RepositorioSQLite } from "./repositories/repositorio-sqlite"
 import { RepositorioUsuariosSQLite } from "./repositories/repositorio-usuarios-sqlite"
 import { ServicoTokens } from "./services/servico-tokens"
@@ -20,7 +21,8 @@ if (semearSeVazio(banco)) {
 const app = criarApp(
     new RepositorioSQLite(banco), // acessa livros e exemplares
     new RepositorioUsuariosSQLite(banco), // acessa usuários
-    tokens
+    tokens,
+    new RepositorioEmprestimosSQLite(banco)
 )
 
 const servidor = app.listen(PORT, (erro?: Error) => {
