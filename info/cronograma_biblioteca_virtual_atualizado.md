@@ -1,14 +1,14 @@
-# Cronograma - Biblioteca Virtual (v13 — escopo essencial)
+# Cronograma - Biblioteca Virtual (v14 — escopo essencial)
 
-**Atualizado em 24/11/2026. Apresentação em 02/12/2026.**
+**Atualizado em 25/11/2026, ao encerrar o trabalho do dia. Apresentação em 02/12/2026.**
 
 **Prazo de preparação:** concluir a versão apresentável e os materiais até 01/12. A data de entrega formal deve seguir o combinado com o professor.
 
 **Capacidade de referência:** 5 h de segunda a sexta e 6 h aos sábados e domingos. A janela de 24/11 a 01/12 tem 42 h nominais, incluindo o trabalho já realizado em 24/11. De 25/11 a 01/12, restam 37 h previstas. Os blocos incluem leitura, implementação manual, testes e correções. As horas de 02/12 são destinadas à apresentação.
 
-**Situação em 24/11:** catálogo e cadastro publicados e conferidos online. Login da API com comparação de senha, emissão e verificação de JWT concluído localmente. Middleware de autenticação criado e testado numa aplicação isolada. O front ainda precisa enviar o login e utilizar o token. ErroPermissao e seu tratamento HTTP 403 foram implementados e passaram no typecheck informado pela usuária. A verificação administrativa e a aplicação das proteções às rotas reais continuam pendentes. Empréstimos, devolução, renovação e multa possuem regras em memória e ainda precisam da integração com SQLite, HTTP e telas.
+**Situação em 25/11:** login local pelo overlay, armazenamento e recuperação de sessão na aba e saída da conta conferidos. Escrita do acervo protegida por autenticação e autorização administrativa. O merge do colaborador trouxe ServicoCirculacao, repositório SQLite e API autenticada de empréstimos, devoluções, renovações e reservas. O front possui listarExemplares e emprestarExemplar, com typecheck aprovado, mas ainda sem ligação ao botão do catálogo. Na leitura final foi identificada uma barra ausente na URL de listarExemplares; corrigir antes do primeiro teste funcional. Lista de empréstimos e devolução pela interface seguem pendentes.
 
-**Verificações registradas:** em 19/11, a usuária confirmou 291 testes de 14 arquivos e typecheck do back-end. Em 23 e 24/11, confirmou 12 testes novos em quatro arquivos, nas execuções direcionadas de sessões, tokens, rota HTTP e autenticação. Também confirmou login local 201 com token e senha incorreta com 401. A suíte completa deve ser executada novamente depois de aplicar as proteções.
+**Verificações até 25/11:** após o merge, foram observados 366 testes aprovados em 22 arquivos. Depois das proteções e dos novos testes 401/403, a usuária confirmou suíte completa e typecheck sem erros, sem informar o novo total. Login, sessão e saída foram conferidos manualmente; funções de empréstimo no front tiveram typecheck aprovado, sem teste funcional do botão. Registro anterior: em 19/11, a usuária confirmou 291 testes de 14 arquivos e typecheck do back-end. Em 23 e 24/11, confirmou 12 testes novos em quatro arquivos, nas execuções direcionadas de sessões, tokens, rota HTTP e autenticação. Também confirmou login local 201 com token e senha incorreta com 401. A confirmação posterior de execução completa está registrada acima; repetir as verificações finais após integrar as telas.
 
 **Regra de acompanhamento:** [X] indica conclusão confirmada; [ ] indica pendência. Backend local, integração ao front e publicação são acompanhados separadamente. A disponibilidade do método de permissão e do middleware em testes não conclui a autorização das rotas reais.
 
@@ -26,17 +26,20 @@
 - [X] Implementar login da API, comparação de senha, emissão e verificação de JWT e configuração local de JWT_SECRET.
 - [X] Testar POST /api/sessoes com 201, 401 e 400 e o middleware de autenticação em rota isolada.
 - [X] Implementar ErroPermissao e sua conversão em resposta HTTP 403, com typecheck aprovado em 24/11.
-- [ ] Implementar e testar o middleware de autorização administrativa e aplicar as proteções às rotas reais.
-- [ ] Conectar o overlay de login à API, organizar o uso do token, a saída da conta e a navegação autenticada.
+- [X] Implementar e testar o middleware de autorização administrativa e aplicar as proteções às rotas reais de escrita do acervo.
+- [X] Conectar o overlay de login à API, guardar e recuperar a sessão em sessionStorage e implementar saída da conta, conferidos localmente.
+- [ ] Usar o token nas ações de empréstimo pela interface e tratar sessão inválida durante o fluxo completo.
 - [ ] Configurar JWT_SECRET no Render e publicar e validar online o login e as proteções.
-- [ ] Empréstimo e devolução persistidos no SQLite, com atualização consistente do exemplar e consulta dos empréstimos do próprio usuário.
-- [ ] Integrar somente limite de 3 empréstimos, prazo de 14 dias e disponibilidade ao fluxo de empréstimo e devolução.
+- [X] Backend de empréstimo e devolução com SQLite, transações, consulta do titular e proteção JWT integrado pelo merge, com testes automatizados aprovados.
+- [X] Regras de limite de 3 empréstimos, prazo de 14 dias e disponibilidade disponíveis no backend de circulação.
+- [X] Criar listarExemplares e emprestarExemplar no cliente HTTP; typecheck aprovado.
+- [ ] Corrigir URL de listarExemplares, ligar empréstimo ao catálogo e implementar consulta e devolução nas telas.
 - [X] Base de TypeScript, POO, API REST, banco relacional e testes de acervo e cadastro.
 - [ ] Testar o fluxo autenticado completo e concluir documentação de execução e preparação da explicação.
 - [X] Estados de carregamento, vazio e erro no catálogo.
 - [ ] Conferir formulários, mensagens e navegação das telas usadas na demonstração. O fechamento dos overlays por Escape já foi conferido; a ampliação da navegação dos cards pelo teclado permanece adiada.
 
-**Fora da entrega de 02/12:** reservas e fila, integração de renovação e multa, administração por tela, edição de conta, histórico separado, notificações, recuperação de senha, filtros avançados e novos padrões Strategy/Specification. Não acrescentar esses itens mesmo se sobrar um pequeno intervalo; usar a margem para estudar e corrigir o núcleo. Preservar as regras e testes que já existem no domínio, explicando quais ainda não estão ligados à API e à interface. Usar o acervo inicial existente na demonstração.
+**Fora do trabalho de interface para 02/12:** reservas e fila, renovação e multa nas telas, administração por tela, edição de conta, histórico separado, notificações, recuperação de senha, filtros avançados e novos padrões Strategy/Specification. Reservas, renovação e multa já chegaram ao backend pelo merge; preservar esse código e seus testes, sem ampliar as telas previstas. Usar a margem para estudar e corrigir o núcleo e demonstrar o acervo inicial existente.
 
 **Recorte e avaliação:** os requisitos e a justificativa de POO continuam descrevendo o projeto completo. Este cronograma registra a versão demonstrável com base no enunciado fornecido, sem afirmar que houve aprovação específica de cada corte pelo professor. Herança entre usuários, encapsulamento das entidades, interfaces de repositório e regras de empréstimo permitem explicar POO com código real. Demonstrar ao menos um teste que rejeita uma operação inválida, além do caminho de sucesso.
 
@@ -109,11 +112,11 @@ As datas representam as previsões anteriores. O registro detalhado do desenvolv
 - [X] **Correção da validação do cadastro** - Substituir Error genérico por ErroValidacao no corpo inválido.
 - [ ] **Cobertura e documentação complementar** - Testar corpo inválido no cadastro e incluir POST /api/usuarios e POST /api/sessoes na apresentação dos endpoints de GET /api, conforme os módulos montados.
 
-**Marco parcial atualizado:** catálogo e cadastro online concluídos. Login e JWT funcionam na API local. A prioridade atual é finalizar autorização, aplicar as proteções e conectar o login ao front.
+**Marco histórico até 24/11:** catálogo e cadastro online concluídos; login e JWT locais. Em 25/11, autorização e login no front foram concluídos; o foco passou à interface dos empréstimos.
 
-## 16/11 a 22/11 - Registro do marco anterior
+## 16/11 a 22/11 - Registro do marco anterior (pendências daquela janela)
 
-O marco de fluxo completo de empréstimos não foi atingido nessa janela. A etapa foi ocupada pela conclusão do cadastro e sua publicação. As pendências foram transferidas para o plano abaixo.
+O marco de fluxo completo de empréstimos não foi atingido nessa janela. A etapa foi ocupada pela conclusão do cadastro e sua publicação. As pendências foram transferidas para o plano abaixo. Atualização de 25/11: persistência e API chegaram pelo merge, usando ServicoCirculacao; a integração das telas permanece pendente. As caixas desta seção preservam o estado daquela janela.
 
 - [ ] Adaptar ServicoEmprestimos para persistência SQLite preservando regras e testes.
 - [ ] Implementar API de empréstimo, consulta do titular e devolução.
@@ -134,14 +137,14 @@ O marco de fluxo completo de empréstimos não foi atingido nessa janela. A etap
 - [X] **24/11** - Criar ErroPermissao em domain/erros.ts e acrescentar sua conversão em HTTP 403 em tratar-erros.ts. Typecheck concluído sem erros conforme confirmação da usuária.
 - [ ] **Próxima ação em 24/11, dentro do tempo que restar do dia** - Implementar o middleware de administrador. Testar membro e administrador antes de aplicar às rotas de escrita. Se exceder o dia, levar para o primeiro bloco de 25/11.
 
-**Ponto de controle:** ErroPermissao e seu tratamento 403 estão concluídos. O middleware de autorização administrativa, os testes de permissão e a aplicação às rotas reais seguem pendentes. Middleware de autenticação testado isoladamente precisa ser aplicado às rotas reais. A carga nominal de 24/11 é de 5 h e inclui o que já foi realizado.
+**Ponto de controle histórico de 24/11 (superado em 25/11):** ErroPermissao e seu tratamento 403 estão concluídos. O middleware de autorização administrativa, os testes de permissão e a aplicação às rotas reais seguem pendentes. Middleware de autenticação testado isoladamente precisa ser aplicado às rotas reais. A carga nominal de 24/11 é de 5 h e inclui o que já foi realizado.
 
 ## 25 a 28/11 - Núcleo da versão apresentável (21 h)
 
-- [ ] **Qua 25/11 (5 h)** - Reservar 1 h para leitura; até 2 h para autorização administrativa, proteção das rotas de escrita existentes e testes de 401/403/sucesso; 2 h para conectar login, token e saída da conta na interface. Trabalhar localmente, sem gastar o bloco com publicação.
-- [ ] **Qui 26/11 (5 h)** - Reservar 1 h para ler serviço, entidades e esquema; 4 h para persistência e API mínimas de criação e consulta dos próprios empréstimos. Reaproveitar limite, disponibilidade e prazo já modelados. Gravar empréstimo e mudança do exemplar na mesma transação. Testar sucesso, exemplar indisponível e limite de 3 ativos.
-- [ ] **Sex 27/11 (5 h)** - Reservar 1 h para leitura e revisão e 4 h para devolução persistente e testes. Impedir acesso a empréstimo alheio e devolução repetida; conferir disponibilidade após devolução e persistência após reiniciar a API. Sem renovação, cálculo de multa na resposta ou reservas.
-- [ ] **Sáb 28/11 (6 h)** - Reservar 1h30 para estudar o caminho das requisições e 4h30 para ligar o botão de empréstimo no catálogo e a lista simples de empréstimos com botão de devolver. Exibir carregamento, sucesso e falha nas operações. Validar o fluxo completo com duas contas, sem acabamento adicional de conta, histórico ou administração.
+- [X] **Qua 25/11 (5 h previstas; duração real não registrada)** - Concluir proteção do acervo, ajustar testes e conferir 401/403 na rota real. Conectar login, sessão e saída na interface. Analisar o merge e iniciar o cliente de empréstimos. Encerrar o dia sem exigir tarefas adicionais.
+- [ ] **Qui 26/11 (5 h)** - Reservar 1 h para estudar o backend incorporado e o modal do catálogo. Nas 4 h restantes, corrigir a barra na URL de listarExemplares, transportar o ID do livro ao modal e conectar o botão de empréstimo. Consultar exemplares, escolher uma unidade disponível e solicitar o empréstimo com token; tratar carregamento, sucesso, falha e atualização da disponibilidade. Não reimplementar o backend existente.
+- [ ] **Sex 27/11 (5 h)** - Reservar 1 h para leitura e 4 h para criar a consulta de empréstimos do usuário no cliente HTTP, preencher a página existente com uma lista simples e conectar devolução. Atualizar a lista após devolver e tratar sessão inválida, vazio e erro. Sem ampliar a UI para reservas e renovação.
+- [ ] **Sáb 28/11 (6 h)** - Reservar 1h30 para estudar as camadas e 4h30 para conferir cadastro -> login -> empréstimo -> consulta -> devolução com duas contas. Conferir limite, exemplar indisponível, titularidade, devolução repetida e persistência após reiniciar a API. Usar o restante para correções e roteiro; congelar funcionalidades.
 
 **Aceite de 25/11:** login e saída utilizáveis localmente e escrita do acervo protegida no servidor. Se houver atraso, priorizar autenticação do fluxo de empréstimo e manter escrita administrativa protegida ou desabilitada até corrigir a autorização; nunca deixar escrita desprotegida para ganhar tempo.
 
@@ -167,12 +170,12 @@ O marco de fluxo completo de empréstimos não foi atingido nessa janela. A etap
 | Data | Marco e situação |
 |---|---|
 | Até 24/11 | Catálogo e cadastro online concluídos; login e JWT local testados; autorização e integração do front pendentes |
-| 25/11 | Meta de autenticação utilizável e escrita do acervo protegida |
+| 25/11 | Login, sessão, saída e proteção do acervo concluídos localmente; backend de circulação incorporado; cliente de empréstimos iniciado |
 | 28/11 | Meta de fluxo de empréstimo/devolução demonstrável e congelamento de funcionalidades |
 | 01/12 | Três ensaios, instalação conferida e materiais prontos |
 | 02/12 | Apresentação |
 
-As 37 h previstas de 25/11 a 01/12 são distribuídas em 21 h até 28/11 e 16 h de validação e preparação de 29/11 a 01/12. A implementação divide os blocos com estudo e testes. O plano não pressupõe horas adicionais.
+Ao encerrar 25/11, restam 32 h previstas de 26/11 a 01/12: 16 h de integração, estudo e correções até 28/11 e 16 h de validação e preparação de 29/11 a 01/12. O backend recebido no merge substitui a implementação que estava agendada para 26 e 27/11. O plano não pressupõe horas adicionais.
 
 Priorizar o fluxo autenticado com persistência e correção dos dados. Os itens retirados desta entrega não voltam ao planejamento antes da apresentação. A publicação completa online também não é condição para a demonstração local prevista no enunciado fornecido.
 
@@ -189,7 +192,7 @@ Preservar os três ensaios. Quando uma meta falhar, atualizar a previsão e o re
 7. Como o token identifica o usuário e como a API impede alterar empréstimos de outra pessoa?
 8. Por que a senha é armazenada com hash? Como o papel de administrador é verificado?
 9. Como impedir que exista empréstimo sem atualizar o exemplar se uma gravação falhar?
-10. Como testar limite de empréstimos e prazo de 14 dias sem esperar dias? Quais testes de multa e renovação pertencem ao domínio ainda sem integração?
+10. Como testar limite de empréstimos, prazo, multa e renovação sem esperar dias? Quais regras já estão na API e quais ainda não têm interface?
 11. O que persiste ao reiniciar a API? Qual é o efeito de db:reset?
 12. Como a hierarquia de usuários representa herança e diferenças de permissão?
 13. Como classes, métodos, herança e interfaces resolvem problemas concretos nesta versão? Localizar os exemplos no código.

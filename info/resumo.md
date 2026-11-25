@@ -1,6 +1,6 @@
 # Resumo de desenvolvimento e estudo - Biblioteca Virtual
 
-**Registro atualizado em 24/11/2026.**
+**Registro atualizado em 25/11/2026, ao encerrar o trabalho do dia.**
 
 Este documento reúne as alterações realizadas, o funcionamento de cada parte e os testes feitos durante o desenvolvimento guiado. As datas organizam o histórico de trabalho e estudo. O cronograma registra as entregas concluídas e as próximas tarefas.
 
@@ -12,7 +12,7 @@ A interface em TypeScript e Vite consulta a API REST em Express. A API utiliza s
 Navegador -> cliente HTTP -> rota -> controller -> serviço -> repositório -> SQLite
 ```
 
-O catálogo e o cadastro pelo overlay foram publicados e validados online. Em 23 e 24/11, foram implementados o login da API, a emissão e verificação de JWT e um middleware de autenticação testado isoladamente. O formulário de login do front ainda tem comportamento simulado. A proteção das rotas reais, a autorização administrativa e a publicação dessa nova versão de autenticação continuam nas próximas etapas.
+O catálogo e o cadastro pelo overlay foram publicados e validados online. Até 25/11, login local, sessão na aba e saída da conta foram conectados ao front e conferidos; a escrita do acervo recebeu autenticação e autorização administrativa. O merge do colaborador incorporou circulação com SQLite e API autenticada. O cliente de empréstimos foi iniciado, mas falta conectá-lo ao catálogo e às telas de consulta e devolução. A publicação dessas novas funções permanece sem confirmação. As seções datadas de 24/11 preservam o estado histórico; a atualização de 25/11 está na seção 14.
 
 ## 2. Base anterior - domínio, banco e API do acervo
 
@@ -572,7 +572,7 @@ A presença do campo papel no token permite consultar a categoria validada. A ap
 
 São 12 testes novos em quatro arquivos, confirmados nas execuções direcionadas durante as etapas de 23 e 24/11. A última execução completa registrada anteriormente teve 291 testes de 14 arquivos em 19/11. Uma nova execução completa deve ser registrada após integrar as proteções. Esta atualização do resumo foi feita pela leitura do código e pelos resultados relatados, sem executar novamente a suíte.
 
-## 12. Situação consolidada em 24/11
+## 12. Situação consolidada em 24/11 — registro histórico
 
 ### Concluído
 
@@ -626,3 +626,67 @@ O cabeçalho Location do cadastro aponta para o identificador criado. A rota GET
 13. Explicar Authorization Bearer, res.locals.usuario, next e next(erro).
 14. Mostrar um teste de login válido, um de senha incorreta e um de rota sem token.
 15. Apontar as proteções já testadas e as integrações que ainda precisam ser realizadas.
+
+## 14. Atualizações até 25/11 — autorização, merge, login no front e início dos empréstimos
+
+### Proteção real da escrita do acervo
+
+O middleware `middlewares/exigir-admin.ts` consulta `res.locals.usuario`. Sem identidade, encaminha ErroAutenticacao, convertido em 401; com papel diferente de ADMIN, encaminha ErroPermissao, convertido em 403. Com permissão, chama next para continuar. Foram confirmados os três testes do middleware: ausência de token, membro e administrador.
+
+Em `routes/livros.routes.ts`, as seis operações de escrita receberam a sequência autenticarUsuario -> exigirAdmin -> controller: criar, substituir, atualizar e remover livro, adicionar e remover exemplar. GET/HEAD continuam públicos e o tratamento de métodos não permitidos permanece separado.
+
+Em `app.ts`, autenticarAcervo é montado com o serviço de tokens e passado como segundo argumento de criarRotasLivros. Quando a aplicação é montada sem esse serviço, a escrita é bloqueada com erro de autenticação; as consultas públicas continuam disponíveis. Essa ligação corrigiu o erro de argumento faltando que ficou durante a implementação em partes.
+
+Em `tests/api.test.ts`, as operações de escrita passaram a enviar um token de administrador. Inclusive cenários que esperam 400, 404 ou 409 precisam autenticar primeiro, para alcançar a validação ou regra que desejam testar. Foram acrescentados testes de cadastro sem token (401) e com membro (403), verificando também que nenhum livro foi incluído. Cada cenário roda com memória e SQLite. Os testes anteriores de cadastro autorizado já verificam 201.
+
+### Integração recebida do colaborador
+
+O merge trouxe `services/servico-circulacao.ts`, que coordena regras de empréstimo, devolução, renovação, multa e reservas. Ele depende da interface RepositorioEmprestimos, separando regras da tecnologia de armazenamento, e recebe um relógio substituível para testar datas sem esperar o tempo real.
+
+`repositories/repositorio-emprestimos-sqlite.ts` consulta e grava empréstimos e reservas e reconstrói entidades a partir das linhas do banco. As transações agrupam alterações do empréstimo e do exemplar, com rollback em caso de falha. Os testes incorporados cobrem regras, HTTP, integridade e rollback. O teste descrito como reinício reconstrói serviço e repositório sobre a mesma conexão SQLite em memória; ele não substitui a conferência manual de fechar e abrir a API usando o arquivo do banco.
+
+`controllers/emprestimos.controller.ts` recebe parâmetros HTTP, chama o serviço e monta respostas. `routes/emprestimos.routes.ts` registra criação, consulta, devolução e renovação, além das rotas de reservas. Essas operações recebem autenticação JWT. `usuario-da-requisicao.ts` recupera o identificador validado em res.locals; o serviço confere existência e titularidade, impedindo que uma pessoa manipule empréstimos de outra.
+
+`server.ts` fornece o repositório SQLite de circulação a criarApp. O ServicoEmprestimos antigo em memória continua no projeto; o fluxo HTTP novo utiliza ServicoCirculacao. Não é necessário refazer a integração do backend que estava prevista para 26 e 27/11.
+
+Reservas, renovação e multa passaram a existir também nesse backend. Suas telas continuam fora do recorte essencial, que permanece centrado em empréstimo e devolução. A pasta local `.integracao-emprestimos` foi identificada como repositório separado e a orientação foi ignorá-la no Git do projeto, preservando seu conteúdo.
+
+### Login, sessão e saída na interface
+
+Em `web/src/api.ts`, DadosLogin define e-mail e senha enviados e RespostaLogin define token e dados públicos recebidos. iniciarSessao faz POST /api/sessoes e transforma falhas HTTP em mensagens para o formulário. Em `script.ts`, o submit passou a ser assíncrono: impede recarregar a página, verifica campos, mostra Entrando..., aguarda a API e exibe sucesso ou erro. Após sucesso, limpa o campo de senha.
+
+A sessão retornada é serializada com JSON.stringify e gravada em sessionStorage sob a chave biblioteca.sessao. A senha não é incluída nessa resposta. obterSessao lê o texto, usa JSON.parse e devolve sessão ou null; quando o JSON é inválido, remove o registro. A anotação de tipo não valida a estrutura em tempo de execução, e a leitura local não comprova a validade do token. Essa validação continua sendo da API.
+
+Ao abrir o overlay, a interface recupera a sessão e mostra o nome conectado. A usuária confirmou a mensagem com o nome Luana. O armazenamento permanece ao recarregar e navegar entre páginas da mesma origem na aba, mas não prolonga o prazo de validade do JWT.
+
+O botão sairConta foi acrescentado aos overlays da home e do acervo, com type=button para não enviar o formulário e hidden para controlar a visibilidade. O clique chama encerrarSessao, remove o registro, limpa o formulário, esconde o botão e mostra a mensagem de saída. Isso remove a cópia local do token; não revoga no servidor um JWT já emitido. Login, recuperação após recarregar e saída foram conferidos pela usuária.
+
+Durante essa etapa, foi corrigida uma vírgula no fechamento do fetch e uma chave ausente no fechamento de iniciarLogin. Também ocorreu Failed to fetch; a rota local /api/saude foi conferida com status ok, e o fluxo de login e recuperação de sessão voltou a ser confirmado posteriormente.
+
+### Cliente HTTP dos empréstimos — etapa iniciada
+
+ExemplarResumo descreve a unidade, com id, livroId, código, status e disponibilidade. listarExemplares consulta a rota pública GET /api/livros/:id/exemplares. EmprestimoResumo descreve os campos usados inicialmente pela UI; a API devolve também outros campos.
+
+emprestarExemplar recupera a sessão e recusa a solicitação quando ela está ausente. Envia POST /api/emprestimos com exemplarId no JSON e o token em Authorization: Bearer. A identidade do usuário vem do token. Em resposta 401, remove a sessão e pede novo login; nas demais falhas, tenta apresentar a mensagem da API. Em sucesso, devolve o empréstimo criado.
+
+A usuária confirmou typecheck sem erros após essas funções. Ainda não houve confirmação de um empréstimo executado pelo botão da interface. O modal continua precisando transportar o ID do livro, consultar exemplares e chamar a função de empréstimo.
+
+**Ajuste encontrado na leitura final, pendente para a retomada:** listarExemplares está usando `/api/livros${encodeURIComponent(livroId)}/exemplares`. Falta a barra entre livros e o identificador. O correto é `/api/livros/${encodeURIComponent(livroId)}/exemplares`. TypeScript não detecta esse erro de endereço. Nenhum código foi alterado nesta atualização documental.
+
+### Verificações e limites do registro
+
+- Após o merge, a execução observada teve 366 testes aprovados em 22 arquivos. O typecheck do backend apontou o argumento faltando durante a alteração das rotas; essa ligação foi corrigida depois.
+- A suíte direcionada de api.test.ts teve 119 testes aprovados após incluir os tokens, com aviso de demora no encerramento interno do Vitest. Não houve falha de asserção nessa execução.
+- Depois dos novos cenários 401 e 403, a usuária confirmou typecheck e suíte completa sem falhas; o total atualizado não foi informado.
+- No front, a usuária confirmou os typechecks e os testes manuais de login, sessão e saída. O build aprovado observado após o merge precede essas últimas alterações e deve ser repetido na validação final.
+- As funções de consulta de exemplares e solicitação de empréstimo tiveram apenas aprovação de tipos relatada; a URL pendente e a ausência de ligação à UI impedem marcar o fluxo como concluído.
+- Esta atualização de documentação foi feita por leitura dos arquivos e resultados já registrados, sem nova execução da suíte.
+
+### Ponto exato para retomar em 26/11
+
+1. Corrigir a barra ausente na URL de listarExemplares.
+2. Estudar como o card entrega o ID do livro ao modal.
+3. Ligar o botão do catálogo à consulta de exemplares e a emprestarExemplar, com carregamento e mensagens.
+4. Atualizar a disponibilidade exibida após sucesso.
+5. Implementar lista dos próprios empréstimos e devolução na página existente.
+6. Conferir o fluxo com duas contas, persistência após reiniciar a API e as regras de bloqueio; depois preparar os ensaios.
