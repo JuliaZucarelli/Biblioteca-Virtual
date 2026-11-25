@@ -1,5 +1,5 @@
 import { elementoFocado, porId } from "./dom";
-import { cadastrarUsuario, iniciarSessao, obterSessao } from "./api";
+import { cadastrarUsuario, iniciarSessao, obterSessao, encerrarSessao } from "./api";
 import { error } from "node:console";
 
 /* ========== MODAL DO LIVRO ========== */
@@ -170,6 +170,7 @@ function iniciarLogin(): void {
   const emailInput = porId<HTMLInputElement>("email");
   const passwordInput = porId<HTMLInputElement>("password");
   const errorEl = porId("loginError");
+  const sairBtn = porId<HTMLButtonElement>("sairConta")
   const forgotBtn = document.querySelector<HTMLButtonElement>(".login-modal__Fpassword");
 
   if (!openBtn || !closeBtn || !form || !emailInput || !passwordInput || !errorEl || !forgotBtn) {
@@ -192,6 +193,10 @@ function iniciarLogin(): void {
 
     // o operador ? : escolhe a mensagem, se houver sessão mostra o nome, caso contrário deixa o campo vazio
     errorEl!.textContent = sessao ? `Você está conectado como ${sessao.usuario.nome}` : ""
+
+    if(sairBtn) {
+      sairBtn.hidden = !sessao
+    }
   }
 
   function closeLogin(): void {
@@ -204,6 +209,14 @@ function iniciarLogin(): void {
 
   openBtn.addEventListener("click", openLogin);
   closeBtn.addEventListener("click", closeLogin);
+
+  sairBtn?.addEventListener("click", () => {
+    encerrarSessao()
+    sairBtn.hidden = true
+    form.reset()
+    errorEl.textContent = "Você saiu da conta."
+    emailInput.focus()
+  })
 
   const abrirCadastroBtn = porId<HTMLButtonElement>("abrirCadastroUsuario")
 
@@ -332,6 +345,11 @@ function iniciarLogin(): void {
         "biblioteca.sessao",
         JSON.stringify(sessao) // transforma o objeto com token e dados públicos do usuário em texto
       )
+
+      // mostrar o botão após um login bem sucedido 
+      if(sairBtn) {
+        sairBtn.hidden = false
+      }
 
       errorEl.textContent = `Login realizado! Olá, ${sessao.usuario.nome}`
 

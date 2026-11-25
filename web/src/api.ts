@@ -132,3 +132,8 @@ export function obterSessao() : RespostaLogin | null {
         return null
     }
 }
+
+// remove a sessaão salva naquela aba
+export function encerrarSessao() : void {
+    sessionStorage.removeItem("biblioteca.sessao")
+}
