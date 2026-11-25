@@ -48,6 +48,16 @@ export interface ExemplarResumo {
     disponivel : boolean
 }
 
+// descreve os campos da resposta que usaremos inicialmente
+export interface EmprestimoResumo {
+    id : string 
+    exemplarId : string
+    livroId : string 
+    livroTitulo : string 
+    dataVencimento : string 
+    ativo : boolean
+}
+
 // função para busca de livro - entrega uma lista de livros
 export async function listarLivros(): Promise<LivroResumo[]> {
     // faz uma requisição GET
@@ -165,4 +175,43 @@ export async function listarExemplares(livroId : string) : Promise<ExemplarResum
     // lê a lista de exemplares retornada pela API
     const exemplares : ExemplarResumo[] = await resposta.json()
     return exemplares
+}
+
+export async function emprestarExemplar(exemplarId : string) : Promise<EmprestimoResumo> {
+    // recupera o token salvo
+    const sessao = obterSessao()
+
+    // impede a solicitação quando não há sessão 
+    if(!sessao) {
+        throw new Error("Entre na sua conta para solicitar um empréstimo.")
+    }
+
+    const enderecoApi = import.meta.env.VITE_API_URL ?? ""   
+
+    const resposta = await fetch(`${enderecoApi}/api/emprestimos`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${sessao.token}` // envia o JWT para a API identificar o usuário -> o corpo envia somente o exemplar, a identidade vem do token
+        },
+        body: JSON.stringify({ exemplarId })
+    })
+
+    if(!resposta.ok) {
+        if(resposta.status === 401) { // remove a sessão inválida e pede um novo login
+            encerrarSessao()
+            throw new Error("Sua sessão não é válida. Entre novamente.")
+        }
+
+        const dadosErro = await resposta.json().catch(() => null)
+
+        throw new Error(
+            typeof dadosErro?.erro === "string"
+            ? dadosErro.erro
+            : "Não foi possível realizar o empréstimo."
+        )
+    }
+
+    const emprestimo : EmprestimoResumo = await resposta.json()
+    return emprestimo
 }
