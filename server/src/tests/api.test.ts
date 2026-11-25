@@ -6,6 +6,9 @@ import { criarAcervoInicial } from "../database/dados_inicias"
 import { semearSeVazio } from "../database/seed"
 import { RepositorioAcervo, RepositorioMemoria } from "../repositories/repositorio"
 import { RepositorioSQLite } from "../repositories/repositorio-sqlite"
+import { AdminUser } from "../domain/admin-user"
+import { ServicoTokens } from "../services/servico-tokens"  
+import { RegularUser } from "../domain/regular-user"
 
 const livroValido = {
     titulo: "Dom Casmurro",
@@ -30,9 +33,25 @@ const implementacoes: Array<[string, () => RepositorioAcervo]> = [
 
 describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, criarRepositorio) => {
     let app: ReturnType<typeof criarApp>
+    // guarda o token que as requisições de escrita vão enviar
+    let tokenAdmin : string
 
     beforeEach(() => {
-        app = criarApp(criarRepositorio())
+        // cria e verifica tokens usando uma chave exclusiva dos testes
+        const tokens = new ServicoTokens("chave-de-teste-com-mais-de-32-bytes")
+
+        const administrador = new AdminUser(
+            "ADMIN-TESTE",
+            "Administrador de teste",
+            "teste@gmail.com"
+        )
+
+        // gera um JWT com a identidade e o papel "ADMIN"
+        tokenAdmin = tokens.gerarToken(administrador)
+
+        // undefined: indica que esses testes de acervo não precisam do repositório de usuários
+        // tokens: fornece a aplicação o serviço que validará esse JWT
+        app = criarApp(criarRepositorio(), undefined, tokens)
     })
 
     // ================= GET =================
@@ -111,8 +130,51 @@ describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, c
 
     // ================= POST =================
     describe("POST /api/livros", () => {
+        it("retorna 401 ao tentar cadastrar livro sem token", async () => {
+            const resposta = await request(app)
+                .post("/api/livros")
+                .send(livroValido)
+
+            expect(resposta.status).toBe(401)
+
+            const consulta = await request(app).get("/api/livros")
+
+            expect(consulta.status).toBe(200)
+            expect(consulta.body).toHaveLength(9)
+        })   
+        
+        it("retorna 403 ao tentar cadastrar livro como membro", async () => {
+            const tokens = new ServicoTokens(
+                "chave-de-teste-com-mais-de-32-bytes"
+            )
+
+            const membro = new RegularUser(
+                "MEMBRO-TESTE",
+                "Ana",
+                "ana@email.com"
+            )
+
+            const tokenMembro = tokens.gerarToken(membro)
+
+            const resposta = await request(app)
+                .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenMembro}`)
+                .send(livroValido)
+
+            expect(resposta.status).toBe(403)
+
+            const consulta = await request(app).get("/api/livros")
+
+            expect(consulta.status).toBe(200)
+            expect(consulta.body).toHaveLength(9)
+        })
+
         it("201 Created, com Location e o livro criado no corpo", async () => {
-            const res = await request(app).post("/api/livros").send(livroValido)
+            const res = await request(app)
+                .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send(livroValido)
+           
             expect(res.status).toBe(201)
             expect(res.headers.location).toBe("/api/livros/L10")
             expect(res.body).toEqual({
@@ -130,7 +192,11 @@ describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, c
         })
 
         it("o livro criado passa a existir (GET no Location)", async () => {
-            const criado = await request(app).post("/api/livros").send(livroValido)
+            const criado = await request(app)
+                .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send(livroValido)
+            
             const res = await request(app).get(criado.headers.location!)
             expect(res.status).toBe(200)
             expect(res.body.titulo).toBe("Dom Casmurro")
@@ -139,59 +205,97 @@ describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, c
 
         it("sinopse e capa são opcionais", async () => {
             const { sinopse, capa, ...minimo } = livroValido
-            const res = await request(app).post("/api/livros").send(minimo)
+
+            const res = await request(app)
+                .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send(minimo)
+
             expect(res.status).toBe(201)
             expect(res.body).toMatchObject({ sinopse: "", capa: "" })
         })
 
         it("remove espaços nas pontas dos textos", async () => {
-            const res = await request(app).post("/api/livros").send({ ...livroValido, titulo: "  Dom Casmurro  " })
+            const res = await request(app)
+                .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send({ ...livroValido, titulo: "  Dom Casmurro  " })
+            
             expect(res.body.titulo).toBe("Dom Casmurro")
         })
 
         it("400 quando falta um campo obrigatório", async () => {
             const { autor, ...semAutor } = livroValido
-            const res = await request(app).post("/api/livros").send(semAutor)
+
+            const res = await request(app)
+                .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send(semAutor)
+
             expect(res.status).toBe(400)
             expect(res.body.erro).toBe("O campo 'autor' é obrigatório.")
         })
 
         it("400 quando um texto está vazio", async () => {
-            const res = await request(app).post("/api/livros").send({ ...livroValido, titulo: "   " })
+            const res = await request(app)
+                .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send({ ...livroValido, titulo: "   " })
+
             expect(res.status).toBe(400)
             expect(res.body.erro).toMatch(/titulo/)
         })
 
         it("400 quando o ano não é um número inteiro positivo", async () => {
             for (const ano of ["1899", -5, 0, 18.5]) {
-                const res = await request(app).post("/api/livros").send({ ...livroValido, ano })
+                const res = await request(app)
+                    .post("/api/livros")
+                    .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                    .send({ ...livroValido, ano })
+
                 expect(res.status, `ano=${ano}`).toBe(400)
                 expect(res.body.erro).toMatch(/ano/)
             }
         })
 
         it("400 quando o ISBN não tem 10 ou 13 dígitos", async () => {
-            const res = await request(app).post("/api/livros").send({ ...livroValido, isbn: "12345" })
+            const res = await request(app)
+                .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send({ ...livroValido, isbn: "12345" })
+
             expect(res.status).toBe(400)
             expect(res.body.erro).toMatch(/isbn/)
         })
 
         it("400 quando um campo tem o tipo errado", async () => {
-            const res = await request(app).post("/api/livros").send({ ...livroValido, titulo: 123 })
+            const res = await request(app)
+                .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send({ ...livroValido, titulo: 123 })
+
             expect(res.status).toBe(400)
             expect(res.body.erro).toBe("O campo 'titulo' deve ser um texto.")
         })
 
         it("400 para campos desconhecidos, inclusive id (o servidor é quem gera o id)", async () => {
-            const res = await request(app).post("/api/livros").send({ ...livroValido, id: "L99" })
+            const res = await request(app)
+                .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send({ ...livroValido, id: "L99" })
+
             expect(res.status).toBe(400)
             expect(res.body.erro).toBe("Campos não permitidos: id.")
         })
 
         it("400 quando o corpo não é um objeto JSON", async () => {
-            const lista = await request(app).post("/api/livros").send([])
+            const lista = await request(app)
+                .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send([])
+
             expect(lista.status).toBe(400)
-            const vazio = await request(app).post("/api/livros")
+            const vazio = await request(app).post("/api/livros").set("Authorization", `Bearer ${tokenAdmin}`)
             expect(vazio.status).toBe(400)
             expect(vazio.body.erro).toBe("O corpo da requisição deve ser um objeto JSON.")
         })
@@ -199,14 +303,20 @@ describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, c
         it("400 quando o JSON é inválido (e não 500)", async () => {
             const res = await request(app)
                 .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
                 .set("Content-Type", "application/json")
                 .send("{ isto não é json")
+
             expect(res.status).toBe(400)
             expect(res.body).toEqual({ erro: "O corpo da requisição não é um JSON válido." })
         })
 
         it("409 Conflict quando o ISBN já está cadastrado (mesmo escrito com hífens)", async () => {
-            const res = await request(app).post("/api/livros").send({ ...livroValido, isbn: "978-0-00-000001-9" })
+            const res = await request(app)
+                .post("/api/livros")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send({ ...livroValido, isbn: "978-0-00-000001-9" })
+
             expect(res.status).toBe(409)
             expect(res.body).toEqual({ erro: "Já existe um livro cadastrado com este ISBN." })
         })
@@ -215,36 +325,57 @@ describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, c
     // ================= PUT =================
     describe("PUT /api/livros/:id", () => {
         it("200: substitui o livro inteiro, mantendo o id e os exemplares", async () => {
-            const res = await request(app).put("/api/livros/L01").send(livroValido)
+            const res = await request(app)
+                .put("/api/livros/L01")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send(livroValido)
+
             expect(res.status).toBe(200)
             expect(res.body).toMatchObject({ id: "L01", titulo: "Dom Casmurro", ano: 1899, total: 3, disponiveis: 2 })
         })
 
         it("campos opcionais que não vieram voltam ao padrão (PUT substitui tudo)", async () => {
             const { sinopse, capa, ...minimo } = livroValido
-            const res = await request(app).put("/api/livros/L01").send(minimo)
+
+            const res = await request(app)
+                .put("/api/livros/L01")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send(minimo)
             expect(res.body).toMatchObject({ sinopse: "", capa: "" })
         })
 
         it("200 ao reenviar o próprio ISBN (não conflita consigo mesmo)", async () => {
-            const res = await request(app).put("/api/livros/L01").send({ ...livroValido, isbn: "9780000000019" })
+            const res = await request(app)
+            .put("/api/livros/L01")
+            .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+            .send({ ...livroValido, isbn: "9780000000019" })
             expect(res.status).toBe(200)
         })
 
         it("400 quando falta campo obrigatório (PUT exige o livro completo)", async () => {
             const { genero, ...semGenero } = livroValido
-            const res = await request(app).put("/api/livros/L01").send(semGenero)
+            const res = await request(app)
+                .put("/api/livros/L01")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send(semGenero)
+
             expect(res.status).toBe(400)
             expect(res.body.erro).toBe("O campo 'genero' é obrigatório.")
         })
 
         it("404 para livro inexistente", async () => {
-            const res = await request(app).put("/api/livros/L999").send(livroValido)
+            const res = await request(app)
+                .put("/api/livros/L999")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send(livroValido)
             expect(res.status).toBe(404)
         })
 
         it("409 quando o ISBN pertence a outro livro", async () => {
-            const res = await request(app).put("/api/livros/L01").send({ ...livroValido, isbn: "9780000000026" })
+            const res = await request(app)
+                .put("/api/livros/L01")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send({ ...livroValido, isbn: "9780000000026" })
             expect(res.status).toBe(409)
         })
     })
@@ -252,7 +383,11 @@ describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, c
     // ================= PATCH =================
     describe("PATCH /api/livros/:id", () => {
         it("200: altera só os campos enviados", async () => {
-            const res = await request(app).patch("/api/livros/L01").send({ ano: 1850, genero: "Clássico" })
+            const res = await request(app)
+                .patch("/api/livros/L01")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send({ ano: 1850, genero: "Clássico" })
+
             expect(res.status).toBe(200)
             expect(res.body).toMatchObject({
                 id: "L01",
@@ -264,34 +399,56 @@ describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, c
         })
 
         it("a alteração fica salva", async () => {
-            await request(app).patch("/api/livros/L01").send({ titulo: "Noites Brancas (edição de bolso)" })
+            await request(app)
+                .patch("/api/livros/L01")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send({ titulo: "Noites Brancas (edição de bolso)" })
+
             const res = await request(app).get("/api/livros/L01")
             expect(res.body.titulo).toBe("Noites Brancas (edição de bolso)")
         })
 
         it("400 quando nenhum campo é enviado", async () => {
-            const res = await request(app).patch("/api/livros/L01").send({})
+            const res = await request(app)
+                .patch("/api/livros/L01")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+                .send({})
+
             expect(res.status).toBe(400)
             expect(res.body.erro).toBe("Informe ao menos um campo para atualizar.")
         })
 
         it("400 ao tentar alterar o id", async () => {
-            const res = await request(app).patch("/api/livros/L01").send({ id: "L77" })
+            const res = await request(app)
+            .patch("/api/livros/L01")
+            .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+            .send({ id: "L77" })
             expect(res.status).toBe(400)
         })
 
         it("400 quando um campo enviado é inválido", async () => {
-            const res = await request(app).patch("/api/livros/L01").send({ titulo: "" })
+            const res = await request(app)
+            .patch("/api/livros/L01")
+            .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+            .send({ titulo: "" })
             expect(res.status).toBe(400)
         })
 
         it("404 para livro inexistente", async () => {
-            const res = await request(app).patch("/api/livros/L999").send({ ano: 2000 })
+            const res = await request(app)
+            .patch("/api/livros/L999")
+            .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+            .send({ ano: 2000 })
+
             expect(res.status).toBe(404)
         })
 
         it("409 quando o novo ISBN pertence a outro livro", async () => {
-            const res = await request(app).patch("/api/livros/L01").send({ isbn: "9780000000026" })
+            const res = await request(app)
+            .patch("/api/livros/L01")
+            .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+            .send({ isbn: "9780000000026" })
+
             expect(res.status).toBe(409)
         })
     })
@@ -299,7 +456,10 @@ describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, c
     // ================= DELETE =================
     describe("DELETE /api/livros/:id", () => {
         it("204 No Content, sem corpo; o livro deixa de existir", async () => {
-            const res = await request(app).delete("/api/livros/L04") // 2 exemplares, nenhum emprestado
+            const res = await request(app)
+                .delete("/api/livros/L04").set("Authorization", `Bearer ${tokenAdmin}`) // 2 exemplares, nenhum emprestado
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+
             expect(res.status).toBe(204)
             expect(res.text ?? "").toBe("")
             expect((await request(app).get("/api/livros/L04")).status).toBe(404)
@@ -307,21 +467,32 @@ describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, c
         })
 
         it("apaga também os exemplares do livro", async () => {
-            await request(app).delete("/api/livros/L04")
+            await request(app)
+                .delete("/api/livros/L04")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+
             expect((await request(app).get("/api/livros/L04/exemplares")).status).toBe(404)
             // os códigos de tombo ficam livres para uso
-            const novo = await request(app).post("/api/livros/L08/exemplares").send({ codigo: "TOMBO-007" })
+            const novo = await request(app).post("/api/livros/L08/exemplares").set("Authorization", `Bearer ${tokenAdmin}`).send({ codigo: "TOMBO-007" })
             expect(novo.status).toBe(201)
         })
 
         it("404 para livro inexistente (e ao apagar duas vezes)", async () => {
-            expect((await request(app).delete("/api/livros/L999")).status).toBe(404)
-            await request(app).delete("/api/livros/L04")
-            expect((await request(app).delete("/api/livros/L04")).status).toBe(404)
+            expect((await request(app)
+                .delete("/api/livros/L999").set("Authorization", `Bearer ${tokenAdmin}`)).status)
+                .toBe(404)
+
+            await request(app)
+                .delete("/api/livros/L04")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+            expect((await request(app).delete("/api/livros/L04").set("Authorization", `Bearer ${tokenAdmin}`)).status).toBe(404)
         })
 
         it("409 quando há exemplar emprestado", async () => {
-            const res = await request(app).delete("/api/livros/L01")
+            const res = await request(app)
+                .delete("/api/livros/L01")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+
             expect(res.status).toBe(409)
             expect(res.body.erro).toMatch(/emprestados ou reservados/)
             expect((await request(app).get("/api/livros/L01")).status).toBe(200) // continua lá
@@ -353,7 +524,10 @@ describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, c
 
     describe("POST /api/livros/:id/exemplares", () => {
         it("201 com Location; o código de tombo é gerado quando não é informado", async () => {
-            const res = await request(app).post("/api/livros/L08/exemplares")
+            const res = await request(app)
+                .post("/api/livros/L08/exemplares")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+
             expect(res.status).toBe(201)
             expect(res.headers.location).toMatch(/^\/api\/livros\/L08\/exemplares\/E\d{3}$/)
             expect(res.body).toMatchObject({ livroId: "L08", status: "DISPONIVEL", disponivel: true })
@@ -361,29 +535,34 @@ describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, c
         })
 
         it("a contagem do livro é atualizada", async () => {
-            await request(app).post("/api/livros/L08/exemplares")
+            await request(app)
+                .post("/api/livros/L08/exemplares")
+                .set("Authorization", `Bearer ${tokenAdmin}`) // add o cabeçalho HTTP
+
             const res = await request(app).get("/api/livros/L08")
             expect(res.body).toMatchObject({ total: 1, disponiveis: 1 })
         })
 
         it("aceita um código de tombo informado", async () => {
-            const res = await request(app).post("/api/livros/L08/exemplares").send({ codigo: "  BIB-0001 " })
+            const res = await request(app)
+                .post("/api/livros/L08/exemplares").set("Authorization", `Bearer ${tokenAdmin}`)
+                .send({ codigo: "  BIB-0001 " })
             expect(res.status).toBe(201)
             expect(res.body.codigo).toBe("BIB-0001")
         })
 
         it("409 quando o código de tombo já existe (sem diferenciar maiúsculas)", async () => {
-            const res = await request(app).post("/api/livros/L08/exemplares").send({ codigo: "tombo-001" })
+            const res = await request(app).post("/api/livros/L08/exemplares").set("Authorization", `Bearer ${tokenAdmin}`).send({ codigo: "tombo-001" })
             expect(res.status).toBe(409)
         })
 
         it("400 para código inválido ou campo desconhecido", async () => {
-            expect((await request(app).post("/api/livros/L08/exemplares").send({ codigo: 5 })).status).toBe(400)
-            expect((await request(app).post("/api/livros/L08/exemplares").send({ status: "EMPRESTADO" })).status).toBe(400)
+            expect((await request(app).post("/api/livros/L08/exemplares").set("Authorization", `Bearer ${tokenAdmin}`).send({ codigo: 5 })).status).toBe(400)
+            expect((await request(app).post("/api/livros/L08/exemplares").set("Authorization", `Bearer ${tokenAdmin}`).send({ status: "EMPRESTADO" })).status).toBe(400)
         })
 
         it("404 para livro inexistente", async () => {
-            expect((await request(app).post("/api/livros/L999/exemplares")).status).toBe(404)
+            expect((await request(app).post("/api/livros/L999/exemplares").set("Authorization", `Bearer ${tokenAdmin}`)).status).toBe(404)
         })
     })
 
@@ -399,20 +578,20 @@ describe.each(implementacoes)("API REST de livros (repositório: %s)", (_nome, c
         })
 
         it("DELETE 204 para exemplar disponível", async () => {
-            const res = await request(app).delete("/api/livros/L01/exemplares/E001")
+            const res = await request(app).delete("/api/livros/L01/exemplares/E001").set("Authorization", `Bearer ${tokenAdmin}`)
             expect(res.status).toBe(204)
             expect((await request(app).get("/api/livros/L01")).body).toMatchObject({ total: 2, disponiveis: 1 })
             expect((await request(app).get("/api/livros/L01/exemplares/E001")).status).toBe(404)
         })
 
         it("DELETE 409 para exemplar emprestado", async () => {
-            const res = await request(app).delete("/api/livros/L01/exemplares/E003")
+            const res = await request(app).delete("/api/livros/L01/exemplares/E003").set("Authorization", `Bearer ${tokenAdmin}`)
             expect(res.status).toBe(409)
             expect(res.body.erro).toMatch(/emprestado/)
         })
 
         it("DELETE 404 para exemplar inexistente", async () => {
-            expect((await request(app).delete("/api/livros/L01/exemplares/E999")).status).toBe(404)
+            expect((await request(app).delete("/api/livros/L01/exemplares/E999").set("Authorization", `Bearer ${tokenAdmin}`)).status).toBe(404)
         })
     })
 
