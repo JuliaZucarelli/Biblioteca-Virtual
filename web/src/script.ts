@@ -1,5 +1,5 @@
 import { elementoFocado, porId } from "./dom";
-import { cadastrarUsuario, iniciarSessao } from "./api";
+import { cadastrarUsuario, iniciarSessao, obterSessao } from "./api";
 import { error } from "node:console";
 
 /* ========== MODAL DO LIVRO ========== */
@@ -186,6 +186,12 @@ function iniciarLogin(): void {
     loginOverlay!.classList.add("is-open");
     document.body.classList.add("modal-open");
     emailInput!.focus();
+
+    // recupera os dados salvos
+    const sessao = obterSessao()
+
+    // o operador ? : escolhe a mensagem, se houver sessão mostra o nome, caso contrário deixa o campo vazio
+    errorEl!.textContent = sessao ? `Você está conectado como ${sessao.usuario.nome}` : ""
   }
 
   function closeLogin(): void {
@@ -320,6 +326,12 @@ function iniciarLogin(): void {
         email,
         senha : password
       })
+
+      // guarda os dados no navegador durante a sessão daquela aba
+      sessionStorage.setItem(
+        "biblioteca.sessao",
+        JSON.stringify(sessao) // transforma o objeto com token e dados públicos do usuário em texto
+      )
 
       errorEl.textContent = `Login realizado! Olá, ${sessao.usuario.nome}`
 

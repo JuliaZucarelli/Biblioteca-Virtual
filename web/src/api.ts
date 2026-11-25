@@ -114,3 +114,21 @@ export async function iniciarSessao(dados : DadosLogin) : Promise<RespostaLogin>
     const sessao : RespostaLogin = await resposta.json()
     return sessao
 }
+
+// a função pode devolver uma sessão ou ausência dela
+export function obterSessao() : RespostaLogin | null {
+    // busca os dados que guarda após o login
+    const texto = sessionStorage.getItem("biblioteca.sessao")
+
+    // retorna null quando nenhuma sessão foi salva 
+    if(!texto) return null
+
+    try {
+        // transforma o texto armazenado novamente em objeto 
+        const sessao : RespostaLogin = JSON.parse(texto)
+        return sessao 
+    } catch { // remova o conteúdo caso ele não seja um JSON válido e retorna null
+        sessionStorage.removeItem("biblioteca.sessao")
+        return null
+    }
+}
