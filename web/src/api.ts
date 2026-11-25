@@ -27,6 +27,18 @@ export interface UsuarioResumo {
     papel : "ADMIN" | "MEMBRO"
 }
 
+// descreve os dados enviados pelo formulário
+export interface DadosLogin {
+    email : string
+    senha : string
+}
+
+// descreve o retorno da API: o JWT e os dados públicos do usuário
+export interface RespostaLogin {
+    token : string
+    usuario : UsuarioResumo
+}
+
 // função para busca de livro - entrega uma lista de livros
 export async function listarLivros(): Promise<LivroResumo[]> {
     // faz uma requisição GET
@@ -72,5 +84,33 @@ export async function cadastrarUsuario(dados : DadosCadastroUsuario) : Promise<U
     const usuario : UsuarioResumo = await resposta.json()
 
     return usuario
-    
+}
+
+// envia uma requisição POST /api/sessoes
+export async function iniciarSessao(dados : DadosLogin) : Promise<RespostaLogin> {
+    const enderecoApi = import.meta.env.VITE_API_URL ?? ""
+
+    const resposta = await fetch(`${enderecoApi}/api/sessoes`, {
+        method : "POST",
+        headers : {
+            "Content-Type" : "application/json"
+        },
+        body : JSON.stringify(dados) // transforma o e-mail e senha em JSON
+    })
+
+    // trata respostas de falha como senha incorreta 
+    // tenta recuperar a mensagem da API e lança um erro no overlay 
+    if(!resposta.ok) {
+        const dadosErro = await resposta.json().catch(() => null)
+        const mensagem = dadosErro?.erro
+
+        throw new Error(
+            typeof mensagem === "string"
+            ? mensagem
+            : "Não foi possível entrar na conta."
+        )
+    }
+
+    const sessao : RespostaLogin = await resposta.json()
+    return sessao
 }

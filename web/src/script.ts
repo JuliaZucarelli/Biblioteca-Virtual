@@ -1,5 +1,6 @@
 import { elementoFocado, porId } from "./dom";
-import { cadastrarUsuario } from "./api";
+import { cadastrarUsuario, iniciarSessao } from "./api";
+import { error } from "node:console";
 
 /* ========== MODAL DO LIVRO ========== */
 
@@ -297,28 +298,39 @@ function iniciarLogin(): void {
     if (e.key === "Escape" && loginOverlay.classList.contains("is-open")) closeLogin();
   });
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+  form.addEventListener("submit", async (e) => {
+    // impede que o formulário recarregue a página
+    e.preventDefault()
 
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
+    const email = emailInput.value.trim()
+    const password = passwordInput.value
 
-    if (!email || !password) {
-      errorEl.textContent = "Preencha e-mail e senha para entrar.";
-      return;
+    // impede de enviar os campos vazios
+    if(!email || !password) {
+      errorEl.textContent = "Preencha e-mail e senha para entrar."
+      return
     }
 
-    errorEl.textContent = "";
+    errorEl.textContent = "Entrando..."
 
-    // TODO: trocar pela chamada de autenticação da API
-    console.log("Login:", { email });
-  });
+    // mostra o nome retornando quando o login funciona e limpa a senha do formulário
+    try {
+      // envia as credenciais e aguarda a resposta 
+      const sessao = await iniciarSessao({
+        email,
+        senha : password
+      })
 
-  forgotBtn.addEventListener("click", () => {
-    // TODO: fluxo de "esqueci minha senha"
-    console.log("Esqueci minha senha");
-  });
+      errorEl.textContent = `Login realizado! Olá, ${sessao.usuario.nome}`
+
+      passwordInput.value = ""
+    } catch (erro : unknown) {
+      errorEl.textContent = // exibe a mensagem de erro como credenciais inválidas
+        erro instanceof Error
+        ? erro.message
+        : "Não foi possível entrar na conta."
+    }
+  })
 }
-
-iniciarModalLivro();
-iniciarLogin();
+iniciarModalLivro()
+iniciarLogin()
