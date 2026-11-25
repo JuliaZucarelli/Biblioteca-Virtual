@@ -39,6 +39,15 @@ export interface RespostaLogin {
     usuario : UsuarioResumo
 }
 
+// descreve o empréstimo pelo catálogo
+export interface ExemplarResumo {
+    id : string
+    livroId : string
+    codigo : string 
+    status : string
+    disponivel : boolean
+}
+
 // função para busca de livro - entrega uma lista de livros
 export async function listarLivros(): Promise<LivroResumo[]> {
     // faz uma requisição GET
@@ -136,4 +145,24 @@ export function obterSessao() : RespostaLogin | null {
 // remove a sessaão salva naquela aba
 export function encerrarSessao() : void {
     sessionStorage.removeItem("biblioteca.sessao")
+}
+
+// lista os exemplares
+/* a propriedade disponivel ajuda a localizar uma unidade disponível. 
+A decisão final de permitir o empréstimo continuará sendo do backend, já que a disponibilidade pode mudar depois da consulta */
+export async function listarExemplares(livroId : string) : Promise<ExemplarResumo[]> {
+    const enderecoApi = import.meta.env.VITE_API_URL ?? ""
+
+    // encodeURIComponent: prepara esse identificador para ser colocado na URL
+    // fetch: consulta GET /api/livros/:id/exemplares -> essa consulta é pública então não precisa de token
+    const resposta = await fetch(`${enderecoApi}/api/livros${encodeURIComponent(livroId)}/exemplares`)
+
+    // interrompe a operação quando a consulta falha
+    if(!resposta.ok) {
+        throw new Error("Não foi possível consultar os exemplares deste livro.")
+    }
+
+    // lê a lista de exemplares retornada pela API
+    const exemplares : ExemplarResumo[] = await resposta.json()
+    return exemplares
 }
