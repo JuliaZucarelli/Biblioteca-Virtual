@@ -16,3 +16,6 @@ dist/
 .DS_Store
 Thumbs.db
 *.log
+
+# copia local usada na integracao
+/.integracao-emprestimos/
