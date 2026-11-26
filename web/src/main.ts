@@ -1,2 +1,3 @@
-import "./script";
-import "./catalogo";
+import "./script"
+import "./catalogo"
+import "./emprestimos"
