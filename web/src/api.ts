@@ -265,3 +265,43 @@ export async function listarMeusEmprestimos() : Promise<EmprestimoResumo[]> {
     const emprestimos : EmprestimoResumo[] = await resposta.json()
     return emprestimos
 }
+
+export async function renovarEmprestimo(emprestimoId : string) : Promise<EmprestimoResumo> {
+    const sessao = obterSessao()
+
+    if(!sessao) {
+        throw new Error("Entre na sua conta para renovar o empréstimo.")
+    }
+
+    const enderecoApi = import.meta.env.VITE_API_URL ?? ""
+
+    const resposta = await fetch(
+        `${enderecoApi}/api/emprestimos/${
+            encodeURIComponent(emprestimoId)
+        }/renovacoes`,
+        {
+            method : "POST", 
+            headers : {
+                "Authorization" : `Bearer ${sessao.token}`
+            }
+        }
+    )
+
+    if(!resposta.ok) {
+        if(resposta.status === 401) {
+            encerrarSessao()
+            throw new Error("Sua sessão não é válida. Entre novamente.")
+        }
+
+        const dadosErro = await resposta.json().catch(() => null)
+
+        throw new Error(
+            typeof dadosErro?.erro === "string"
+                ? dadosErro.erro
+                : "Não foi possível renovar o empréstimo."
+        )
+    }
+
+    const emprestimo : EmprestimoResumo = await resposta.json()
+    return emprestimo
+}
