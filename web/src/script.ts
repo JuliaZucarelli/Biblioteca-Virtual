@@ -82,6 +82,34 @@ function iniciarModalLivro(): void {
   let lastFocused: HTMLElement | null = null
   let livroSelecionadoId = ""
 
+  async function atualizarDisponibilidade(livroId : string) : Promise<void> {
+    // consulta os dados atuais da API
+    const exemplares = await listarExemplares(livroId)
+
+    // conta quantas unidades estão disponíveis
+    const disponiveis = exemplares.filter(exemplar => exemplar.disponivel).length
+
+    // escolhem entre a contagem e o "Indisponível"
+    const texto = disponiveis > 0
+      ? `${disponiveis} disponíveis / ${exemplares.length} total`
+      : "Indisponível"
+
+      document.querySelectorAll<HTMLElement>(".book-card").forEach(card => {
+        // ignora os cards de outros livros e o return encerra apenas a execução atual do forEach
+        if(card.dataset.id !== livroId) return
+
+        // atualiza a informação que o modal lerá quando for aberto novamente
+        card.dataset.disponibilidade = texto
+
+        const disponibilidade = card.querySelector<HTMLElement>("book-card__availability")
+
+        // atualiza o texto visível quando encontra o elemento com a classe que add
+        if(disponibilidade) {
+          disponibilidade.textContent = texto
+        }
+    })
+  }
+
   function openBook(card: HTMLElement): void {
     const book = getBookData(card)
     livroSelecionadoId = book.id
