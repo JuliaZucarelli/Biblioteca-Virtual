@@ -60,8 +60,34 @@ function criarCardEmprestimo(emprestimo : EmprestimoResumo, livro : LivroResumo 
         ? "Empréstimo ativo"
         : "Empréstimo encerrado"
 
+    const restante = document.createElement("p")
+    restante.className = "emprestimos-card__remainder"
+
+    const hoje = new Date()
+    hoje.setHours(0, 0, 0, 0)
+
+    const prazo = new Date(emprestimo.dataVencimento)
+    prazo.setHours(0, 0, 0, 0)
+
+    const diaEmMilissegundos = 24 * 60 * 60 * 1000
+
+    const diasRestantes = Math.round(
+        (
+            Date.UTC(prazo.getFullYear(), prazo.getMonth(), prazo.getDate()) -
+            Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate())
+        ) / diaEmMilissegundos
+    )
+
+    if(!emprestimo.ativo) {
+        restante.textContent = "Encerrando..."
+    } else if(diasRestantes < 0) {
+        restante.textContent = "Vence hoje"
+    } else {
+        restante.textContent = `${diasRestantes}d restantes`
+    }
+
     // organiza os elementos 
-    corpo.append(titulo, autor, retirada, vencimento)
+    corpo.append(titulo, autor, retirada, vencimento, restante)
     card.append(capa, corpo)
 
     return card
