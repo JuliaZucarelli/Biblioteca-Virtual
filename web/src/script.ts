@@ -95,18 +95,18 @@ function iniciarModalLivro(): void {
       : "Indisponível"
 
       document.querySelectorAll<HTMLElement>(".book-card").forEach(card => {
-        // ignora os cards de outros livros e o return encerra apenas a execução atual do forEach
-        if(card.dataset.id !== livroId) return
+      // ignora os cards de outros livros e o return encerra apenas a execução atual do forEach
+      if(card.dataset.id !== livroId) return
 
-        // atualiza a informação que o modal lerá quando for aberto novamente
-        card.dataset.disponibilidade = texto
+      // atualiza a informação que o modal lerá quando for aberto novamente
+      card.dataset.disponibilidade = texto
 
-        const disponibilidade = card.querySelector<HTMLElement>("book-card__availability")
+      const disponibilidade = card.querySelector<HTMLElement>(".book-card__availability")
 
-        // atualiza o texto visível quando encontra o elemento com a classe que add
-        if(disponibilidade) {
-          disponibilidade.textContent = texto
-        }
+      // atualiza o texto visível quando encontra o elemento com a classe que add
+      if(disponibilidade) {
+        disponibilidade.textContent = texto
+      }
     })
   }
 
@@ -229,6 +229,15 @@ function iniciarModalLivro(): void {
         const vencimento = new Date(emprestimo.dataVencimento).toLocaleDateString("pt-BR")
 
         modal.availability.textContent = `Empréstimo realizado! Devolução até ${vencimento}.`
+      }
+      
+      // se o empréstimo funcionar e apenar a atualização visual falhar, a mensagem continua informando que o empréstimo foi realizado
+      try {
+        await atualizarDisponibilidade(livroId)
+      } catch {
+        if(livroSelecionadoId === livroId) {
+          modal.availability.textContent += "A disponibilidade não pôde ser atualizada. Recarregue o acervo."
+        }
       }
     } catch (erro : unknown) {
       // mostrar o errro somente no livro correspondente -> impedir que uma falha da solicitação de um livo apareça no modal de outro 
