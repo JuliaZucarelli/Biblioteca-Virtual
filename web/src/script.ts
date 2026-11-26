@@ -1,29 +1,29 @@
 import { elementoFocado, porId } from "./dom";
 import { cadastrarUsuario, iniciarSessao, obterSessao, encerrarSessao } from "./api";
-import { error } from "node:console";
 
 /* ========== MODAL DO LIVRO ========== */
 
 interface DadosLivro {
-  genero: string;
-  titulo: string;
-  autor: string;
-  ano: string;
-  descricao: string;
-  disponibilidade: string;
-  capa: string;
+  genero: string
+  id : string
+  titulo: string
+  autor: string
+  ano: string
+  descricao: string
+  disponibilidade: string
+  capa: string
 }
 
 interface ElementosModalLivro {
-  overlay: HTMLElement;
-  closeBtn: HTMLButtonElement;
-  reserveBtn: HTMLButtonElement;
-  cover: HTMLImageElement;
-  genre: HTMLElement;
-  title: HTMLElement;
-  meta: HTMLElement;
-  description: HTMLElement;
-  availability: HTMLElement;
+  overlay: HTMLElement
+  closeBtn: HTMLButtonElement
+  reserveBtn: HTMLButtonElement
+  cover: HTMLImageElement
+  genre: HTMLElement
+  title: HTMLElement
+  meta: HTMLElement
+  description: HTMLElement
+  availability: HTMLElement
 }
 
 function lerElementosModalLivro(): ElementosModalLivro | null {
@@ -57,6 +57,7 @@ function getBookData(card: HTMLElement): DadosLivro {
 
   return {
     genero: d.genero || card.querySelector(".book-card__genre")?.textContent?.trim() || "",
+    id : d.id ?? "",
     titulo: d.titulo || card.querySelector(".book-card__title")?.textContent?.trim() || "",
     autor: d.autor || autorDom,
     ano: d.ano || anoDom,
@@ -66,46 +67,48 @@ function getBookData(card: HTMLElement): DadosLivro {
       card.querySelector(".book-card__disponibilidade p")?.textContent?.trim() ||
       "",
     capa: img?.getAttribute("src") ?? "",
-  };
+  }
 }
 
 function isAvailable(text: string): boolean {
   // "indisponível ..." ou "0 disponíveis ..." => indisponível
-  return !/^\s*(indispon|0\s)/i.test(text);
+  return !/^\s*(indispon|0\s)/i.test(text)
 }
 
 function iniciarModalLivro(): void {
-  const modal = lerElementosModalLivro();
+  const modal = lerElementosModalLivro()
   if (!modal) return; // página sem o modal do livro
 
-  let lastFocused: HTMLElement | null = null;
+  let lastFocused: HTMLElement | null = null
+  let livroSelecionadoId = ""
 
   function openBook(card: HTMLElement): void {
-    const book = getBookData(card);
+    const book = getBookData(card)
+    livroSelecionadoId = book.id
 
-    modal!.cover.src = book.capa;
-    modal!.cover.alt = `capa do livro ${book.titulo}`;
-    modal!.genre.textContent = book.genero;
-    modal!.title.textContent = book.titulo;
-    modal!.meta.textContent = [book.autor, book.ano].filter(Boolean).join(" • ");
-    modal!.description.textContent = book.descricao;
+    modal!.cover.src = book.capa
+    modal!.cover.alt = `capa do livro ${book.titulo}`
+    modal!.genre.textContent = book.genero
+    modal!.title.textContent = book.titulo
+    modal!.meta.textContent = [book.autor, book.ano].filter(Boolean).join(" • ")
+    modal!.description.textContent = book.descricao
 
-    const available = isAvailable(book.disponibilidade);
+    const available = isAvailable(book.disponibilidade)
 
-    const dot = document.createElement("span");
+    const dot = document.createElement("span")
     dot.className =
       "book-modal__dot " +
-      (available ? "book-modal__dot--disponivel" : "book-modal__dot--indisponivel");
+      (available ? "book-modal__dot--disponivel" : "book-modal__dot--indisponivel")
 
-    const label = document.createElement("span");
-    label.textContent = book.disponibilidade;
+    const label = document.createElement("span")
+    label.textContent = book.disponibilidade
 
-    modal!.availability.replaceChildren(dot, label);
+    modal!.availability.replaceChildren(dot, label)
 
-    lastFocused = elementoFocado();
-    modal!.overlay.classList.add("is-open");
-    document.body.classList.add("modal-open");
-    modal!.closeBtn.focus();
+    lastFocused = elementoFocado()
+    modal!.overlay.classList.add("is-open")
+    document.body.classList.add("modal-open")
+    modal!.closeBtn.focus()
   }
 
   function closeBook(): void {

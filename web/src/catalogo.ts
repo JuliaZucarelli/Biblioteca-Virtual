@@ -8,6 +8,7 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
   card.className = "book-card catalog-book"
 
   // acessar atributos personalizados -> guardam informações no elemento, mas não produzem texto visível 
+  card.dataset.id = livro.id
   card.dataset.titulo = livro.titulo
   card.dataset.autor = livro.autor
   card.dataset.isbn = livro.isbn

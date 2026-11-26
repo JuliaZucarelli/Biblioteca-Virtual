@@ -63,7 +63,7 @@ export async function listarLivros(): Promise<LivroResumo[]> {
     // faz uma requisição GET
     // const resposta = await fetch("/api/livros")
     const enderecoApi = import.meta.env.VITE_API_URL ?? ""
-    const resposta = await fetch(`${enderecoApi}/api/livros`)
+    const resposta = await fetch(`${enderecoApi}/api/livros/`)
 
     // verifica se status HTPP está entre 200 e 299
     if(!resposta.ok) {
