@@ -215,3 +215,52 @@ export async function emprestarExemplar(exemplarId : string) : Promise<Emprestim
     const emprestimo : EmprestimoResumo = await resposta.json()
     return emprestimo
 }
+
+// recupera a sessão e impede a consulta sem login 
+// () indica que ela não recebe argumentos, a identidade será obtida pelo token
+export async function listarMeusEmprestimos() : Promise<EmprestimoResumo[]> {
+    // recuperar sessão 
+    const sessao = obterSessao()
+
+    // chama a função que lê "biblioteca.sessao" do sessionStorage
+    // se não existir sessão, cria um erro e interrompe a função antes de consultat a API
+    if(!sessao) {
+        throw new Error("Entre na sua conta para consultar os empréstimos.")
+    }
+
+    // definir endereço da API
+    const enderecoApi = import.meta.env.VITE_API_URL ?? ""
+
+    // consultar os empréstimos
+    // fetch: envia a requisição
+    // Authorization: envia o JWT no formato Bearer token 
+    // o middleware valida o token e recupera a identidade, o serviço usa esse identidade para consultar os empréstimos daquele usuário 
+    const resposta = await fetch(`${enderecoApi}/api/emprestimos`, {
+        headers : {
+            "Authorization" : `Bearer ${sessao.token}`
+        }
+    })
+
+    // identificar uma resposta de falha 
+    if(!resposta.ok) {
+        // se a API responder 401, o token não foi aceito 
+        if(resposta.status === 401) {
+            encerrarSessao() // remove a sessão armazenada na aba 
+            throw new Error("Sua sessão não é válida. Entre novamente.")
+        }
+
+        // recuperar outras mensagens de erro 
+        const dadosErro = await resposta.json().catch(() => null)
+ 
+        // se o corpo for JSON válido, o .catch(() => null) evita que essa leitura gere outro erro e usa null
+        throw new Error(
+            typeof dadosErro?.erro === "string" // verifica se a mensagem recebida é um texto 
+            ? dadosErro.erro
+            : "Não foi possível consultar seus empréstimos." // escolher a mensagem da API
+        )
+    }
+
+    // ler e devolver a lista 
+    const emprestimos : EmprestimoResumo[] = await resposta.json()
+    return emprestimos
+}
