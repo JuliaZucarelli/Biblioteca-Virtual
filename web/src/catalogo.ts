@@ -32,7 +32,7 @@ function criarCardLivro(livro: LivroResumo): HTMLElement {
 
   // disponibilidade do card
   const disponibilidade = document.createElement("p")
-  disponibilidade.className = "book-card__meta"
+  disponibilidade.className = "book-card__meta book-card__availability"
 
   if(livro.disponiveis > 0) {
     disponibilidade.textContent = `${livro.disponiveis} disponíveis / ${livro.total} total`
