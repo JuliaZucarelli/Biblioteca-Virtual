@@ -1,5 +1,5 @@
 import { elementoFocado, porId } from "./dom";
-import { cadastrarUsuario, iniciarSessao, obterSessao, encerrarSessao } from "./api";
+import { cadastrarUsuario, iniciarSessao, obterSessao, encerrarSessao, listarExemplares, emprestarExemplar } from "./api";
 
 /* ========== MODAL DO LIVRO ========== */
 
@@ -77,7 +77,7 @@ function isAvailable(text: string): boolean {
 
 function iniciarModalLivro(): void {
   const modal = lerElementosModalLivro()
-  if (!modal) return; // página sem o modal do livro
+  if (!modal) return // página sem o modal do livro
 
   let lastFocused: HTMLElement | null = null
   let livroSelecionadoId = ""
@@ -133,31 +133,88 @@ function iniciarModalLivro(): void {
 
   /* Reconhece cliques também nos cards criados depois pela API */
   document.addEventListener("click", (evento) => {
-    const alvo = evento.target;
+    const alvo = evento.target
 
-    if (!(alvo instanceof Element)) return;
+    if (!(alvo instanceof Element)) return
 
-    const card = alvo.closest<HTMLElement>(".book-card");
+    const card = alvo.closest<HTMLElement>(".book-card")
 
     if (!card) return;
 
     openBook(card);
-  });
+  })
 
   /* Fechar: botão, clique no fundo e tecla Esc */
-  modal.closeBtn.addEventListener("click", closeBook);
+  modal.closeBtn.addEventListener("click", closeBook)
 
   modal.overlay.addEventListener("click", (e) => {
-    if (e.target === modal.overlay) closeBook();
-  });
+    if (e.target === modal.overlay) closeBook()
+  })
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.overlay.classList.contains("is-open")) closeBook();
-  });
+    if (e.key === "Escape" && modal.overlay.classList.contains("is-open")) closeBook()
+  })
 
   /* Botão reservar (troque pela sua lógica depois) */
-  modal.reserveBtn.addEventListener("click", () => {
-    console.log("Reservar:", modal.title.textContent);
+  modal.reserveBtn.textContent = "Emprestar"
+
+  modal.reserveBtn.addEventListener("click", async () => {
+    // impedir cliques repetidos
+    if(modal.reserveBtn.disabled) return
+
+    const livroId = livroSelecionadoId
+
+    // verificar se existe um livro identificado
+    // ! (significa não) -> o livroId será verdadeiro quando o identificador estiver vazio
+    if(!livroId) {
+      modal.availability.textContent = "Abra um livro pelo acervo para solicitar o empréstimo."
+      return
+    }
+
+    // verificar se há uma sessão salva 
+    // se retornar null esse if mostra a orientação de login e interrompe a operação
+    // essa verificação confirma que há uma sessão armazenada, a API ainda verifica se o token é válido e não expirou 
+    if(!obterSessao()) {
+      modal.availability.textContent = "Entre na conta antes de solicitar um empréstimo."
+      return
+    }
+
+    modal.reserveBtn.disabled = true
+    modal.availability.textContent = "Solicitando empréstimo..."
+
+    try {
+      const exemplares = await listarExemplares(livroId)
+      // find: procura uma unidade disponível
+      const exemplar = exemplares.find(item => item.disponivel)
+
+      // verificar se encontramos uma unidade disponpivel 
+      if(!exemplar) {
+        throw new Error("Este livro não tem exemplar disponível no momento. ")
+      }
+
+      const emprestimo = await emprestarExemplar(exemplar.id)
+
+      // mostrar sucesso somente no livro correspondente -> mostra a confirmação e o vencimento 
+      // livroId: guarda o livro selecionado no momento do clique 
+      // livroSelecionadoId: representa o livro atualmente aberto +
+      if(livroSelecionadoId === livroId) {
+        const vencimento = new Date(emprestimo.dataVencimento).toLocaleDateString("pt-BR")
+
+        modal.availability.textContent = `Empréstimo realizado! Devolução até ${vencimento}.`
+      }
+    } catch (erro : unknown) {
+      // mostrar o errro somente no livro correspondente -> impedir que uma falha da solicitação de um livo apareça no modal de outro 
+      if(livroSelecionadoId === livroId) {
+        modal.availability.textContent = 
+          erro instanceof Error
+            ? erro.message
+            : "Não foi possível realizar o empréstimo."
+      }
+    }
+
+    finally {
+        modal.reserveBtn.disabled = false
+      }
   });
 }
 

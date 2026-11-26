@@ -165,7 +165,7 @@ export async function listarExemplares(livroId : string) : Promise<ExemplarResum
 
     // encodeURIComponent: prepara esse identificador para ser colocado na URL
     // fetch: consulta GET /api/livros/:id/exemplares -> essa consulta é pública então não precisa de token
-    const resposta = await fetch(`${enderecoApi}/api/livros${encodeURIComponent(livroId)}/exemplares`)
+    const resposta = await fetch(`${enderecoApi}/api/livros/${encodeURIComponent(livroId)}/exemplares`)
 
     // interrompe a operação quando a consulta falha
     if(!resposta.ok) {
