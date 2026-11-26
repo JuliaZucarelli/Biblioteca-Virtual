@@ -1,11 +1,25 @@
 import { porId } from "./dom";
-import { listarMeusEmprestimos } from "./api";
-import type { EmprestimoResumo } from "./api";
+import { listarMeusEmprestimos, listarLivros } from "./api";
+import type { EmprestimoResumo, LivroResumo } from "./api";
 
-function criarCardEmprestimo(emprestimo : EmprestimoResumo) : HTMLElement {
+function criarCardEmprestimo(emprestimo : EmprestimoResumo, livro : LivroResumo | undefined) : HTMLElement {
     // representa o card
     const card = document.createElement("article") 
     card.className = "emprestimos-card"
+
+    // cria a imagem da capa do livro 
+    const capa = document.createElement("div")
+    capa.className = "emprestimos-card__cover emprestimos-cover--noite"
+
+    if(livro?.capa) {
+        const imagem = document.createElement("img")
+
+        imagem.src = import.meta.env.BASE_URL + livro.capa.replace(/^\/+/, "")
+
+        imagem.alt = `Capa de ${emprestimo.livroTitulo}`
+
+        capa.append(imagem)
+    }
 
     // organiza o conteúdo e reaproveita o CSS existente
     const corpo = document.createElement("div")
@@ -16,11 +30,29 @@ function criarCardEmprestimo(emprestimo : EmprestimoResumo) : HTMLElement {
     titulo.className = "emprestimos-card__title"
     titulo.textContent = emprestimo.livroTitulo
 
-    // converte a data recebida em uma apresentação brasileira
+    // mostra o autor
+    const autor = document.createElement("p")
+    autor.className = "emprestimos-card__author"
+    autor.textContent = livro?.autor ?? "Autor não informado"
+
+    const formatoData : Intl.DateTimeFormatOptions = {
+        day : "2-digit",
+        month : "short",
+        year : "numeric"
+    }
+
+    // organiza informações de retirada
+    const retirada = document.createElement("p")
+    retirada.className = "emprestimos-card__date"
+    retirada.textContent =
+        `emprestado: ${new Date(emprestimo.dataEmprestimo)
+        .toLocaleDateString("pt-BR", formatoData)}`
+
     const vencimento = document.createElement("p")
     vencimento.className = "emprestimos-card__devolution"
     vencimento.textContent = 
-        `Prazo de devolução: ${new Date(emprestimo.dataVencimento).toLocaleDateString("pt-BR")}`
+            `devolução: ${new Date(emprestimo.dataVencimento)
+                .toLocaleDateString("pt-BR", formatoData)}`
 
     // informa se o empréstimo está ativo ou encerrado
     const situacao = document.createElement("p")
@@ -29,11 +61,12 @@ function criarCardEmprestimo(emprestimo : EmprestimoResumo) : HTMLElement {
         : "Empréstimo encerrado"
 
     // organiza os elementos 
-    corpo.append(titulo, vencimento, situacao)
-    card.append(corpo)
+    corpo.append(titulo, autor, retirada, vencimento)
+    card.append(capa, corpo)
 
     return card
 }
+
 
 async function iniciarEmprestimos() : Promise<void> {
     const lista = porId("emprestimosLista")
@@ -47,13 +80,16 @@ async function iniciarEmprestimos() : Promise<void> {
     // consultam empréstimos da conta conectada
     try {
         const emprestimos = await listarMeusEmprestimos()
+        const livros = await listarLivros()
 
         // limpa a lista antes de preenchê-la
         lista.replaceChildren()
 
         // percorre os empréstimos, cria um card para cada um e o adiciona a página
         for(const emprestimo of emprestimos) {
-            const card = criarCardEmprestimo(emprestimo)
+            const livro = livros.find(item => item.id === emprestimo.livroId)
+
+            const card = criarCardEmprestimo(emprestimo, livro)
             lista.append(card)
         }
 

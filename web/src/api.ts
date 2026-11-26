@@ -56,6 +56,7 @@ export interface EmprestimoResumo {
     livroTitulo : string 
     dataVencimento : string 
     ativo : boolean
+    dataEmprestimo : string
 }
 
 // função para busca de livro - entrega uma lista de livros
