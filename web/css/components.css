@@ -564,4 +564,24 @@
   color: var(--color-text-muted);
 }
 
+.emprestimos-card__return {
+  grid-column: 4;
+  grid-row: 3;
+  justify-self: end;
+  align-self: center;
+
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.emprestimos-card__return:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
 

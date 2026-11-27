@@ -305,3 +305,49 @@ export async function renovarEmprestimo(emprestimoId : string) : Promise<Emprest
     const emprestimo : EmprestimoResumo = await resposta.json()
     return emprestimo
 }
+
+export interface RespostaDevolucao {
+    emprestimo : EmprestimoResumo
+    diasDeAtraso : number
+    multaCentavos : number 
+}
+
+export async function devolverEmprestimo(emprestimoId : string) : Promise<RespostaDevolucao> {
+    const sessao = obterSessao()
+
+    if(!sessao) {
+        throw new Error("Entre na sua conta para devolver o livro.")
+    }
+
+    const enderecoApi = import.meta.env.VITE_API_URL ?? ""
+
+    const resposta = await fetch(
+        `${enderecoApi}/api/emprestimos/${
+            encodeURIComponent(emprestimoId)
+        }/devolucao`,
+        {
+            method : "POST",
+            headers : {
+                "Authorization" : `Bearer ${sessao.token}`
+            }
+        }
+    )
+
+    if(!resposta.ok) {
+        if(resposta.status === 401) {
+            encerrarSessao()
+            throw new Error("Sua sessão não é válida. Entre novamente.")
+        }
+
+        const dadosErro = await resposta.json().catch(() => null)
+
+        throw new Error(
+            typeof dadosErro?.erro === "string"
+                ? dadosErro.erro
+                : "Não foi possível devolver o livro."
+        )
+    }
+
+    const devolucao : RespostaDevolucao = await resposta.json()
+    return devolucao
+}

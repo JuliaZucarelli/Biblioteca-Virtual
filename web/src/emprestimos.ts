@@ -1,6 +1,7 @@
 import { porId } from "./dom";
-import { listarMeusEmprestimos, listarLivros, renovarEmprestimo } from "./api";
+import { listarMeusEmprestimos, listarLivros, renovarEmprestimo, devolverEmprestimo } from "./api";
 import type { EmprestimoResumo, LivroResumo } from "./api";
+import { stat } from "node:fs";
 
 function criarCardEmprestimo(emprestimo : EmprestimoResumo, livro : LivroResumo | undefined) : HTMLElement {
     // representa o card
@@ -111,7 +112,7 @@ function criarCardEmprestimo(emprestimo : EmprestimoResumo, livro : LivroResumo 
                 const atualizado = await renovarEmprestimo(emprestimo.id)
 
                 const novoCard = criarCardEmprestimo(atualizado, livro)
-                card.replaceWith(novoCard) // substitui o card pelos dados retornados, atualizando prazo e dias restantes
+                card.replaceWith(novoCard)
 
                 if(status) {
                     status.textContent = `Empréstimo de ${atualizado.livroTitulo} renovado com sucesso.`
@@ -130,6 +131,44 @@ function criarCardEmprestimo(emprestimo : EmprestimoResumo, livro : LivroResumo 
         })
 
         corpo.append(renovar)
+
+        const devolver = document.createElement("button")
+        devolver.type = "button"
+        devolver.className = "emprestimos-card__return"
+        devolver.textContent = "Devolver"
+
+        devolver.addEventListener("click", async() => {
+            if(devolver.disabled || renovar.disabled) return 
+
+            devolver.disabled = true
+            renovar.disabled = true
+            devolver.textContent = "Devolvendo..."
+
+            const status = porId("emprestimosStatus")
+
+            try {
+                const resultado = await devolverEmprestimo(emprestimo.id)
+
+                card.remove()
+
+                if(status) {
+                    status.textContent = `Devolução de ${resultado.emprestimo.livroTitulo} realizada com sucesso.`
+                }
+            } catch(erro : unknown) {
+                if(status) {
+                    status.textContent = 
+                        erro instanceof Error
+                            ? erro.message
+                            : "Não foi possível devolver o livro."
+                }
+            } finally {
+                devolver.disabled = false
+                renovar.disabled = false
+                devolver.textContent = "Devolver"
+            }
+        })
+
+        corpo.append(devolver)
     }
 
     card.append(capa, corpo)
@@ -149,7 +188,9 @@ async function iniciarEmprestimos() : Promise<void> {
 
     // consultam empréstimos da conta conectada
     try {
-        const emprestimos = await listarMeusEmprestimos()
+        const todosEmprestimos = await listarMeusEmprestimos()
+        //cria uma lista apenas com os empréstimos ativos, logo os encerrados não aparecem ao recarregar
+        const emprestimos = todosEmprestimos.filter(emprestimo => emprestimo.ativo)
         const livros = await listarLivros()
 
         // limpa a lista antes de preenchê-la
@@ -165,7 +206,7 @@ async function iniciarEmprestimos() : Promise<void> {
 
         // mostra a mensagem de lista vazia quando a API retorna []
         if(emprestimos.length === 0) {
-            status.textContent = "Você ainda não possui empréstimos."
+            status.textContent = "Você ainda não possui empréstimos ativos."
             return
         }
 
