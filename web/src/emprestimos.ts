@@ -1,5 +1,5 @@
 import { porId } from "./dom";
-import { listarMeusEmprestimos, listarLivros } from "./api";
+import { listarMeusEmprestimos, listarLivros, renovarEmprestimo } from "./api";
 import type { EmprestimoResumo, LivroResumo } from "./api";
 
 function criarCardEmprestimo(emprestimo : EmprestimoResumo, livro : LivroResumo | undefined) : HTMLElement {
@@ -81,6 +81,8 @@ function criarCardEmprestimo(emprestimo : EmprestimoResumo, livro : LivroResumo 
     if(!emprestimo.ativo) {
         restante.textContent = "Encerrando..."
     } else if(diasRestantes < 0) {
+        restante.textContent = `${Math.abs(diasRestantes)}d em atraso`
+    } else if (diasRestantes === 0) {
         restante.textContent = "Vence hoje"
     } else {
         restante.textContent = `${diasRestantes}d restantes`
@@ -88,6 +90,48 @@ function criarCardEmprestimo(emprestimo : EmprestimoResumo, livro : LivroResumo 
 
     // organiza os elementos 
     corpo.append(titulo, autor, retirada, vencimento, restante)
+
+    // mostra a ação somente nos empréstimos ativos
+    if(emprestimo.ativo) {
+        const renovar = document.createElement("button")
+        renovar.type = "button"
+        renovar.className = "emprestimos-card__renovation"
+        renovar.textContent = "↻ renovar por mais 14 dias"
+
+        renovar.addEventListener("click", async () => {
+            if(renovar.disabled) return // disabled: impede solicitações repetidas enquanto aguarda a API
+
+            renovar.disabled = true
+            renovar.textContent = "Renovando..."
+
+            const status = porId("emprestimosStatus")
+
+            try {
+                // solicita a renovação - o backend verifica suas regras
+                const atualizado = await renovarEmprestimo(emprestimo.id)
+
+                const novoCard = criarCardEmprestimo(atualizado, livro)
+                card.replaceWith(novoCard) // substitui o card pelos dados retornados, atualizando prazo e dias restantes
+
+                if(status) {
+                    status.textContent = `Empréstimo de ${atualizado.livroTitulo} renovado com sucesso.`
+                }
+            } catch(erro : unknown) { // mostra o motivo de uma renovação recusada
+                if(status) {
+                    status.textContent = 
+                        erro instanceof Error   
+                            ? erro.message
+                            : "Não foi possível renovar o empréstimo."
+                }
+            } finally { // restaura o botão caso ele continue na página
+                renovar.disabled = false
+                renovar.textContent = "↻ renovar por mais 14 dias"
+            }
+        })
+
+        corpo.append(renovar)
+    }
+
     card.append(capa, corpo)
 
     return card
